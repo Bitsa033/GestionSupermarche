@@ -1,0 +1,130 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <!-- Content Wrapper. Contains page content -->
+    <div
+        class="content-wrapper">
+
+        <!-- Main content -->
+        <section class="content">
+			<br>
+            <div
+                class="container-fluid">
+                <!-- Info boxes -->
+                <div class="row">
+                    <div class="col-12 col-sm-6 col-md-3"></div>
+                    <!-- /.col -->
+
+                </div>
+                <!-- /.row -->
+                <div class="row">
+					<div class="col-md-6">
+						<div class="card">
+						 <h3 class="card-title">Liste des produits disponibles</h3>
+							<div class="card-body table-responsive p-0" style="height: 390px;">
+								<table class="table table-head-fixed text-nowrap">
+
+									<tbody>
+										<tr>
+											<th style="width:3%;">ID</th>
+											<th>Produit</th>
+											
+										</tr>
+										{% for produit in produits %}
+											<tr>
+												<td>
+													{{ produit.id }}</td>
+												<td>
+													<strong>{{ produit.ref }}</strong>
+													<br>
+													<i>{{ produit.famille.nom }}</i> <i>{{ produit.nom }}</i> <i>{{ produit.prix }} FCFA</i>
+													</td>
+													{# <td>
+														<a class="btn btn-info" href="{{ path('filieres_index',{id:filiere.id}) }}">Mettre à jour
+															<i class="fa fa-edit"></i>
+														</a>
+														<a class="btn btn-warning" href="{{ path('filieres_suppression',{id:filiere.id}) }}">Supprimer
+															<i class="fa fa-times"></i>
+														</a>
+													</td> #}
+												</tr>
+												{% else %}
+												<tr>
+													<td colspan="2">Liste vide !</td>
+												</tr>
+										{% endfor %}
+
+									</tbody>
+								</table>
+
+							</div>
+							<!-- /.card-body -->
+						</div>
+					</div>
+                    
+                    <div class="col-md-5">
+
+                        <div class="card">
+                            <div class="card-header">
+								<form action="{{ path('produit_nb') }}" method="post">
+								<div class="form-inline">
+									<input type="number" name="nb_row" class="form-control" placeholder="Nbre ex: 5">
+									<button type="submit" class="form-control">Ok</button>
+								</div>
+								</form>
+                                
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body table-responsive p-0" style="height: 350px;">
+                                <form action="{{ path('produit_index',{id:famille.id}) }}" method="post">
+                                    <table class="table table-head-fixed text-nowrap">
+
+                                        <tbody>
+                                            <tr>
+                                                <th>Produit</th>
+                                                <th>Prix</th>
+                                            </tr>
+
+											{% for nb_row in nb_rows %}
+                                            <tr>
+                                                <th>
+                                                    <input type="text" name="produit{{nb_row}}" class="form-control" placeholder="Nom du produit" id="">
+												</th>
+                                                <th>
+                                                    <input type="text" name="prix{{nb_row}}" class="form-control" placeholder="Prix du produit" id="">
+												</th>
+                                            </tr>
+												
+											{% endfor %}
+												
+											
+                                        </tbody>
+										<!-- /.tbody -->
+                                    </table>
+                                    <button type="submit" name="enregistrer" class="btn btn-success form-control offset-1 col-10">Enregistrer</button>
+									<br><br>
+                                </form>
+                                <!-- /.form -->
+
+								</div>
+								<!-- /.card-body -->
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                        <!-- /.card -->
+
+                    </div>
+                    <!-- /.col -->
+
+
+                </div>
+					
+                <!-- /.row -->
+            </div>
+
+        </section>
+    </div>
+{% endblock %}
