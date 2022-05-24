@@ -30,11 +30,6 @@ class Produit
     private $ref;
 
     /**
-     * @ORM\Column(type="bigint")
-     */
-    private $prix;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Famille::class, inversedBy="produits")
      */
     private $famille;
@@ -79,18 +74,6 @@ class Produit
     public function setRef(string $ref): self
     {
         $this->ref = $ref;
-
-        return $this;
-    }
-
-    public function getPrix(): ?string
-    {
-        return $this->prix;
-    }
-
-    public function setPrix(string $prix): self
-    {
-        $this->prix = $prix;
 
         return $this;
     }
