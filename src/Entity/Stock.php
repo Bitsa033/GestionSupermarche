@@ -42,6 +42,36 @@ class Stock
      */
     private $createdAt;
 
+    /**
+     * @ORM\Column(type="bigint")
+     */
+    private $pat;
+
+    /**
+     * @ORM\Column(type="bigint")
+     */
+    private $pau;
+
+    /**
+     * @ORM\Column(type="bigint")
+     */
+    private $pvt;
+
+    /**
+     * @ORM\Column(type="bigint")
+     */
+    private $pvu;
+
+    /**
+     * @ORM\Column(type="bigint")
+     */
+    private $bvt;
+
+    /**
+     * @ORM\Column(type="bigint")
+     */
+    private $bvu;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -103,6 +133,78 @@ class Stock
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getPat(): ?string
+    {
+        return $this->pat;
+    }
+
+    public function setPat(string $pat): self
+    {
+        $this->pat = $pat;
+
+        return $this;
+    }
+
+    public function getPau(): ?string
+    {
+        return $this->pau;
+    }
+
+    public function setPau(string $pau): self
+    {
+        $this->pau = $pau;
+
+        return $this;
+    }
+
+    public function getPvt(): ?string
+    {
+        return $this->pvt;
+    }
+
+    public function setPvt(string $pvt): self
+    {
+        $this->pvt = $pvt;
+
+        return $this;
+    }
+
+    public function getPvu(): ?string
+    {
+        return $this->pvu;
+    }
+
+    public function setPvu(string $pvu): self
+    {
+        $this->pvu = $pvu;
+
+        return $this;
+    }
+
+    public function getBvt(): ?string
+    {
+        return $this->bvt;
+    }
+
+    public function setBvt(string $bvt): self
+    {
+        $this->bvt = $bvt;
+
+        return $this;
+    }
+
+    public function getBvu(): ?string
+    {
+        return $this->bvu;
+    }
+
+    public function setBvu(string $bvu): self
+    {
+        $this->bvu = $bvu;
 
         return $this;
     }
