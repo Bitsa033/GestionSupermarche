@@ -37,16 +37,16 @@
 												<td>
 													<strong>{{ produit.ref }}</strong>
 													<br>
-													<i>{{ produit.famille.nom }}</i> <i>{{ produit.nom }}</i> <i>{{ produit.prix }} FCFA</i>
+													<i>{{ produit.famille.nom }}</i> <i>{{ produit.nom }}
 													</td>
-													{# <td>
-														<a class="btn btn-info" href="{{ path('filieres_index',{id:filiere.id}) }}">Mettre à jour
+													<td>
+														<a  href="{{ path('stock_index',{id:produit.id}) }}">Stocks
 															<i class="fa fa-edit"></i>
 														</a>
-														<a class="btn btn-warning" href="{{ path('filieres_suppression',{id:filiere.id}) }}">Supprimer
+														{# <a class="btn btn-warning" href="{{ path('filieres_suppression',{id:filiere.id}) }}">Supprimer
 															<i class="fa fa-times"></i>
-														</a>
-													</td> #}
+														</a> #}
+													</td>
 												</tr>
 												{% else %}
 												<tr>
@@ -82,7 +82,7 @@
                                         <tbody>
                                             <tr>
                                                 <th>Produit</th>
-                                                <th>Prix</th>
+                                                {# <th>Prix</th> #}
                                             </tr>
 
 											{% for nb_row in nb_rows %}
@@ -90,9 +90,9 @@
                                                 <th>
                                                     <input type="text" name="produit{{nb_row}}" class="form-control" placeholder="Nom du produit" id="">
 												</th>
-                                                <th>
+                                                {# <th>
                                                     <input type="text" name="prix{{nb_row}}" class="form-control" placeholder="Prix du produit" id="">
-												</th>
+												</th> #}
                                             </tr>
 												
 											{% endfor %}

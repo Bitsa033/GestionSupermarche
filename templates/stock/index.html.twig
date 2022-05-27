@@ -1,41 +1,127 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Stock index{% endblock %}
-
 {% block body %}
-    <h1>Stock index</h1>
+    <!-- Content Wrapper. Contains page content -->
+    <div
+        class="content-wrapper">
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Qt</th>
-                <th>Qd</th>
-                <th>Qs</th>
-                <th>CreatedAt</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for stock in stocks %}
-            <tr>
-                <td>{{ stock.id }}</td>
-                <td>{{ stock.qt }}</td>
-                <td>{{ stock.qd }}</td>
-                <td>{{ stock.qs }}</td>
-                <td>{{ stock.createdAt ? stock.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('stock_show', {'id': stock.id}) }}">show</a>
-                    <a href="{{ path('stock_edit', {'id': stock.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        <!-- Main content -->
+        <section class="content">
+			<br>
+            <div
+                class="container-fluid">
+                <!-- Info boxes -->
+                <div class="row">
+                    <div class="col-12 col-sm-6 col-md-3"></div>
+                    <!-- /.col -->
 
-    <a href="{{ path('stock_new') }}">Create new</a>
+                </div>
+                <!-- /.row -->
+                <div class="row">
+					<div class="col-md-6">
+						<div class="card">
+						 <h3 class="card-title">Liste des stocks disponibles</h3>
+							<div class="card-body table-responsive p-0" style="height: 390px;">
+								<table class="table table-head-fixed text-nowrap">
+
+									<tbody>
+										<tr>
+											<th>ID</th>
+											<th>Qt</th>
+											<th>Qd</th>
+											<th>Qs</th>
+											<th>Pat</th>
+											<th>Pvt</th>
+											<th>Bvt</th>
+											
+										</tr>
+										{% for stock in stocks %}
+											<tr>
+												<td>{{ stock.id }}</td>
+												<td>{{ stock.qt }}</td>
+												<td>{{ stock.qd }}</td>
+												<td>{{ stock.qs }}</td>
+												<td>{{ stock.pat }} FCFA</td>
+												<td>{{ stock.pvt }} FCFA</td>
+												<td>{{ stock.bvt }} FCFA</td>
+											</tr>
+											{% else %}
+											<tr>
+												<td colspan="2">Liste vide !</td>
+											</tr>
+										{% endfor %}
+
+									</tbody>
+								</table>
+
+							</div>
+							<!-- /.card-body -->
+						</div>
+					</div>
+                    
+                    <div class="col-md-5">
+
+                        <div class="card">
+                            <div class="card-header">
+								<form action="{{ path('produit_nb') }}" method="post">
+								<div class="form-inline">
+									<input type="number" name="nb_row" class="form-control" placeholder="Nbre ex: 5">
+									<button type="submit" class="form-control">Ok</button>
+								</div>
+								</form>
+                                
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body table-responsive p-0" style="height: 350px;">
+                                <form action="{{ path('stock_index',{id:produit.id}) }}" method="post">
+                                    <table class="table table-head-fixed text-nowrap">
+
+                                        <tbody>
+                                            <tr>
+                                                <th>Stock</th>
+                                                <th>Prix</th>
+                                            </tr>
+
+											{% for nb_row in nb_rows %}
+                                            <tr>
+                                                <th>
+                                                    <input type="text" name="qtet{{nb_row}}" class="form-control" placeholder="qte total du stock" id="">
+												</th>
+                                                <th>
+                                                   <input type="text" name="prixt{{nb_row}}" class="form-control" placeholder="prix total du stock" id="">
+												</th>
+                                            </tr>
+												
+											{% endfor %}
+												
+											
+                                        </tbody>
+										<!-- /.tbody -->
+                                    </table>
+                                    <button type="submit" name="enregistrer" class="btn btn-success form-control offset-1 col-10">Enregistrer</button>
+									<br><br>
+                                </form>
+                                <!-- /.form -->
+
+								</div>
+								<!-- /.card-body -->
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                        <!-- /.card -->
+
+                    </div>
+                    <!-- /.col -->
+
+
+                </div>
+					
+                <!-- /.row -->
+            </div>
+
+        </section>
+    </div>
 {% endblock %}

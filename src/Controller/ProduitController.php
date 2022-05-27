@@ -85,7 +85,6 @@ class ProduitController extends AbstractController
             $produit->setFamille($famille);
             $produit->setNom(ucfirst($data['produit']));
             $produit->setRef(strtoupper($data['ref']));
-            $produit->setPrix($data['prix']);
             $produit->setCreatedAt(new \datetime);
             $manager = $end->getManager();
             $manager->persist($produit);
@@ -100,8 +99,7 @@ class ProduitController extends AbstractController
                 $ref=rand(001,5599);
                 $data = array(
                     'produit' => $_POST['produit' . $i],
-                    'ref'    => 'ref_'.$ref,
-                    'prix' => $_POST['prix' . $i],
+                    'ref'    => 'ref_'.$ref
                 );
                
                 insert_into_db($data,$famille,$familleRepository ,$end,$user);
