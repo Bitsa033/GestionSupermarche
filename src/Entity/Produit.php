@@ -35,7 +35,7 @@ class Produit
     private $famille;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="date")
      */
     private $createdAt;
 

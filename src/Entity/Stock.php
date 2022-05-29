@@ -38,7 +38,7 @@ class Stock
     private $qs;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="date")
      */
     private $createdAt;
 

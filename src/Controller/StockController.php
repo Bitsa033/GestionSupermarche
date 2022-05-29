@@ -108,18 +108,18 @@ class StockController extends AbstractController
                 // $ref=rand(001,5599);
                 //on recupere le stock total du post
                 $st=$_POST['qtet' . $i];
-                //on recupere le prix d'achat total du stock obtenu du post
-                $pat=$_POST['prixt' . $i];
+                //on recupere le prix d'achat unitaire du stock obtenu du post
+                $pau=$_POST['prixt' . $i];
                 //on initialise un diviseur($d)
                 $d=4;
                 //on calcul le stock de securite(soit 1/4 du stock total)
-                $ss=$st / $d;
+                $ss=floor($st / $d);
                 //on calcul le stock disponible(soit 3/4 du stock total)
                 $sd=$st - $ss;
-                //on calcul le prix d'achat unitaire
-                $pau=$pat / $st;
+                //on calcul le prix d'achat total
+                $pat=ceil($pau * $st);
                 //on calcul le prix de vente unitaire
-                $pvu=$pau / $d + $pau;
+                $pvu=ceil($pau / $d + $pau);
                 //on calcul le prix de vente total
                 $pvt=$pvu * $st;
                 //on calcul le benefice de vente unitaire
@@ -129,14 +129,14 @@ class StockController extends AbstractController
                 //on stocke toutes les donnees dans le tableau
                 $data = array(
                     'Qt' => $st,
-                    'Qd'=>ceil($sd) ,
-                    'Qs'=>floor($ss) ,
-                    'Pau'=>ceil($pau),
+                    'Qd'=>$sd ,
+                    'Qs'=>$ss,
+                    'Pau'=>$pau,
                     'Pat' => $pat,
-                    'Pvu'=>ceil($pvu),
-                    'Pvt'=>ceil($pvt),
-                    'Bvu'=>ceil($bvu),
-                    'Bvt'=>ceil($bvt)
+                    'Pvu'=>$pvu,
+                    'Pvt'=>$pvt,
+                    'Bvu'=>$bvu,
+                    'Bvt'=>$bvt
                 );
                
                 insert_into_db($data,$produit,$produitRepository ,$end,$user);

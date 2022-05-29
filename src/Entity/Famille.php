@@ -30,14 +30,14 @@ class Famille
     private $ref;
 
     /**
-     * @ORM\Column(type="datetime")
-     */
-    private $createdAt;
-
-    /**
      * @ORM\OneToMany(targetEntity=Produit::class, mappedBy="famille")
      */
     private $produits;
+
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $modifierLe;
 
     public function __construct()
     {
@@ -73,18 +73,6 @@ class Famille
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Produit[]
      */
@@ -111,6 +99,18 @@ class Famille
                 $produit->setFamille(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getModifierLe(): ?\DateTimeInterface
+    {
+        return $this->modifierLe;
+    }
+
+    public function setModifierLe(\DateTimeInterface $modifierLe): self
+    {
+        $this->modifierLe = $modifierLe;
 
         return $this;
     }

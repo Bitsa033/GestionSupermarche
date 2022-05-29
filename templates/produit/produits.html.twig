@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <!-- Content Wrapper. Contains page content -->
+    <div
+        class="content-wrapper">
+
+        <!-- Main content -->
+        <section class="content">
+			<br>
+            <div
+                class="container-fluid">
+                <!-- Info boxes -->
+                <div class="row">
+                    <div class="col-12 col-sm-6 col-md-3"></div>
+                    <!-- /.col -->
+
+                </div>
+                <!-- /.row -->
+                <div class="row">
+					<div class="col-md-12">
+						<div class="card">
+						 <h3 class="card-title">Liste des produits disponibles</h3>
+							<div class="card-body table-responsive p-0" style="height: 390px;">
+								<table class="table table-head-fixed text-nowrap">
+
+									<tbody>
+										<tr>
+											<th>ID</th>
+											<th>Produit</th>
+                                            <th>Prix</th>
+                                            <th>Qté</th>
+                                            <th>Total TTC</th>
+											
+										</tr>
+										{% for stock in stocks %}
+											<tr>
+												<td>{{stock.id}}</td>
+                                                <td>{{stock.nomFamille}} {{stock.nomProduit}}</td>
+                                                <td>{{stock.pvu}} FCFA</td>
+                                                <td>{{stock.qt}}</td>
+                                                <td>{{stock.pvt}} FCFA</td>
+                                            </tr>
+
+										{% else %}
+											<tr>
+												<td colspan="2">Liste vide !</td>
+											</tr>
+										{% endfor %}
+
+									</tbody>
+								</table>
+
+							</div>
+							<!-- /.card-body -->
+						</div>
+					</div>
+
+                </div>
+					
+                <!-- /.row -->
+            </div>
+
+        </section>
+    </div>
+{% endblock %}

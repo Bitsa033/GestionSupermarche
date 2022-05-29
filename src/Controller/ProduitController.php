@@ -7,6 +7,7 @@ use App\Entity\Famille;
 use App\Form\ProduitType;
 use App\Repository\FamilleRepository;
 use App\Repository\ProduitRepository;
+use App\Repository\StockRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -115,6 +116,16 @@ class ProduitController extends AbstractController
             // 'famillesNb' => $familleRepository->count([
             //     'user' => $user
             // ]),
+        ]);
+    }
+
+    /**
+     * @Route("listeP", name="produit_listeP")
+     */
+    public function produitsListe(StockRepository $stockRepository){
+
+        return $this->render('produit/produits.html.twig',[
+            'stocks'=>$stockRepository->ListeStocksSelonFifo()
         ]);
     }
 
