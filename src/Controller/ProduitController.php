@@ -35,17 +35,34 @@ class ProduitController extends AbstractController
             $session->set('nb_row', $nb_of_row);
             //dd($session);
         }
-        return $this->redirectToRoute('famille_index');
+        return $this->redirectToRoute('produit_index');
+    }
+
+    /**
+     * @Route("sessionFamille", name="produit_sessionFamille")
+     */
+    public function sessionFamille(SessionInterface $session, Request $request)
+    {
+        if (!empty($request->request->get('famille'))) {
+            $famille = $request->request->get('famille');
+            $get_famille = $session->get('famille', []);
+            if (!empty($get_famille)) {
+                $session->set('famille', $famille);
+            }
+            $session->set('famille', $famille);
+            // dd($session);
+        }
+        return $this->redirectToRoute('produit_index');
     }
 
     /**
      * Insertion et affichage des filieres
-     * @Route("index_{id}", name="produit_index")
+     * @Route("index", name="produit_index")
      */
-    public function produit(SessionInterface $session,Famille $famille,FamilleRepository $familleRepository,ProduitRepository $produitRepository, Request $request, ManagerRegistry $end)
+    public function produit(SessionInterface $session,FamilleRepository $familleRepository,ProduitRepository $produitRepository, Request $request, ManagerRegistry $end)
     {
-        //$getIdFamille=$session->get('famille',[]);
-        //$repoFam=$familleRepository->find($getIdFamille);
+        $getIdFamille=$session->get('famille',[]);
+        $repoFam=$familleRepository->find($getIdFamille);
         // if (empty($getIdFamille)) {
         //     $session->set('famille',$famille);
         // }
@@ -72,7 +89,7 @@ class ProduitController extends AbstractController
         }
         $session_nb_row=1;
         //on cree la methode qui permettra d'enregistrer les infos du post dans la bd
-        function insert_into_db($data,Famille $famille,FamilleRepository $familleRepository, ManagerRegistry $end,$user)
+        function insert_into_db($data,$repoFam,FamilleRepository $familleRepository, ManagerRegistry $end,$user)
         {
             foreach ($data as $key => $value) {
                 $k[] = $key;
@@ -81,9 +98,9 @@ class ProduitController extends AbstractController
             $k = implode(",", $k);
             $v = implode(",", $v);
             //echo $data['filiere'];
-            $getFamille=$familleRepository->find($famille);
+            $getFamille=$familleRepository->find($repoFam);
             $produit = new Produit();
-            $produit->setFamille($famille);
+            $produit->setFamille($getFamille);
             $produit->setNom(ucfirst($data['produit']));
             $produit->setRef(strtoupper($data['ref']));
             $produit->setCreatedAt(new \datetime);
@@ -103,7 +120,7 @@ class ProduitController extends AbstractController
                     'ref'    => 'ref_'.$ref
                 );
                
-                insert_into_db($data,$famille,$familleRepository ,$end,$user);
+                insert_into_db($data,$repoFam,$familleRepository ,$end,$user);
             }
 
             // return $this->redirectToRoute('niveaux_index');
@@ -111,7 +128,7 @@ class ProduitController extends AbstractController
 
         return $this->render('produit/index.html.twig', [
             'nb_rows' => $nb_row,
-            'famille'=>$famille,
+            'familles'=>$familleRepository->findAll(),
             'produits'=>$produitRepository->findAll(),
             // 'famillesNb' => $familleRepository->count([
             //     'user' => $user

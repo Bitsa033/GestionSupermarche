@@ -63,17 +63,32 @@
 
                         <div class="card">
                             <div class="card-header">
-								<form action="{{ path('produit_nb') }}" method="post">
+								<form action="{{ path('stock_nb') }}" method="post">
 								<div class="form-inline">
-									<input type="number" name="nb_row" class="form-control" placeholder="Nbre ex: 5">
+									Nb stocks:
+									<input type="number" name="nb_row" class="form-control" placeholder="Ex: 5">
 									<button type="submit" class="form-control">Ok</button>
 								</div>
 								</form>
                                 
                             </div>
                             <!-- /.card-header -->
+							<div class="card-header form-inline">
+								<form action="{{path('stock_sessionProduit')}}" method="post">
+									Produit:
+									<select class="form-control" name="produit" id="">
+										{% for produit in produits %}
+										<option value="{{produit.id}}">{{produit.famille.nom}} {{produit.nom}}</option>
+											
+										{% else %}
+										<option value="">Liste vide...</option>
+										{% endfor %}
+									</select>
+									<button class="btn btn-default" type="submit">Ok</button>
+								</form>
+							</div>
                             <div class="card-body table-responsive p-0" style="height: 350px;">
-                                <form action="{{ path('stock_index',{id:produit.id}) }}" method="post">
+                                <form action="{{ path('stock_index') }}" method="post">
                                     <table class="table table-head-fixed text-nowrap">
 
                                         <tbody>

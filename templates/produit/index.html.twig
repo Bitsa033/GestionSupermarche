@@ -18,7 +18,7 @@
                 </div>
                 <!-- /.row -->
                 <div class="row">
-					<div class="col-md-6">
+					<div class="col-md-5">
 						<div class="card">
 						 <h3 class="card-title">Liste des produits disponibles</h3>
 							<div class="card-body table-responsive p-0" style="height: 390px;">
@@ -62,23 +62,37 @@
 						</div>
 					</div>
                     
-                    <div class="col-md-5">
+                    <div class="col-md-6">
 
                         <div class="card">
                             <div class="card-header">
 								<form action="{{ path('produit_nb') }}" method="post">
 								<div class="form-inline">
-									<input type="number" name="nb_row" class="form-control" placeholder="Nbre ex: 5">
+									Nb de produits---->:
+									<input type="number" name="nb_row" class="form-control" placeholder="Ex: 5">
 									<button type="submit" class="form-control">Ok</button>
 								</div>
 								</form>
                                 
                             </div>
                             <!-- /.card-header -->
+							<div class="card-header form-inline">
+								<form action="{{path('produit_sessionFamille')}}" method="post">
+									Famille------------>:
+									<select class="form-control" name="famille" id="">
+										{% for famille in familles %}
+										<option value="{{famille.id}}">{{famille.nom}}</option>
+											
+										{% else %}
+										<option value="">Liste vide...</option>
+										{% endfor %}
+									</select>
+									<button class="btn btn-default" type="submit">Ok</button>
+								</form>
+							</div>
                             <div class="card-body table-responsive p-0" style="height: 350px;">
-                                <form action="{{ path('produit_index',{id:famille.id}) }}" method="post">
+                                <form action="{{ path('produit_index') }}" method="post">
                                     <table class="table table-head-fixed text-nowrap">
-
                                         <tbody>
                                             <tr>
                                                 <th>Produit</th>

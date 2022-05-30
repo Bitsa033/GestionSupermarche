@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("stock")
+ * @Route("stock_")
  */
 class StockController extends AbstractController
 {
@@ -34,17 +34,34 @@ class StockController extends AbstractController
             $session->set('nb_row', $nb_of_row);
             //dd($session);
         }
-        return $this->redirectToRoute('produit_index');
+        return $this->redirectToRoute('stock_index');
+    }
+
+    /**
+     * @Route("sessionProduit", name="stock_sessionProduit")
+     */
+    public function sessionProduit(SessionInterface $session, Request $request)
+    {
+        if (!empty($request->request->get('produit'))) {
+            $produit = $request->request->get('produit');
+            $get_produit = $session->get('produit', []);
+            if (!empty($get_produit)) {
+                $session->set('produit', $produit);
+            }
+            $session->set('produit', $produit);
+            // dd($session);
+        }
+        return $this->redirectToRoute('stock_index');
     }
 
     /**
      * Insertion et affichage des filieres
-     * @Route("index_{id}", name="stock_index")
+     * @Route("index", name="stock_index")
      */
-    public function stock(SessionInterface $session, StockRepository $stockRepository,Produit $produit,ProduitRepository $produitRepository, Request $request, ManagerRegistry $end)
+    public function stock(SessionInterface $session, StockRepository $stockRepository,ProduitRepository $produitRepository, Request $request, ManagerRegistry $end)
     {
-        //$getIdFamille=$session->get('famille',[]);
-        //$repoFam=$familleRepository->find($getIdFamille);
+        $getIdProduit=$session->get('produit',[]);
+        $repoProd=$produitRepository->find($getIdProduit);
         // if (empty($getIdFamille)) {
         //     $session->set('famille',$famille);
         // }
@@ -71,7 +88,7 @@ class StockController extends AbstractController
         }
         $session_nb_row=1;
         //on cree la methode qui permettra d'enregistrer les infos du post dans la bd
-        function insert_into_db($data,Produit $produit,ProduitRepository $produitRepository, ManagerRegistry $end,$user)
+        function insert_into_db($data,$repoProd,ProduitRepository $produitRepository, ManagerRegistry $end,$user)
         {
             foreach ($data as $key => $value) {
                 $k[] = $key;
@@ -80,10 +97,10 @@ class StockController extends AbstractController
             $k = implode(",", $k);
             $v = implode(",", $v);
             //echo $data['filiere'];
-            $getProduit=$produitRepository->find($produit);
+            $getProduit=$produitRepository->find($repoProd);
             
             $stock = new Stock();
-            $stock->setProduit($produit);
+            $stock->setProduit($getProduit);
             $stock->setQt($data['Qt']);
             $stock->setQd($data['Qd']);
             $stock->setQs($data['Qs']);
@@ -139,7 +156,7 @@ class StockController extends AbstractController
                     'Bvt'=>$bvt
                 );
                
-                insert_into_db($data,$produit,$produitRepository ,$end,$user);
+                insert_into_db($data,$repoProd,$produitRepository ,$end,$user);
             }
 
             // return $this->redirectToRoute('niveaux_index');
@@ -147,11 +164,21 @@ class StockController extends AbstractController
 
         return $this->render('stock/index.html.twig', [
             'nb_rows' => $nb_row,
-            'produit'=>$produit,
             'stocks'=>$stockRepository->findAll(),
+            'produits'=>$produitRepository->findAll(),
             // 'famillesNb' => $familleRepository->count([
             //     'user' => $user
             // ]),
+        ]);
+    }
+
+    /**
+     * @Route("listeSt", name="stock_listeSt")
+     */
+    public function stocksListe(StockRepository $stockRepository){
+
+        return $this->render('stock/stocks.html.twig',[
+            'stocks'=>$stockRepository->ListeStocksSelonFifo()
         ]);
     }
 
