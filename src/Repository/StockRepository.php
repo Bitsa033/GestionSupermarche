@@ -25,7 +25,7 @@ class StockRepository extends ServiceEntityRepository
         $conn = $this->getEntityManager()->getConnection();
         $sql = '
         
-        SELECT stock.id,qt,pvu,pvt,famille.nom as nomFamille,produit.nom as nomProduit 
+        SELECT stock.id,qd,qs,qt,pau,pat,bvt,bvu,pvu,pvt,famille.nom as nomFamille,produit.nom as nomProduit 
         FROM `stock` inner join produit on produit.id= stock.produit_id inner join famille
         on famille.id= produit.famille_id 
 

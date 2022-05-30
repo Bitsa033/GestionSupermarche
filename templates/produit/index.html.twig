@@ -39,14 +39,6 @@
 													<br>
 													<i>{{ produit.famille.nom }}</i> <i>{{ produit.nom }}
 													</td>
-													<td>
-														<a  href="{{ path('stock_index',{id:produit.id}) }}">Stocks
-															<i class="fa fa-edit"></i>
-														</a>
-														{# <a class="btn btn-warning" href="{{ path('filieres_suppression',{id:filiere.id}) }}">Supprimer
-															<i class="fa fa-times"></i>
-														</a> #}
-													</td>
 												</tr>
 												{% else %}
 												<tr>

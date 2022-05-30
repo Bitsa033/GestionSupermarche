@@ -39,24 +39,12 @@
 													<br>
 														<a href="">{{ famille.nom }}</a>
 												</td>
-												<td>
-													<i class="fa fa-pen"></i>produits
-													<br>
-													<a href="{{path('produit_index',{id:famille.id})}}">ajouter</a>
-												</td>
-												{# <td>
-													<a class="btn btn-info" href="{{ path('filieres_index',{id:filiere.id}) }}">Mettre à jour
-														<i class="fa fa-edit"></i>
-													</a>
-													<a class="btn btn-warning" href="{{ path('filieres_suppression',{id:filiere.id}) }}">Supprimer
-														<i class="fa fa-times"></i>
-													</a>
-												</td> #}
+			
 												</tr>
-												{% else %}
-												<tr>
-													<td colspan="2">Liste vide !</td>
-												</tr>
+										{% else %}
+										<tr>
+											<td colspan="2">Liste vide !</td>
+										</tr>
 										{% endfor %}
 
 									</tbody>

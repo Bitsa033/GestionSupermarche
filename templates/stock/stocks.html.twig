@@ -28,18 +28,30 @@
 										<tr>
 											<th>ID</th>
 											<th>Produit</th>
-                                            <th>Prix</th>
-                                            <th>Qté</th>
-                                            <th>Total TTC</th>
+                                            <th>P.Achat</th>
+                                            <th>P.Vente</th>
+                                            <th>Qd</th>
+                                            <th>Qs</th>
+                                            <th>Qt</th>
+                                            <th>T.Achat</th>
+                                            <th>T.Vente</th>
+                                            <th>Prof.Unit</th>
+                                            <th>Prof.Tot</th>
 											
 										</tr>
 										{% for stock in stocks %}
 											<tr>
 												<td>{{stock.id}}</td>
                                                 <td>{{stock.nomFamille}} {{stock.nomProduit}}</td>
+                                                <td>{{stock.pau}} FCFA</td>
                                                 <td>{{stock.pvu}} FCFA</td>
+                                                <td>{{stock.qd}}</td>
+                                                <td>{{stock.qs}}</td>
                                                 <td>{{stock.qt}}</td>
+                                                <td>{{stock.pat}} FCFA</td>
                                                 <td>{{stock.pvt}} FCFA</td>
+                                                <td>{{stock.bvu}} FCFA</td>
+                                                <td>{{stock.bvt}} FCFA</td>
                                             </tr>
 
 										{% else %}
