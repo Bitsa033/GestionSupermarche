@@ -61,7 +61,7 @@ class StockController extends AbstractController
     public function stock(SessionInterface $session, StockRepository $stockRepository,ProduitRepository $produitRepository, Request $request, ManagerRegistry $end)
     {
         $getIdProduit=$session->get('produit',[]);
-        $repoProd=$produitRepository->find($getIdProduit);
+        //$repoProd=$produitRepository->find($getIdProduit);
         // if (empty($getIdFamille)) {
         //     $session->set('famille',$famille);
         // }
@@ -88,7 +88,7 @@ class StockController extends AbstractController
         }
         $session_nb_row=1;
         //on cree la methode qui permettra d'enregistrer les infos du post dans la bd
-        function insert_into_db($data,$repoProd,ProduitRepository $produitRepository, ManagerRegistry $end,$user)
+        function insert_into_db($data,$getIdProduit,ProduitRepository $produitRepository, ManagerRegistry $end,$user)
         {
             foreach ($data as $key => $value) {
                 $k[] = $key;
@@ -97,7 +97,7 @@ class StockController extends AbstractController
             $k = implode(",", $k);
             $v = implode(",", $v);
             //echo $data['filiere'];
-            $getProduit=$produitRepository->find($repoProd);
+            $getProduit=$produitRepository->find($getIdProduit);
             
             $stock = new Stock();
             $stock->setProduit($getProduit);
@@ -156,7 +156,7 @@ class StockController extends AbstractController
                     'Bvt'=>$bvt
                 );
                
-                insert_into_db($data,$repoProd,$produitRepository ,$end,$user);
+                insert_into_db($data,$getIdProduit,$produitRepository ,$end,$user);
             }
 
             // return $this->redirectToRoute('niveaux_index');

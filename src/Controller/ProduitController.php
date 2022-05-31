@@ -62,7 +62,7 @@ class ProduitController extends AbstractController
     public function produit(SessionInterface $session,FamilleRepository $familleRepository,ProduitRepository $produitRepository, Request $request, ManagerRegistry $end)
     {
         $getIdFamille=$session->get('famille',[]);
-        $repoFam=$familleRepository->find($getIdFamille);
+        //$repoFam=$familleRepository->find($getIdFamille);
         // if (empty($getIdFamille)) {
         //     $session->set('famille',$famille);
         // }
@@ -89,7 +89,7 @@ class ProduitController extends AbstractController
         }
         $session_nb_row=1;
         //on cree la methode qui permettra d'enregistrer les infos du post dans la bd
-        function insert_into_db($data,$repoFam,FamilleRepository $familleRepository, ManagerRegistry $end,$user)
+        function insert_into_db($data,$getIdFamille,FamilleRepository $familleRepository, ManagerRegistry $end,$user)
         {
             foreach ($data as $key => $value) {
                 $k[] = $key;
@@ -98,7 +98,7 @@ class ProduitController extends AbstractController
             $k = implode(",", $k);
             $v = implode(",", $v);
             //echo $data['filiere'];
-            $getFamille=$familleRepository->find($repoFam);
+            $getFamille=$familleRepository->find($getIdFamille);
             $produit = new Produit();
             $produit->setFamille($getFamille);
             $produit->setNom(ucfirst($data['produit']));
@@ -120,7 +120,7 @@ class ProduitController extends AbstractController
                     'ref'    => 'ref_'.$ref
                 );
                
-                insert_into_db($data,$repoFam,$familleRepository ,$end,$user);
+                insert_into_db($data,$getIdFamille,$familleRepository ,$end,$user);
             }
 
             // return $this->redirectToRoute('niveaux_index');
@@ -139,10 +139,10 @@ class ProduitController extends AbstractController
     /**
      * @Route("listeP", name="produit_listeP")
      */
-    public function produitsListe(StockRepository $stockRepository){
+    public function produitsListe(ProduitRepository $produitRepository){
 
         return $this->render('produit/produits.html.twig',[
-            'stocks'=>$stockRepository->ListeStocksSelonFifo()
+            'produits'=>$produitRepository->ListeProduitsSelonFifo()
         ]);
     }
 

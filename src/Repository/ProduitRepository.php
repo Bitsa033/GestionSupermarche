@@ -19,6 +19,24 @@ class ProduitRepository extends ServiceEntityRepository
         parent::__construct($registry, Produit::class);
     }
 
+    public function ListeProduitsSelonFifo()
+    {
+        //SELECT * FROM `stock` WHERE id=(SELECT max(id) FROM stock) AND qt>0
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = '
+        
+        SELECT produit.ref as reference, produit.nom as nomProduit,famille.nom as nomFamille, SUM(qt) as qt, 
+        pvu as prixDeVente, SUM(pvt) as prixTotalVente FROM produit inner join famille on famille.id=produit.famille_id INNER join 
+        stock on stock.produit_id =produit.id GROUP BY stock.produit_id 
+
+        ';
+        $stmt = $conn->prepare($sql);
+        $stmt->executeQuery();
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $stmt;
+    }
+
     // /**
     //  * @return Produit[] Returns an array of Produit objects
     //  */

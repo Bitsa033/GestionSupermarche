@@ -18,7 +18,7 @@
                 </div>
                 <!-- /.row -->
                 <div class="row">
-					<div class="col-md-6">
+					<div class="col-md-5">
 						<div class="card">
 						 <h3 class="card-title">Liste des stocks disponibles</h3>
 							<div class="card-body table-responsive p-0" style="height: 390px;">
@@ -59,7 +59,7 @@
 						</div>
 					</div>
                     
-                    <div class="col-md-5">
+                    <div class="col-md-7">
 
                         <div class="card">
                             <div class="card-header">
@@ -78,7 +78,7 @@
 									Produit:
 									<select class="form-control" name="produit" id="">
 										{% for produit in produits %}
-										<option value="{{produit.id}}">{{produit.famille.nom}} {{produit.nom}}</option>
+										<option value="{{produit.id}}">{{produit.ref}} {{produit.famille.nom}} {{produit.nom}}</option>
 											
 										{% else %}
 										<option value="">Liste vide...</option>

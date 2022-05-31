@@ -25,9 +25,10 @@ class StockRepository extends ServiceEntityRepository
         $conn = $this->getEntityManager()->getConnection();
         $sql = '
         
-        SELECT stock.id,qd,qs,qt,pau,pat,bvt,bvu,pvu,pvt,famille.nom as nomFamille,produit.nom as nomProduit 
-        FROM `stock` inner join produit on produit.id= stock.produit_id inner join famille
-        on famille.id= produit.famille_id 
+        SELECT produit.ref as reference, produit.nom as nomProduit,famille.nom as nomFamille,SUM(qd) as qd, 
+        SUM(qs) as qs, SUM(qt) as qt, bvu as bvu, SUM(bvt) as bvt, pau,pat,
+        pvu as pvu, SUM(pvt) as pvt FROM produit inner join famille on famille.id=produit.famille_id INNER join 
+        stock on stock.produit_id =produit.id GROUP BY stock.produit_id 
 
         ';
         $stmt = $conn->prepare($sql);

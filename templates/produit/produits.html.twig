@@ -26,20 +26,20 @@
 
 									<tbody>
 										<tr>
-											<th>ID</th>
+											<th>CODE</th>
 											<th>Produit</th>
                                             <th>Prix</th>
                                             <th>Qté</th>
                                             <th>Total TTC</th>
 											
 										</tr>
-										{% for stock in stocks %}
+										{% for produit in produits %}
 											<tr>
-												<td>{{stock.id}}</td>
-                                                <td>{{stock.nomFamille}} {{stock.nomProduit}}</td>
-                                                <td>{{stock.pvu}} FCFA</td>
-                                                <td>{{stock.qt}}</td>
-                                                <td>{{stock.pvt}} FCFA</td>
+												<td>{{produit.reference}}</td>
+                                                <td>{{produit.nomFamille}} {{produit.nomProduit}}</td>
+                                                <td>{{produit.prixDeVente}} FCFA</td>
+                                                <td>{{produit.qt}}</td>
+                                                <td>{{produit.prixTotalVente}} FCFA</td>
                                             </tr>
 
 										{% else %}
