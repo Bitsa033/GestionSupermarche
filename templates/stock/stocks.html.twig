@@ -26,7 +26,7 @@
 
 									<tbody>
 										<tr>
-											<th>ID</th>
+											{# <th>ID</th> #}
 											<th>Produit</th>
                                             <th>P.Achat</th>
                                             <th>P.Vente</th>
@@ -41,7 +41,7 @@
 										</tr>
 										{% for stock in stocks %}
 											<tr>
-												<td>{{stock.reference}}</td>
+												{# <td>{{stock.reference}}</td> #}
                                                 <td>{{stock.nomFamille}} {{stock.nomProduit}}</td>
                                                 <td>{{stock.pau | number_format(0, ' ', ' ')}} FCFA</td>
                                                 <td>{{stock.pvu | number_format(0, ' ', ' ')}} FCFA</td>
