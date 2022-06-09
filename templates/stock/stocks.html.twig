@@ -22,7 +22,7 @@
 						<div class="card">
 						 <h3 class="card-title">Liste des stocks disponibles <a href="{{path('stock_index')}}"><i class="fa fa-pen"></i></a></h3>
 							<div class="card-body table-responsive p-0" style="height: 390px;">
-								<table class="table table-head-fixed text-nowrap">
+								<table class="table table-head-fixed table-bordered">
 
 									<tbody>
 										<tr>
@@ -30,12 +30,12 @@
 											<th>Produit</th>
                                             <th>P.Achat</th>
                                             <th>P.Vente</th>
-                                            <th>Qd</th>
-                                            <th>Qs</th>
+                                            {# <th>Qd</th> #}
                                             <th>Qt</th>
+                                            <th>Qs</th>
                                             <th>T.Achat</th>
                                             <th>T.Vente</th>
-                                            <th>Prof.Unit</th>
+                                            {# <th>Prof.Unit</th> #}
                                             <th>Prof.Tot</th>
 											
 										</tr>
@@ -43,15 +43,15 @@
 											<tr>
 												<td>{{stock.reference}}</td>
                                                 <td>{{stock.nomFamille}} {{stock.nomProduit}}</td>
-                                                <td>{{stock.pau}} FCFA</td>
-                                                <td>{{stock.pvu}} FCFA</td>
-                                                <td>{{stock.qd}}</td>
-                                                <td>{{stock.qs}}</td>
-                                                <td>{{stock.qt}}</td>
-                                                <td>{{stock.pat}} FCFA</td>
-                                                <td>{{stock.pvt}} FCFA</td>
-                                                <td>{{stock.bvu}} FCFA</td>
-                                                <td>{{stock.bvt}} FCFA</td>
+                                                <td>{{stock.pau | number_format(0, ' ', ' ')}} FCFA</td>
+                                                <td>{{stock.pvu | number_format(0, ' ', ' ')}} FCFA</td>
+                                                {# <td>{{stock.qd| number_format(0, ' ', ' ')}}</td> #}
+                                                <td>{{stock.qt| number_format(0, ' ', ' ')}}</td>
+                                                <td>{{stock.qs| number_format(0, ' ', ' ')}}</td>
+                                                <td>{{stock.pat | number_format(0, ' ', ' ')}} FCFA</td>
+                                                <td>{{stock.pvt | number_format(0, ' ', ' ')}} FCFA</td>
+                                                {# <td>{{stock.bvu | number_format(0, ' ', ' ')}} FCFA</td> #}
+                                                <td>{{stock.bvt | number_format(0, ' ', ' ')}} FCFA</td>
                                             </tr>
 
 										{% else %}

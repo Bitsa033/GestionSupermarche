@@ -22,7 +22,7 @@
 						<div class="card">
 						 <h3 class="card-title">Liste des produits disponibles <a href="{{path('produit_index')}}"><i class="fa fa-pen"></i></a></h3>
 							<div class="card-body table-responsive p-0" style="height: 390px;">
-								<table class="table table-head-fixed text-nowrap">
+								<table class="table table-head-fixed table-bordered">
 
 									<tbody>
 										<tr>
@@ -37,9 +37,9 @@
 											<tr>
 												<td>{{produit.reference}}</td>
                                                 <td>{{produit.nomFamille}} {{produit.nomProduit}}</td>
-                                                <td>{{produit.prixDeVente}} FCFA</td>
-                                                <td>{{produit.qt}}</td>
-                                                <td>{{produit.prixTotalVente}} FCFA</td>
+                                                <td>{{produit.prixDeVente| number_format(0, ' ', ' ')}} FCFA</td>
+                                                <td>{{produit.qt| number_format(0, ' ', ' ')}}</td>
+                                                <td>{{produit.prixTotalVente| number_format(0, ' ', ' ')}} FCFA</td>
                                             </tr>
 
 										{% else %}
