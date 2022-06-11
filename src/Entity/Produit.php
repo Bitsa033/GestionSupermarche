@@ -44,6 +44,17 @@ class Produit
      */
     private $stocks;
 
+    /**
+     * @ORM\Column(type="bigint")
+     */
+    private $masse;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=UniteDeMesure::class, inversedBy="produits")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $mesure;
+
     public function __construct()
     {
         $this->stocks = new ArrayCollection();
@@ -128,6 +139,30 @@ class Produit
                 $stock->setProduit(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMasse(): ?string
+    {
+        return $this->masse;
+    }
+
+    public function setMasse(string $masse): self
+    {
+        $this->masse = $masse;
+
+        return $this;
+    }
+
+    public function getMesure(): ?UniteDeMesure
+    {
+        return $this->mesure;
+    }
+
+    public function setMesure(?UniteDeMesure $mesure): self
+    {
+        $this->mesure = $mesure;
 
         return $this;
     }

@@ -25,9 +25,10 @@ class ProduitRepository extends ServiceEntityRepository
         $conn = $this->getEntityManager()->getConnection();
         $sql = '
         
-        SELECT produit.ref as reference, produit.nom as nomProduit,famille.nom as nomFamille, SUM(qt) as qt, 
-        pvu as prixDeVente, SUM(pvt) as prixTotalVente FROM produit inner join famille on famille.id=produit.famille_id INNER join 
-        stock on stock.produit_id =produit.id GROUP BY stock.produit_id 
+        SELECT produit.ref as reference,unite,masse, produit.nom as nomProduit,famille.nom_fam as nomFamille,
+        qt as qt, pvu as prixDeVente, pvt as prixTotalVente FROM produit inner join unite_de_mesure on 
+        unite_de_mesure.id=produit.mesure_id inner join famille on famille.id=produit.famille_id LEFT join stock on stock.produit_id 
+        =produit.id
 
         ';
         $stmt = $conn->prepare($sql);

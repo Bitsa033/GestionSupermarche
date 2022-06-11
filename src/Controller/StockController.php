@@ -102,7 +102,6 @@ class StockController extends AbstractController
             $stock = new Stock();
             $stock->setProduit($getProduit);
             $stock->setQt($data['Qt']);
-            $stock->setQd($data['Qd']);
             $stock->setQs($data['Qs']);
             $stock->setPau($data['Pau']);
             $stock->setPat($data['Pat']);
@@ -131,8 +130,6 @@ class StockController extends AbstractController
                 $d=4;
                 //on calcul le stock de securite(soit 1/4 du stock total)
                 $ss=floor($st / $d);
-                //on calcul le stock disponible(soit 3/4 du stock total)
-                $sd=$st - $ss;
                 //on calcul le prix d'achat total
                 $pat=ceil($pau * $st);
                 //on calcul le prix de vente unitaire
@@ -146,7 +143,6 @@ class StockController extends AbstractController
                 //on stocke toutes les donnees dans le tableau
                 $data = array(
                     'Qt' => $st,
-                    'Qd'=>$sd ,
                     'Qs'=>$ss,
                     'Pau'=>$pau,
                     'Pat' => $pat,

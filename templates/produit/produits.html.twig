@@ -36,7 +36,10 @@
 										{% for produit in produits %}
 											<tr>
 												<td>{{produit.reference}}</td>
-                                                <td>{{produit.nomFamille}} {{produit.nomProduit}}</td>
+                                                <td>
+                                                    {{produit.nomFamille}}{{produit.nomProduit}} 
+                                                    {{produit.masse}}{{produit.unite}}
+                                                </td>
                                                 <td>{{produit.prixDeVente| number_format(0, ' ', ' ')}} FCFA</td>
                                                 <td>{{produit.qt| number_format(0, ' ', ' ')}}</td>
                                                 <td>{{produit.prixTotalVente| number_format(0, ' ', ' ')}} FCFA</td>
@@ -44,7 +47,7 @@
 
 										{% else %}
 											<tr>
-												<td colspan="2">Liste vide !</td>
+												<td colspan="5">Liste vide !</td>
 											</tr>
 										{% endfor %}
 

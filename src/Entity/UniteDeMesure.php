@@ -2,15 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\FamilleRepository;
+use App\Repository\UniteDeMesureRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=FamilleRepository::class)
+ * @ORM\Entity(repositoryClass=UniteDeMesureRepository::class)
  */
-class Famille
+class UniteDeMesure
 {
     /**
      * @ORM\Id
@@ -20,19 +20,14 @@ class Famille
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=50)
      */
-    private $nomFam;
+    private $unite;
 
     /**
-     * @ORM\OneToMany(targetEntity=Produit::class, mappedBy="famille")
+     * @ORM\OneToMany(targetEntity=Produit::class, mappedBy="mesure")
      */
     private $produits;
-
-    /**
-     * @ORM\Column(type="date")
-     */
-    private $modifierLe;
 
     public function __construct()
     {
@@ -44,14 +39,14 @@ class Famille
         return $this->id;
     }
 
-    public function getNom(): ?string
+    public function getUnite(): ?string
     {
-        return $this->nomFam;
+        return $this->unite;
     }
 
-    public function setNom(string $nom): self
+    public function setUnite(string $unite): self
     {
-        $this->nomFam = $nom;
+        $this->unite = $unite;
 
         return $this;
     }
@@ -68,7 +63,7 @@ class Famille
     {
         if (!$this->produits->contains($produit)) {
             $this->produits[] = $produit;
-            $produit->setFamille($this);
+            $produit->setMesure($this);
         }
 
         return $this;
@@ -78,22 +73,10 @@ class Famille
     {
         if ($this->produits->removeElement($produit)) {
             // set the owning side to null (unless already changed)
-            if ($produit->getFamille() === $this) {
-                $produit->setFamille(null);
+            if ($produit->getMesure() === $this) {
+                $produit->setMesure(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getModifierLe(): ?\DateTimeInterface
-    {
-        return $this->modifierLe;
-    }
-
-    public function setModifierLe(\DateTimeInterface $modifierLe): self
-    {
-        $this->modifierLe = $modifierLe;
 
         return $this;
     }

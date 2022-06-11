@@ -30,11 +30,6 @@ class Stock
     /**
      * @ORM\Column(type="bigint")
      */
-    private $qd;
-
-    /**
-     * @ORM\Column(type="bigint")
-     */
     private $qs;
 
     /**
@@ -97,18 +92,6 @@ class Stock
     public function setQt(string $qt): self
     {
         $this->qt = $qt;
-
-        return $this;
-    }
-
-    public function getQd(): ?string
-    {
-        return $this->qd;
-    }
-
-    public function setQd(string $qd): self
-    {
-        $this->qd = $qd;
 
         return $this;
     }

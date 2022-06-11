@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'layouts/layoutStock.html.twig' %}
 
 {% block body %}
     <!-- Content Wrapper. Contains page content -->
@@ -22,6 +22,14 @@
 						<div class="card">
 						 <h3 class="card-title">Liste des stocks disponibles <a href="{{path('stock_index')}}"><i class="fa fa-pen"></i></a></h3>
 							<div class="card-body table-responsive p-0" style="height: 390px;">
+                                <br>
+                                <form action="" method="post">
+                                    <div class="form-inline">
+                                        <input type="text" name="" class="form-control">
+                                        <button type="submit" class='btn btn-dark'><i class="fa fa-search"></i></button>
+                                    </div>
+                                </form>
+                                <br>
 								<table class="table table-head-fixed table-bordered">
 
 									<tbody>
@@ -30,22 +38,19 @@
 											<th>Produit</th>
                                             <th>P.Achat</th>
                                             <th>P.Vente</th>
-                                            {# <th>Qd</th> #}
                                             <th>Qt</th>
                                             <th>Qs</th>
                                             <th>T.Achat</th>
                                             <th>T.Vente</th>
-                                            {# <th>Prof.Unit</th> #}
                                             <th>Prof.Tot</th>
 											
 										</tr>
 										{% for stock in stocks %}
 											<tr>
 												{# <td>{{stock.reference}}</td> #}
-                                                <td>{{stock.nomFamille}} {{stock.nomProduit}}</td>
+                                                <td><a href="">{{stock.nomFamille}} {{stock.nomProduit}}</a></td>
                                                 <td>{{stock.pau | number_format(0, ' ', ' ')}} FCFA</td>
                                                 <td>{{stock.pvu | number_format(0, ' ', ' ')}} FCFA</td>
-                                                {# <td>{{stock.qd| number_format(0, ' ', ' ')}}</td> #}
                                                 <td>{{stock.qt| number_format(0, ' ', ' ')}}</td>
                                                 <td>{{stock.qs| number_format(0, ' ', ' ')}}</td>
                                                 <td>{{stock.pat | number_format(0, ' ', ' ')}} FCFA</td>
@@ -56,7 +61,7 @@
 
 										{% else %}
 											<tr>
-												<td colspan="2">Liste vide !</td>
+												<td colspan="8" align='center'>Liste vide !</td>
 											</tr>
 										{% endfor %}
 

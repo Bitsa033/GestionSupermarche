@@ -28,26 +28,20 @@
 										<tr>
 											<th>ID</th>
 											<th>Qt</th>
-											<th>Qd</th>
+											
 											<th>Qs</th>
-											<th>Pat</th>
-											<th>Pvt</th>
-											<th>Bvt</th>
 											
 										</tr>
 										{% for stock in stocks %}
 											<tr>
 												<td>{{ stock.id }}</td>
 												<td>{{ stock.qt }}</td>
-												<td>{{ stock.qd }}</td>
+												
 												<td>{{ stock.qs }}</td>
-												<td>{{ stock.pat }} FCFA</td>
-												<td>{{ stock.pvt }} FCFA</td>
-												<td>{{ stock.bvt }} FCFA</td>
 											</tr>
 											{% else %}
 											<tr>
-												<td colspan="2">Liste vide !</td>
+												<td colspan="3" align='center'>Liste vide !</td>
 											</tr>
 										{% endfor %}
 

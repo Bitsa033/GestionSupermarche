@@ -18,7 +18,7 @@
                 </div>
                 <!-- /.row -->
                 <div class="row">
-					<div class="col-md-5">
+					<div class="col-md-4">
 						<div class="card">
 						 <h3 class="card-title">Liste des produits disponibles</h3>
 							<div class="card-body table-responsive p-0" style="height: 390px;">
@@ -26,24 +26,20 @@
 
 									<tbody>
 										<tr>
-											<th style="width:3%;">ID</th>
-											<th>Produit</th>
-											
+											<th style="width:3%;">Code</th>
+											{# <th>Produit</th> #}
+											<th>Prix</th>
 										</tr>
 										{% for produit in produits %}
 											<tr>
-												<td>
-													{{ produit.id }}</td>
-												<td>
-													<strong>{{ produit.ref }}</strong>
-													<br>
-													<i>{{ produit.famille.nom }}</i> <i>{{ produit.nom }}
-													</td>
-												</tr>
-												{% else %}
-												<tr>
-													<td colspan="2">Liste vide !</td>
-												</tr>
+												<td>{{produit.reference}}</td>
+                                                {# <td>{{produit.nomFamille}} {{produit.nomProduit}}</td> #}
+                                                <td>{{produit.prixDeVente| number_format(0, ' ', ' ')}} FCFA</td>
+                                            </tr>
+										{% else %}
+											<tr>
+												<td colspan="3">Liste vide !</td>
+											</tr>
 										{% endfor %}
 
 									</tbody>
@@ -54,15 +50,15 @@
 						</div>
 					</div>
                     
-                    <div class="col-md-6">
+                    <div class="col-md-8">
 
                         <div class="card">
                             <div class="card-header">
 								<form action="{{ path('produit_nb') }}" method="post">
 								<div class="form-inline">
-									Nb de produits---->:
+									Nb de produits:
 									<input type="number" name="nb_row" class="form-control" placeholder="Ex: 5">
-									<button type="submit" class="form-control">Ok</button>
+									<button type="submit" class="btn btn-default">Ok</button>
 								</div>
 								</form>
                                 
@@ -70,7 +66,7 @@
                             <!-- /.card-header -->
 							<div class="card-header form-inline">
 								<form action="{{path('produit_sessionFamille')}}" method="post">
-									Famille------------>:
+									Famille:
 									<select class="form-control" name="famille" id="">
 										{% for famille in familles %}
 										<option value="{{famille.id}}">{{famille.nom}}</option>
@@ -88,7 +84,8 @@
                                         <tbody>
                                             <tr>
                                                 <th>Produit</th>
-                                                {# <th>Prix</th> #}
+                                                <th>Masse</th>
+												<th>Mesure</th>
                                             </tr>
 
 											{% for nb_row in nb_rows %}
@@ -96,9 +93,19 @@
                                                 <th>
                                                     <input type="text" name="produit{{nb_row}}" class="form-control" placeholder="Nom du produit" id="">
 												</th>
-                                                {# <th>
-                                                    <input type="text" name="prix{{nb_row}}" class="form-control" placeholder="Prix du produit" id="">
-												</th> #}
+                                                <th>
+                                                    <input type="number" name="masse{{nb_row}}" class="form-control" placeholder="Masse en qté Ex: 300" id="">
+												</th>
+												<th>
+													<select type="text" name="mesure{{nb_row}}" class="form-control">
+														{% for mesure in mesures %}
+															<option value="{{mesure.id}}">{{mesure.unite}}</option>
+															
+														{% else %}
+																<option value="">Liste vide</option>
+														{% endfor %}
+													</select>
+												</th>
                                             </tr>
 												
 											{% endfor %}
