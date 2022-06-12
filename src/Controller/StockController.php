@@ -122,7 +122,7 @@ class StockController extends AbstractController
             //dd($session_nb_row);
             for ($i = 0; $i < $session_nb_row; $i++) {
                 // $ref=rand(001,5599);
-                //on recupere le stock total du post
+                //on recupere le stock unitaire du post
                 $st=$_POST['qtet' . $i];
                 //on recupere le prix d'achat unitaire du stock obtenu du post
                 $pau=$_POST['prixt' . $i];
@@ -133,7 +133,7 @@ class StockController extends AbstractController
                 //on calcul le prix d'achat total
                 $pat=ceil($pau * $st);
                 //on calcul le prix de vente unitaire
-                $pvu=ceil($pau / $d + $pau);
+                $pvu=ceil(200 + $pau);
                 //on calcul le prix de vente total
                 $pvt=$pvu * $st;
                 //on calcul le benefice de vente unitaire
