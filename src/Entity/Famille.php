@@ -29,11 +29,6 @@ class Famille
      */
     private $produits;
 
-    /**
-     * @ORM\Column(type="date")
-     */
-    private $modifierLe;
-
     public function __construct()
     {
         $this->produits = new ArrayCollection();
@@ -86,15 +81,5 @@ class Famille
         return $this;
     }
 
-    public function getModifierLe(): ?\DateTimeInterface
-    {
-        return $this->modifierLe;
-    }
-
-    public function setModifierLe(\DateTimeInterface $modifierLe): self
-    {
-        $this->modifierLe = $modifierLe;
-
-        return $this;
-    }
+    
 }

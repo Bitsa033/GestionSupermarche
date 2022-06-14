@@ -60,7 +60,7 @@ class ProduitController extends AbstractController
      * Insertion et affichage des filieres
      * @Route("index", name="produit_index")
      */
-    public function produit(SessionInterface $session,UniteDeMesureRepository $uniteDeMesureRepository,FamilleRepository $familleRepository,ProduitRepository $produitRepository, Request $request, ManagerRegistry $end)
+    public function produit(SessionInterface $session, $uniteDeMesureRepository,FamilleRepository $familleRepository,ProduitRepository $produitRepository, Request $request, ManagerRegistry $end)
     {
         $getIdFamille=$session->get('famille',[]);
         //$repoFam=$familleRepository->find($getIdFamille);
@@ -90,7 +90,7 @@ class ProduitController extends AbstractController
         }
         $session_nb_row=1;
         //on cree la methode qui permettra d'enregistrer les infos du post dans la bd
-        function insert_into_db($data,UniteDeMesureRepository $uniteDeMesureRepository,$getIdFamille,FamilleRepository $familleRepository, ManagerRegistry $end,$user)
+        function insert_into_db($data, $uniteDeMesureRepository,$getIdFamille,FamilleRepository $familleRepository, ManagerRegistry $end,$user)
         {
             foreach ($data as $key => $value) {
                 $k[] = $key;
@@ -105,9 +105,8 @@ class ProduitController extends AbstractController
             $produit->setFamille($getFamille);
             $produit->setNom(ucfirst($data['produit']));
             $produit->setMasse($data['masse']);
-            $produit->setMesure($getMesure);
+            // $produit->setMesure($getMesure);
             $produit->setRef(strtoupper($data['ref']));
-            $produit->setCreatedAt(new \datetime);
             $manager = $end->getManager();
             $manager->persist($produit);
             $manager->flush();

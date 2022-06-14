@@ -67,6 +67,38 @@ class Stock
      */
     private $bvu;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Uval::class, inversedBy="stocks")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $uvalst;
+
+    /**
+     * @ORM\Column(type="bigint")
+     */
+    private $qgc;
+
+    /**
+     * @ORM\Column(type="string", length=5)
+     */
+    private $c;
+
+    /**
+     * @ORM\Column(type="bigint")
+     */
+    private $qgv;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Uval::class, inversedBy="stocks")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $ugv;
+
+    /**
+     * @ORM\Column(type="bigint")
+     */
+    private $qtv;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -188,6 +220,78 @@ class Stock
     public function setBvu(string $bvu): self
     {
         $this->bvu = $bvu;
+
+        return $this;
+    }
+
+    public function getUvalst(): ?Uval
+    {
+        return $this->uvalst;
+    }
+
+    public function setUvalst(?Uval $uvalst): self
+    {
+        $this->uvalst = $uvalst;
+
+        return $this;
+    }
+
+    public function getQgc(): ?string
+    {
+        return $this->qgc;
+    }
+
+    public function setQgc(string $qgc): self
+    {
+        $this->qgc = $qgc;
+
+        return $this;
+    }
+
+    public function getC(): ?string
+    {
+        return $this->c;
+    }
+
+    public function setC(string $c): self
+    {
+        $this->c = $c;
+
+        return $this;
+    }
+
+    public function getQgv(): ?string
+    {
+        return $this->qgv;
+    }
+
+    public function setQgv(string $qgv): self
+    {
+        $this->qgv = $qgv;
+
+        return $this;
+    }
+
+    public function getUgv(): ?Uval
+    {
+        return $this->ugv;
+    }
+
+    public function setUgv(?Uval $ugv): self
+    {
+        $this->ugv = $ugv;
+
+        return $this;
+    }
+
+    public function getQtv(): ?string
+    {
+        return $this->qtv;
+    }
+
+    public function setQtv(string $qtv): self
+    {
+        $this->qtv = $qtv;
 
         return $this;
     }

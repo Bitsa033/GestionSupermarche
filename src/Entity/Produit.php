@@ -35,11 +35,6 @@ class Produit
     private $famille;
 
     /**
-     * @ORM\Column(type="date")
-     */
-    private $createdAt;
-
-    /**
      * @ORM\OneToMany(targetEntity=Stock::class, mappedBy="produit")
      */
     private $stocks;
@@ -50,10 +45,10 @@ class Produit
     private $masse;
 
     /**
-     * @ORM\ManyToOne(targetEntity=UniteDeMesure::class, inversedBy="produits")
+     * @ORM\ManyToOne(targetEntity=Uval::class, inversedBy="produits")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $mesure;
+    private $uvalp;
 
     public function __construct()
     {
@@ -101,18 +96,6 @@ class Produit
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Stock[]
      */
@@ -155,15 +138,17 @@ class Produit
         return $this;
     }
 
-    public function getMesure(): ?UniteDeMesure
+    public function getUvalp(): ?Uval
     {
-        return $this->mesure;
+        return $this->uvalp;
     }
 
-    public function setMesure(?UniteDeMesure $mesure): self
+    public function setUvalp(?Uval $uvalp): self
     {
-        $this->mesure = $mesure;
+        $this->uvalp = $uvalp;
 
         return $this;
     }
+
+
 }
