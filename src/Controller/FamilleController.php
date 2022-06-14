@@ -75,7 +75,6 @@ class FamilleController extends AbstractController
             $famille = new Famille();
             // $famille->setUser($user);
             $famille->setNom(ucfirst($data['famille']));
-            $famille->setModifierLe(new \DateTime());
             $manager = $end->getManager();
             $manager->persist($famille);
             $manager->flush();
