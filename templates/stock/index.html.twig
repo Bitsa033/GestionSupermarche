@@ -72,7 +72,7 @@
 									Produit:
 									<select class="form-control" name="produit" id="">
 										{% for produit in produits %}
-										<option value="{{produit.id}}"> {{produit.nom}}{{produit.masse}}{{produit.mesure.unite}}</option>
+										<option value="{{produit.id}}"> {{produit.nom}} {{produit.masse}}{{produit.uvalp.nomuval}}</option>
 											
 										{% else %}
 										<option value="">Liste vide...</option>

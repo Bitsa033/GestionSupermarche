@@ -64,11 +64,6 @@ class ProduitController extends AbstractController
     public function produit(SessionInterface $session,UvalRepository $uniteDeMesureRepository,FamilleRepository $familleRepository,ProduitRepository $produitRepository, Request $request, ManagerRegistry $end)
     {
         $getIdFamille=$session->get('famille',[]);
-        //$repoFam=$familleRepository->find($getIdFamille);
-        // if (empty($getIdFamille)) {
-        //     $session->set('famille',$famille);
-        // }
-        //$session->set('famille',$famille);
         //on cherche l'utilisateur connecté
         $user = $this->getUser();
         //si l'utilisateur est n'est pas connecté,
@@ -106,7 +101,7 @@ class ProduitController extends AbstractController
             $produit->setFamille($getFamille);
             $produit->setNom(ucfirst($data['produit']));
             $produit->setMasse($data['masse']);
-            // $produit->setMesure($getMesure);
+            $produit->setUvalp($getMesure);
             $produit->setRef(strtoupper($data['ref']));
             $manager = $end->getManager();
             $manager->persist($produit);
