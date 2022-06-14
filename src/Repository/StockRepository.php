@@ -25,9 +25,9 @@ class StockRepository extends ServiceEntityRepository
         $conn = $this->getEntityManager()->getConnection();
         $sql = '
         
-        SELECT produit.ref as reference,pau,pvu,qs,pau,pat,pvt,bvt,unite, produit.nom as nomProduit,famille.nom_fam as nomFamille,
+        SELECT produit.ref as reference,pau,pvu,qs,pau,pat,pvt,bvt,nomcatval as catUnite,nomuval as unite, produit.nom as nomProduit,famille.nom_fam as nomFamille,
         qt as qt, pvu as prixDeVente, pvt as prixTotalVente,masse FROM produit inner join famille on famille.id
-        =produit.famille_id inner join unite_de_mesure on unite_de_mesure.id=produit.mesure_id
+        =produit.famille_id inner join uval on uval.id=produit.uvalp_id inner join catuval on catuval.id=uval.catuval_id
           INNER join stock on stock.produit_id =produit.id
 
         ';
