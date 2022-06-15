@@ -20,7 +20,7 @@ class Produit
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $nom;
 
@@ -38,11 +38,6 @@ class Produit
      * @ORM\OneToMany(targetEntity=Stock::class, mappedBy="produit")
      */
     private $stocks;
-
-    /**
-     * @ORM\Column(type="bigint")
-     */
-    private $masse;
 
     /**
      * @ORM\ManyToOne(targetEntity=Uval::class, inversedBy="produits")
@@ -122,18 +117,6 @@ class Produit
                 $stock->setProduit(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getMasse(): ?string
-    {
-        return $this->masse;
-    }
-
-    public function setMasse(string $masse): self
-    {
-        $this->masse = $masse;
 
         return $this;
     }

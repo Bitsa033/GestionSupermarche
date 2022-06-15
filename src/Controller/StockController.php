@@ -110,7 +110,6 @@ class StockController extends AbstractController
             $stock->setBvu($data['Bvu']);
             $stock->setBvt($data['Bvt']);
             // $stock->setRef(strtoupper($data['ref']));
-            $stock->setCreatedAt(new \datetime);
             $manager = $end->getManager();
             $manager->persist($stock);
             $manager->flush();

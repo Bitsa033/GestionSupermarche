@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20220614205634 extends AbstractMigration
+final class Version20220615213134 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -23,7 +23,7 @@ final class Version20220614205634 extends AbstractMigration
         $this->addSql('CREATE TABLE catuval (id INT AUTO_INCREMENT NOT NULL, nomcatval VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE famille (id INT AUTO_INCREMENT NOT NULL, nom_fam VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE produit (id INT AUTO_INCREMENT NOT NULL, famille_id INT DEFAULT NULL, uvalp_id INT NOT NULL, nom VARCHAR(255) NOT NULL, ref VARCHAR(255) NOT NULL, masse BIGINT NOT NULL, INDEX IDX_29A5EC2797A77B84 (famille_id), INDEX IDX_29A5EC27637F5F81 (uvalp_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE stock (id INT AUTO_INCREMENT NOT NULL, produit_id INT DEFAULT NULL, uvalst_id INT NOT NULL, ugv_id INT NOT NULL, qt BIGINT NOT NULL, qs BIGINT NOT NULL, created_at DATE NOT NULL, pat BIGINT NOT NULL, pau BIGINT NOT NULL, pvt BIGINT NOT NULL, pvu BIGINT NOT NULL, bvt BIGINT NOT NULL, bvu BIGINT NOT NULL, qgc BIGINT NOT NULL, c VARCHAR(5) NOT NULL, qgv BIGINT NOT NULL, qtv BIGINT NOT NULL, INDEX IDX_4B365660F347EFB (produit_id), INDEX IDX_4B365660A7DA33A5 (uvalst_id), INDEX IDX_4B365660166B75EE (ugv_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE stock (id INT AUTO_INCREMENT NOT NULL, produit_id INT DEFAULT NULL, uvalst_id INT NOT NULL, ugv_id INT NOT NULL, qt BIGINT NOT NULL, qs BIGINT NOT NULL, pat BIGINT NOT NULL, pau BIGINT NOT NULL, pvt BIGINT NOT NULL, pvu BIGINT NOT NULL, bvt BIGINT NOT NULL, bvu BIGINT NOT NULL, qgc BIGINT NOT NULL, c VARCHAR(5) NOT NULL, qgv BIGINT NOT NULL, qtv BIGINT NOT NULL, INDEX IDX_4B365660F347EFB (produit_id), INDEX IDX_4B365660A7DA33A5 (uvalst_id), INDEX IDX_4B365660166B75EE (ugv_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE uval (id INT AUTO_INCREMENT NOT NULL, catuval_id INT NOT NULL, nomuval VARCHAR(255) NOT NULL, INDEX IDX_153BECC595D1C6BC (catuval_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE produit ADD CONSTRAINT FK_29A5EC2797A77B84 FOREIGN KEY (famille_id) REFERENCES famille (id)');
         $this->addSql('ALTER TABLE produit ADD CONSTRAINT FK_29A5EC27637F5F81 FOREIGN KEY (uvalp_id) REFERENCES uval (id)');

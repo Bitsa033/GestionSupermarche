@@ -33,11 +33,6 @@ class Stock
     private $qs;
 
     /**
-     * @ORM\Column(type="date")
-     */
-    private $createdAt;
-
-    /**
      * @ORM\Column(type="bigint")
      */
     private $pat;
@@ -99,6 +94,11 @@ class Stock
      */
     private $qtv;
 
+    /**
+     * @ORM\Column(type="bigint")
+     */
+    private $pvuv;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -136,18 +136,6 @@ class Stock
     public function setQs(string $qs): self
     {
         $this->qs = $qs;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
-    {
-        $this->createdAt = $createdAt;
 
         return $this;
     }
@@ -292,6 +280,18 @@ class Stock
     public function setQtv(string $qtv): self
     {
         $this->qtv = $qtv;
+
+        return $this;
+    }
+
+    public function getPvuv(): ?string
+    {
+        return $this->pvuv;
+    }
+
+    public function setPvuv(string $pvuv): self
+    {
+        $this->pvuv = $pvuv;
 
         return $this;
     }

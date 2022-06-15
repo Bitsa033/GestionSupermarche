@@ -25,7 +25,7 @@ class ProduitRepository extends ServiceEntityRepository
         $conn = $this->getEntityManager()->getConnection();
         $sql = '
         
-        SELECT produit.ref as reference,nomcatval as catUnite,nomuval as unite ,masse, produit.nom as nomProduit,famille.nom_fam as nomFamille,
+        SELECT produit.ref as reference,nomcatval as catUnite,nomuval as unite , produit.nom as nomProduit,famille.nom_fam as nomFamille,
         qt as qt, pvu as prixDeVente, pvt as prixTotalVente FROM produit inner join uval on 
         uval.id=produit.uvalp_id inner join catuval on catuval.id=uval.catuval_id inner join famille on famille.id=produit.famille_id LEFT join stock on stock.produit_id 
         =produit.id

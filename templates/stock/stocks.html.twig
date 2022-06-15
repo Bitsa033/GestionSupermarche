@@ -48,7 +48,7 @@
 										{% for stock in stocks %}
 											<tr>
 												{# <td>{{stock.reference}}</td> #}
-                                                <td><a href=""> {{stock.nomProduit}} {{stock.masse}}{{stock.unite}}</a></td>
+                                                <td><a href=""> {{stock.nomProduit}}|{{stock.unite}}</a></td>
                                                 <td>{{stock.pau | number_format(0, ' ', ' ')}} FCFA</td>
                                                 <td>{{stock.pvu | number_format(0, ' ', ' ')}} FCFA</td>
                                                 <td>{{stock.qt| number_format(0, ' ', ' ')}}</td>
