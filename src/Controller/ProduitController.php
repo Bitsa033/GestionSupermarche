@@ -61,7 +61,7 @@ class ProduitController extends AbstractController
      * Insertion et affichage des filieres
      * @Route("index", name="produit_index")
      */
-    public function produit(SessionInterface $session,UvalRepository $uniteDeMesureRepository,FamilleRepository $familleRepository,ProduitRepository $produitRepository, Request $request, ManagerRegistry $end)
+    public function produit(SessionInterface $session,UvalRepository $uniteDeValorisation,FamilleRepository $familleRepository,ProduitRepository $produitRepository, Request $request, ManagerRegistry $end)
     {
         $getIdFamille=$session->get('famille',[]);
         //on cherche l'utilisateur connecté
@@ -86,7 +86,7 @@ class ProduitController extends AbstractController
         }
         $session_nb_row=1;
         //on cree la methode qui permettra d'enregistrer les infos du post dans la bd
-        function insert_into_db($data,UvalRepository $uniteDeMesureRepository,$getIdFamille,FamilleRepository $familleRepository, ManagerRegistry $end,$user)
+        function insert_into_db($data,UvalRepository $uniteDeValorisation,$getIdFamille,FamilleRepository $familleRepository, ManagerRegistry $end,$user)
         {
             foreach ($data as $key => $value) {
                 $k[] = $key;
@@ -96,11 +96,10 @@ class ProduitController extends AbstractController
             $v = implode(",", $v);
             //echo $data['filiere'];
             $getFamille=$familleRepository->find($getIdFamille);
-            $getMesure=$uniteDeMesureRepository->find($data['mesure']);
+            $getMesure=$uniteDeValorisation->find($data['mesure']);
             $produit = new Produit();
             $produit->setFamille($getFamille);
             $produit->setNom(ucfirst($data['produit']));
-            $produit->setMasse($data['masse']);
             $produit->setUvalp($getMesure);
             $produit->setRef(strtoupper($data['ref']));
             $manager = $end->getManager();
@@ -117,11 +116,10 @@ class ProduitController extends AbstractController
                 $data = array(
                     'produit' => $_POST['produit' . $i],
                     'ref'    => 'ref_'.$ref,
-                    'masse' => $_POST['masse' . $i],
                     'mesure' => $_POST['mesure'. $i]
                 );
                
-                insert_into_db($data,$uniteDeMesureRepository,$getIdFamille,$familleRepository ,$end,$user);
+                insert_into_db($data,$uniteDeValorisation,$getIdFamille,$familleRepository ,$end,$user);
             }
 
             // return $this->redirectToRoute('niveaux_index');
@@ -131,7 +129,7 @@ class ProduitController extends AbstractController
             'nb_rows' => $nb_row,
             'familles'=>$familleRepository->findAll(),
             'produits'=>$produitRepository->ListeProduitsSelonFifo(),
-            'mesures'=>$uniteDeMesureRepository->findAll()
+            'mesures'=>$uniteDeValorisation->findAll()
         ]);
     }
 

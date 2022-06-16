@@ -7,130 +7,133 @@
 
         <!-- Main content -->
         <section class="content">
-			<br>
-            <div
-                class="container-fluid">
-                <!-- Info boxes -->
-                <div class="row">
-                    <div class="col-12 col-sm-6 col-md-3"></div>
-                    <!-- /.col -->
-
-                </div>
-                <!-- /.row -->
-                <div class="row">
-					<div class="col-md-5">
-						<div class="card">
-						 <h3 class="card-title">Liste des stocks disponibles</h3>
-							<div class="card-body table-responsive p-0" style="height: 390px;">
-								<table class="table table-head-fixed text-nowrap">
-
-									<tbody>
-										<tr>
-											<th>ID</th>
-											<th>Qt</th>
-											
-											<th>Qs</th>
-											
-										</tr>
-										{% for stock in stocks %}
-											<tr>
-												<td>{{ stock.id }}</td>
-												<td>{{ stock.qt }}</td>
-												
-												<td>{{ stock.qs }}</td>
-											</tr>
-											{% else %}
-											<tr>
-												<td colspan="3" align='center'>Liste vide !</td>
-											</tr>
-										{% endfor %}
-
-									</tbody>
-								</table>
-
-							</div>
-							<!-- /.card-body -->
-						</div>
-					</div>
-                    
-                    <div class="col-md-7">
-
-                        <div class="card">
-                            <div class="card-header">
-								<form action="{{ path('stock_nb') }}" method="post">
-								<div class="form-inline">
-									Nb stocks:
-									<input type="number" name="nb_row" class="form-control" placeholder="Ex: 5">
-									<button type="submit" class="form-control">Ok</button>
-								</div>
-								</form>
-                                
-                            </div>
-                            <!-- /.card-header -->
-							<div class="card-header form-inline">
-								<form action="{{path('stock_sessionProduit')}}" method="post">
-									Produit:
-									<select class="form-control" name="produit" id="">
-										{% for produit in produits %}
-										<option value="{{produit.id}}"> {{produit.nom}}|{{produit.uvalp.nomuval}}</option>
-											
-										{% else %}
-										<option value="">Liste vide...</option>
-										{% endfor %}
-									</select>
-									<button class="btn btn-default" type="submit">Ok</button>
-								</form>
-							</div>
-                            <div class="card-body table-responsive p-0" style="height: 350px;">
-                                <form action="{{ path('stock_index') }}" method="post">
-                                    <table class="table table-head-fixed text-nowrap">
-
-                                        <tbody>
-                                            <tr>
-                                                <th>Stock</th>
-                                                <th>Prix unitaire d'achat</th>
-                                            </tr>
-
-											{% for nb_row in nb_rows %}
-                                            <tr>
-                                                <th>
-                                                    <input type="text" name="qtet{{nb_row}}" class="form-control" placeholder="qte total du stock" id="">
-												</th>
-                                                <th>
-                                                   <input type="text" name="prixt{{nb_row}}" class="form-control" placeholder="prix unitaire du stock" id="">
-												</th>
-                                            </tr>
-												
-											{% endfor %}
-												
-											
-                                        </tbody>
-										<!-- /.tbody -->
-                                    </table>
-                                    <button type="submit" name="enregistrer" class="btn btn-success form-control offset-1 col-10">Enregistrer</button>
-									<br><br>
-                                </form>
-                                <!-- /.form -->
-
-								</div>
-								<!-- /.card-body -->
-                                </div>
-
-                            </div>
-
-
-                        </div>
-                        <!-- /.card -->
+            <br>
+                <div
+                    class="container-fluid">
+                    <!-- Info boxes -->
+                    <div class="row">
+                        <div class="col-12 col-sm-6 col-md-3"></div>
+                        <!-- /.col -->
 
                     </div>
-                    <!-- /.col -->
+                    <!-- /.row -->
+                    <div class="row">
+
+                        <div class="col-md-12">
+
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="form-inline">
+                                        <form action="{{ path('stock_nb') }}" method="post">
+                                            Nb stocks:
+                                            <input type="number" name="nb_row" class="form-control" placeholder="Ex: 5">
+                                                <button type="submit" class="form-control">Ok</button>
+                                            </form>
+
+                                            <form action="{{ path('stock_sessionProduit') }}" method="post" class='marge'>
+                                                Unité:
+                                                <select class="form-control" name="" id="">
+                                                    {% for catuval in catuvals %}
+                                                        <option value="{{ catuval.id }}">{{ catuval.nomcatval }}
+                                                        </option>
+
+                                                    {% else %}
+                                                        <option value="">Liste vide...</option>
+                                                    {% endfor %}
+                                                </select>
+                                                <button class="btn btn-default" type="submit">Ok</button>
+                                            </form>
+
+                                            <form action="{{ path('stock_Uval') }}" method="post" class='marge'>
+                                                Unité de stockage:
+                                                <select class="form-control" name="uval" id="">
+                                                    {% for uval in uvals %}
+                                                        <option value="{{ uval.id }}">{{ uval.nomuval }}</option>
+
+                                                    {% else %}
+                                                        <option value="">Liste vide...</option>
+                                                    {% endfor %}
+                                                </select>
+                                                <button class="btn btn-default" type="submit">Ok</button>
+                                            </form>
+                                        </div>
+
+                                    </div>
+                                    <!-- /.card-header -->
+                                    <div class="card-header form-inline">
+                                        <form action="{{ path('stock_sessionProduit') }}" method="post">
+                                            Produit:
+                                            <select class="form-control" name="produit" id="">
+                                                {% for produit in produits %}
+                                                    <option value="{{ produit.id }}">{{ produit.famille.nom }}
+                                                        {{ produit.nom }}</option>
+
+                                                {% else %}
+                                                    <option value="">Liste vide...</option>
+                                                {% endfor %}
+                                            </select>
+                                            <button class="btn btn-default" type="submit">Ok</button>
+                                        </form>
+
+                                        <div class="marge">
+                                            1 CARTON =
+											 <form action="{{ path('stock_index') }}" method="post">
+                                            <input type="text" name='qgv' class='form-control col-5' required>
+                                                KG
+
+                                            </div>
+
+                                        </div>
 
 
-                </div>
-					
-                <!-- /.row -->
-            </div>
+                                        <div class="card-body table-responsive p-0" style="height: 350px;">
+                                           
+                                                <table class="table table-head-fixed text-nowrap">
 
-        </section>
-    </div>
-{% endblock %}
+                                                    <tbody>
+                                                        <tr>
+                                                            <th>Stock</th>
+                                                            <th>Prix unitaire d'achat</th>
+                                                        </tr>
+
+                                                        {% for nb_row in nb_rows %}
+                                                            <tr>
+                                                                <th>
+                                                                    <input type="text" name="qtet{{ nb_row }}" class="form-control" placeholder="qte total du stock" id=""></th>
+                                                                    <th>
+                                                                        <input type="text" name="prixt{{ nb_row }}" class="form-control" placeholder="prix unitaire du stock" id=""></th>
+                                                                    </tr>
+
+                                                                {% endfor %}
+
+
+                                                            </tbody>
+                                                            <!-- /.tbody -->
+                                                        </table>
+                                                        <button type="submit" name="enregistrer" class="btn btn-success form-control offset-1 col-10">Enregistrer</button>
+                                                        <br>
+                                                            <br></form>
+                                                            <!-- /.form -->
+
+                                                        </div>
+                                                        <!-- /.card-body -->
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+                                            <!-- /.card -->
+
+                                        </div>
+                                        <!-- /.col -->
+
+
+                                    </div>
+
+                                    <!-- /.row -->
+                                </div>
+
+                            </section>
+                        </div>
+                    {% endblock %}

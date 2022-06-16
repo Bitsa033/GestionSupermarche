@@ -26,7 +26,7 @@ class StockRepository extends ServiceEntityRepository
         $sql = '
         
         SELECT produit.ref as reference,pau,pvu,qs,pau,pat,pvt,bvt,nomcatval as catUnite,nomuval as unite, produit.nom as nomProduit,famille.nom_fam as nomFamille,
-        qt as qt, pvu as prixDeVente, pvt as prixTotalVente,masse FROM produit inner join famille on famille.id
+        qt as qt, pvu as prixDeVente, pvt as prixTotalVente FROM produit inner join famille on famille.id
         =produit.famille_id inner join uval on uval.id=produit.uvalp_id inner join catuval on catuval.id=uval.catuval_id
           INNER join stock on stock.produit_id =produit.id
 

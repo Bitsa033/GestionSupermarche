@@ -2,11 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Catuval;
 use App\Entity\Produit;
 use App\Entity\Stock;
+use App\Entity\Uval;
 use App\Repository\ProduitRepository;
 use App\Form\StockType;
 use App\Repository\StockRepository;
+use App\Repository\UvalRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -55,21 +58,34 @@ class StockController extends AbstractController
     }
 
     /**
+     * @Route("sessionUval", name="stock_Uval")
+     */
+    public function sessionUval(SessionInterface $session, Request $request)
+    {
+        if (!empty($request->request->get('uval'))) {
+            $uval = $request->request->get('uval');
+            $get_uval = $session->get('uval', []);
+            if (!empty($get_uval)) {
+                $session->set('uval', $uval);
+            }
+            $session->set('uval', $uval);
+            //dd($session);
+        }
+        return $this->redirectToRoute('stock_index');
+    }
+
+    /**
      * Insertion et affichage des filieres
      * @Route("index", name="stock_index")
      */
     public function stock(SessionInterface $session, StockRepository $stockRepository,ProduitRepository $produitRepository, Request $request, ManagerRegistry $end)
     {
         $getIdProduit=$session->get('produit',[]);
-        //$repoProd=$produitRepository->find($getIdProduit);
-        // if (empty($getIdFamille)) {
-        //     $session->set('famille',$famille);
-        // }
-        //$session->set('famille',$famille);
+        $getSessionUval=$session->get('uval',[]);
+        
         //on cherche l'utilisateur connecté
         $user = $this->getUser();
-        //si l'utilisateur est n'est pas connecté,
-        // on le redirige vers la page de connexion
+        //si l'utilisateur est n'est pas connecté, on le redirige vers la page de connexion
         // if (!$user) {
         //     return $this->redirectToRoute('app_login');
         // }
@@ -98,6 +114,7 @@ class StockController extends AbstractController
             $v = implode(",", $v);
             //echo $data['filiere'];
             $getProduit=$produitRepository->find($getIdProduit);
+            $getUval=$getProduit->getUvalp();
             
             $stock = new Stock();
             $stock->setProduit($getProduit);
@@ -109,6 +126,13 @@ class StockController extends AbstractController
             $stock->setPvt($data['Pvt']);
             $stock->setBvu($data['Bvu']);
             $stock->setBvt($data['Bvt']);
+            $stock->setUvalst($getUval);
+            $stock->setQgc(1);
+            $stock->setC("=");
+            $stock->setQgv($data['qgv']);
+            $stock->setUgv($getUval);
+            $stock->setQtv($data['qtv']);
+            $stock->setPvuv($data['pvuv']);
             // $stock->setRef(strtoupper($data['ref']));
             $manager = $end->getManager();
             $manager->persist($stock);
@@ -139,16 +163,28 @@ class StockController extends AbstractController
                 $bvu=$pvu - $pau;
                 //on calcul le benefice de vente total
                 $bvt=$bvu * $st;
+                
+                // $repoUval=$this->getDoctrine()->getRepository(Uval::class);
+                // $uvalst=$repoUval->find($getSessionUval);
+                // $ugv=$repoUval->find($getIdProduit);
+                $qgv=$_POST['qgv'];
+                $qtv=$qgv * $st;
+                $pvuv= ceil($pvu /$qgv);
                 //on stocke toutes les donnees dans le tableau
                 $data = array(
                     'Qt' => $st,
                     'Qs'=>$ss,
+                    // 'uvalst'=>$getSessionUval,
                     'Pau'=>$pau,
                     'Pat' => $pat,
                     'Pvu'=>$pvu,
                     'Pvt'=>$pvt,
                     'Bvu'=>$bvu,
-                    'Bvt'=>$bvt
+                    'Bvt'=>$bvt,
+                    // 'ugv'=>$ugv,
+                    'qgv'=>$qgv,
+                    'qtv'=>$qtv,
+                    'pvuv'=>$pvuv
                 );
                
                 insert_into_db($data,$getIdProduit,$produitRepository ,$end,$user);
@@ -157,13 +193,17 @@ class StockController extends AbstractController
             // return $this->redirectToRoute('niveaux_index');
         }
 
+        $repoUval=$this->getDoctrine()->getRepository(Uval::class);
+        $repoCatuval=$this->getDoctrine()->getRepository(Catuval::class);
+
         return $this->render('stock/index.html.twig', [
             'nb_rows' => $nb_row,
             'stocks'=>$stockRepository->findAll(),
             'produits'=>$produitRepository->findAll(),
-            // 'famillesNb' => $familleRepository->count([
-            //     'user' => $user
-            // ]),
+            'catuvals'=>$repoCatuval->findAll(),
+            'uvals' => $repoUval->findBy([
+                'catuval' => 2
+            ]),
         ]);
     }
 
