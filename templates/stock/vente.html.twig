@@ -36,22 +36,27 @@
 										<tr>
 											{# <th>ID</th> #}
 											<th>Produit</th>
-                                            <th>Unité</th>
-                                            <th>Qté Tot.</th>
-                                            <th>Qté Sec</th>
-                                            <th>Prix Unit.</th>
-                                            <th>Prix Total</th>
+                                            <th>Qte totale</th>
+                                            <th>Qte d'alerte</th>
+                                            <th>Prix d'Achat</th>
+                                            <th>Prix de Vente</th>
+                                            <th>Total Achat</th>
+                                            <th>Total Vente</th>
+                                            <th>Prof.Tot</th>
 											
 										</tr>
 										{% for stock in stocks %}
 											<tr>
 												{# <td>{{stock.reference}}</td> #}
                                                 <td><a href=""> {{stock.nomProduit}}</a></td>
-                                                <td>{{stock.unite}}</td>
                                                 <td>{{stock.qt| number_format(0, ' ', ' ')}}</td>
                                                 <td>{{stock.qs| number_format(0, ' ', ' ')}}</td>
+                                                <td>{{stock.pau | number_format(0, ' ', ' ')}} FCFA</td>
                                                 <td>{{stock.pvu | number_format(0, ' ', ' ')}} FCFA</td>
+                                                <td>{{stock.pat | number_format(0, ' ', ' ')}} FCFA</td>
                                                 <td>{{stock.pvt | number_format(0, ' ', ' ')}} FCFA</td>
+                                                {# <td>{{stock.bvu | number_format(0, ' ', ' ')}} FCFA</td> #}
+                                                <td>{{stock.bvt | number_format(0, ' ', ' ')}} FCFA</td>
                                             </tr>
 
 										{% else %}
