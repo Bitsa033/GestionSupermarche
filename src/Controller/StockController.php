@@ -82,6 +82,7 @@ class StockController extends AbstractController
     {
         $getIdProduit=$session->get('produit',[]);
         $getSessionUval=$session->get('uval',[]);
+        $repoUval=$this->getDoctrine()->getRepository(Uval::class);
         
         //on cherche l'utilisateur connecté
         $user = $this->getUser();
@@ -104,7 +105,7 @@ class StockController extends AbstractController
         }
         $session_nb_row=1;
         //on cree la methode qui permettra d'enregistrer les infos du post dans la bd
-        function insert_into_db($data,$getIdProduit,ProduitRepository $produitRepository, ManagerRegistry $end,$user)
+        function insert_into_db($data,$getIdProduit,ProduitRepository $produitRepository,$getIdUval,UvalRepository $uvalRepository, ManagerRegistry $end,$user)
         {
             foreach ($data as $key => $value) {
                 $k[] = $key;
@@ -114,6 +115,7 @@ class StockController extends AbstractController
             $v = implode(",", $v);
             //echo $data['filiere'];
             $getProduit=$produitRepository->find($getIdProduit);
+            $getUval1=$uvalRepository->find($getIdUval);
             $getUval=$getProduit->getUvalp();
             
             $stock = new Stock();
@@ -126,7 +128,7 @@ class StockController extends AbstractController
             $stock->setPvt($data['Pvt']);
             $stock->setBvu($data['Bvu']);
             $stock->setBvt($data['Bvt']);
-            $stock->setUvalst($getUval);
+            $stock->setUvalst($getUval1);
             $stock->setQgc(1);
             $stock->setC("=");
             $stock->setQgv($data['qgv']);
@@ -187,13 +189,12 @@ class StockController extends AbstractController
                     'pvuv'=>$pvuv
                 );
                
-                insert_into_db($data,$getIdProduit,$produitRepository ,$end,$user);
+                insert_into_db($data,$getIdProduit,$produitRepository,$getSessionUval,$repoUval ,$end,$user);
             }
 
             // return $this->redirectToRoute('niveaux_index');
         }
 
-        $repoUval=$this->getDoctrine()->getRepository(Uval::class);
         $repoCatuval=$this->getDoctrine()->getRepository(Catuval::class);
 
         return $this->render('stock/index.html.twig', [
