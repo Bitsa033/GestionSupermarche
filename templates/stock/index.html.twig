@@ -76,10 +76,18 @@
                                         </form>
 
                                         <div class="marge">
-                                            1 CARTON =
 											 <form action="{{ path('stock_index') }}" method="post">
+                                            {% if app.session.get('uval') %}
+                                                1 {{uvs.nomuval}} =
+                                                {% else %}
+                                                 Unité de stockage ...
+                                            {% endif %}
                                             <input type="text" name='qgv' class='form-control col-5' required>
-                                                KG
+                                            {% if app.session.get('produit') %}
+                                                {{uvalprod.uvalp.nomuval}}
+                                                {% else %}
+                                                Unité de valorisation du produit ...
+                                            {% endif %}
 
                                             </div>
 
@@ -101,7 +109,7 @@
                                                                 <th>
                                                                     <input type="text" name="qtet{{ nb_row }}" class="form-control" placeholder="qte total du stock" id=""></th>
                                                                     <th>
-                                                                        <input type="text" name="prixt{{ nb_row }}" class="form-control" placeholder="prix unitaire du stock" id=""></th>
+                                                                        <input type="text" name="prixu{{ nb_row }}" class="form-control" placeholder="prix unitaire du stock" id=""></th>
                                                                     </tr>
 
                                                                 {% endfor %}

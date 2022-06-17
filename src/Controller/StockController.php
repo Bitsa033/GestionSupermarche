@@ -146,54 +146,70 @@ class StockController extends AbstractController
             $session_nb_row = $session->get('nb_row', []);
             //dd($session_nb_row);
             for ($i = 0; $i < $session_nb_row; $i++) {
-                // $ref=rand(001,5599);
-                //on recupere le stock unitaire du post
+                //on recupere la qte total du stock
                 $st=$_POST['qtet' . $i];
+                //on recupere la qte generale de valorisation du produit
+                $qgv=$_POST['qgv'];
                 //on recupere le prix d'achat unitaire du stock obtenu du post
-                $pau=$_POST['prixt' . $i];
+                $pau=$_POST['prixu' . $i];
+                //on calcul le prix d'achat unitaire du produit
+                $pauvs0=ceil($pau/$qgv);
+                //on calcul le prix de vente unitaire du produit
+                $pvuvs0=ceil($pauvs0 + 200);
                 //on initialise un diviseur($d)
                 $d=4;
                 //on calcul le stock de securite(soit 1/4 du stock total)
                 $ss=floor($st / $d);
-                //on calcul le prix d'achat total
+                //on calcul le prix d'achat total du stock
                 $pat=ceil($pau * $st);
-                //on calcul le prix de vente unitaire
-                $pvu=ceil(200 + $pau);
-                //on calcul le prix de vente total
-                $pvt=$pvu * $st;
-                //on calcul le benefice de vente unitaire
-                $bvu=$pvu - $pau;
-                //on calcul le benefice de vente total
-                $bvt=$bvu * $st;
+                //on calcul le prix de vente unitaire du stock
+                $pvu=ceil($pvuvs0 * $qgv);
+                //on calcul le prix de vente total du stock
+                $pvt=ceil($pvu * $st);
+                //on calcul le benefice de vente unitaire du stock
+                $bvu=ceil($pvu - $pau);
+                //on calcul le benefice de vente total du stock
+                $bvt=ceil($bvu * $st);
                 
-                // $repoUval=$this->getDoctrine()->getRepository(Uval::class);
-                // $uvalst=$repoUval->find($getSessionUval);
-                // $ugv=$repoUval->find($getIdProduit);
-                $qgv=$_POST['qgv'];
+                //qte totale de valorisation du produit
                 $qtv=$qgv * $st;
-                $pvuv= ceil($pvu /$qgv);
+                
                 //on stocke toutes les donnees dans le tableau
                 $data = array(
                     'Qt' => $st,
                     'Qs'=>$ss,
-                    // 'uvalst'=>$getSessionUval,
                     'Pau'=>$pau,
                     'Pat' => $pat,
                     'Pvu'=>$pvu,
                     'Pvt'=>$pvt,
                     'Bvu'=>$bvu,
                     'Bvt'=>$bvt,
-                    // 'ugv'=>$ugv,
                     'qgv'=>$qgv,
                     'qtv'=>$qtv,
-                    'pvuv'=>$pvuv
+                    'pvuv'=>$pvuvs0
                 );
                
                 insert_into_db($data,$getIdProduit,$produitRepository,$getSessionUval,$repoUval ,$end,$user);
             }
 
-            // return $this->redirectToRoute('niveaux_index');
         }
+
+        //affichage des unites de valorisation du stock
+
+        if (!empty($getIdProduit)) {
+            $uvp=$produitRepository->find($getIdProduit);
+        }
+        else{
+            $uvp='';
+        }
+
+        if (!empty($getSessionUval)) {
+            $uvs=$repoUval->find($getSessionUval);
+        }
+        else{
+            $uvs='';
+        }
+
 
         $repoCatuval=$this->getDoctrine()->getRepository(Catuval::class);
 
@@ -202,6 +218,8 @@ class StockController extends AbstractController
             'stocks'=>$stockRepository->findAll(),
             'produits'=>$produitRepository->findAll(),
             'catuvals'=>$repoCatuval->findAll(),
+            'uvalprod'=>$uvp,
+            'uvs'=>$uvs,
             'uvals' => $repoUval->findBy([
                 'catuval' => 2
             ]),
