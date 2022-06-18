@@ -24,6 +24,44 @@ use Symfony\Component\Routing\Annotation\Route;
 class StockController extends AbstractController
 {
     /**
+     * @Route("listeSt", name="stock_listeSt")
+     */
+    public function listeSt(StockRepository $stockRepository){
+
+        return $this->render('stock/stocks.html.twig',[
+            'stocks'=>$stockRepository->ListeStocksSelonFifo()
+        ]);
+    }
+
+    /**
+     * @Route("devis", name="stock_devis")
+     */
+    public function devis(StockRepository $stockRepository, Request $request){
+
+        if (!empty($request->request->get('budjet')) && !empty($request->request->get('prixUnitArt'))) {
+            $budjet=$request->request->get('budjet');
+            $prixUnitArt=$request->request->get('prixUnitArt');
+            $nbArt=floor($budjet / $prixUnitArt);
+            $depenses=$nbArt *  $prixUnitArt;
+            $resteBudjet=$budjet - $depenses;
+        }
+        else{
+            $nbArt='XXX ...';
+            $depenses='XXX ...';
+            $resteBudjet='XXX ...';
+            $budjet='XXX ...';
+        }
+
+        return $this->render('stock/devis.html.twig',[
+            'stocks'=>$stockRepository->ListeStocksSelonFifo(),
+            'budjet'=>$budjet,
+            'nbArt'=>$nbArt,
+            'depenses'=>$depenses,
+            'resteBudjet'=>$resteBudjet
+        ]);
+    }
+    
+    /**
      * @Route("nb", name="stock_nb")
      */
     public function nb(SessionInterface $session, Request $request)
@@ -213,6 +251,20 @@ class StockController extends AbstractController
 
         $repoCatuval=$this->getDoctrine()->getRepository(Catuval::class);
 
+        if (!empty($request->request->get('budjet')) && !empty($request->request->get('prixUnitArt'))) {
+            $budjet=$request->request->get('budjet');
+            $prixUnitArt=$request->request->get('prixUnitArt');
+            $nbArt=floor($budjet / $prixUnitArt);
+            $depenses=$nbArt *  $prixUnitArt;
+            $resteBudjet=$budjet - $depenses;
+        }
+        else{
+            $nbArt='XXX ...';
+            $depenses='XXX ...';
+            $resteBudjet='XXX ...';
+            $budjet='XXX ...';
+        }
+
         return $this->render('stock/index.html.twig', [
             'nb_rows' => $nb_row,
             'stocks'=>$stockRepository->findAll(),
@@ -223,16 +275,10 @@ class StockController extends AbstractController
             'uvals' => $repoUval->findBy([
                 'catuval' => 2
             ]),
-        ]);
-    }
-
-    /**
-     * @Route("listeSt", name="stock_listeSt")
-     */
-    public function stocksListe(StockRepository $stockRepository){
-
-        return $this->render('stock/stocks.html.twig',[
-            'stocks'=>$stockRepository->ListeStocksSelonFifo()
+            'budjet'=>$budjet,
+            'nbArt'=>$nbArt,
+            'depenses'=>$depenses,
+            'resteBudjet'=>$resteBudjet
         ]);
     }
 
