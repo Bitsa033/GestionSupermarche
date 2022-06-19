@@ -186,7 +186,7 @@ class StockController extends AbstractController
             for ($i = 0; $i < $session_nb_row; $i++) {
                 //on recupere la qte total du stock
                 $st=$_POST['qtet' . $i];
-                //on recupere la qte generale de valorisation du produit
+                //on recupere la qte generale de valorisation du stock
                 $qgv=$_POST['qgv'];
                 //on recupere le prix d'achat unitaire du stock obtenu du post
                 $pau=$_POST['prixu' . $i];
@@ -256,6 +256,7 @@ class StockController extends AbstractController
             $prixUnitArt=$request->request->get('prixUnitArt');
             $nbArt=floor($budjet / $prixUnitArt);
             $depenses=$nbArt *  $prixUnitArt;
+            $prixUnit=$depenses /$nbArt;
             $resteBudjet=$budjet - $depenses;
         }
         else{
@@ -263,6 +264,7 @@ class StockController extends AbstractController
             $depenses='XXX ...';
             $resteBudjet='XXX ...';
             $budjet='XXX ...';
+            $prixUnit='XXX ...';
         }
 
         return $this->render('stock/index.html.twig', [
@@ -278,6 +280,7 @@ class StockController extends AbstractController
             'budjet'=>$budjet,
             'nbArt'=>$nbArt,
             'depenses'=>$depenses,
+            'prixUnit'=>$prixUnit,
             'resteBudjet'=>$resteBudjet
         ]);
     }

@@ -109,8 +109,15 @@
                                                 <tbody class="table table-light">
                                                     {% for nb_row in nb_rows %}
                                                     <tr>
-                                                        <td><input type="text" name="qtet{{ nb_row }}" class="form-control" placeholder="qte total du stock" id=""></td>
-                                                        <td><input type="text" name="prixu{{ nb_row }}" class="form-control" placeholder="prix total du stock" id=""></td>
+                                                        <td>Qte total stock n°{{nb_row +1}}<input type="text" name="qtet{{ nb_row }}" class="form-control" value="{{nbArt}}" id=""></td>
+                                                        <td>Prix total d'achat<input type="text" name="" class="form-control" value="{{depenses}}" id=""></td>
+                                                        <td>Prix unitaire d'achat<input type="text" name="prixu{{ nb_row }}" class="form-control" value="{{prixUnit}}" id=""></td>
+                                                        <td>Frais de stockage<input type="text" name="" class="form-control" value="{{resteBudjet}}" id=""></td>
+                                                        <td>Devise
+                                                            <select type="text" name="" class="form-control" value="" id="">
+                                                                <option value="">FCFA</option>
+                                                            </select
+                                                        </td>
                                                     </tr>
                                                     {% endfor %}
                                                     <tr>
@@ -120,7 +127,7 @@
                                                 </tbody>
                                             </table>
                                                 
-                                               </form>
+                                            </form>
 
                                             </div>
                                             <!-- /.card -->
@@ -128,7 +135,12 @@
                                         </div>
                                         <table class="table table-primary table-head-fixed">
                                             <tr>
-                                                <td>Devis d'achat</td>
+                                                <td>
+                                                    <div class="form-inline">
+                                                        Devis d'achat<input type="text" name="devisNb" class="form-control" value="1">
+                                                    
+                                                    </div>
+                                                </td>
                                             </tr>
                                         </table>
                                         <form action="" method="post" class=''>
