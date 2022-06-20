@@ -99,106 +99,113 @@
                                                     <tr>
                                                         <td colspan='2'>Creation du stock produit</td>
                                                     </tr>
-                                                
+
                                                 </thead>
                                             </table>
                                             <div class="card-body table-responsive p-0" style="height: 150px;">
                                                 <table class="table table-head-fixed">
-                            
 
-                                                <tbody class="table table-light">
-                                                    {% for nb_row in nb_rows %}
-                                                    <tr>
-                                                        <td>Qte total stock n°{{nb_row +1}}<input type="text" name="qtet{{ nb_row }}" class="form-control" value="{{nbArt}}" id=""></td>
-                                                        <td>Prix total d'achat<input type="text" name="" class="form-control" value="{{depenses}}" id=""></td>
-                                                        <td>Prix unitaire d'achat<input type="text" name="prixu{{ nb_row }}" class="form-control" value="{{prixUnit}}" id=""></td>
-                                                        <td>Frais de stockage<input type="text" name="" class="form-control" value="{{resteBudjet}}" id=""></td>
-                                                        <td>Devise
-                                                            <select type="text" name="" class="form-control" value="" id="">
-                                                                <option value="">FCFA</option>
-                                                            </select
-                                                        </td>
-                                                    </tr>
-                                                    {% endfor %}
-                                                    <tr>
-                                                        <td> <button type="submit" name="enregistrer" class="btn btn-success">Enregistrer</button></td>
-                                                    </tr>
-                                                
-                                                </tbody>
-                                            </table>
-                                                
-                                            </form>
 
+                                                    <tbody class="table table-light">
+                                                        {% for nb_row in nb_rows %}
+                                                            <tr>
+                                                                <td>Qte total stock n°{{ nb_row +1 }}<input type="text" name="qtet{{ nb_row }}" class="form-control" value="{{ nbArt }}" id=""></td>
+                                                                    <td>Prix total d'achat<input type="text" name="" class="form-control" value="{{ depenses }}" id=""></td>
+                                                                        <td>Prix unitaire d'achat<input type="text" name="prixu{{ nb_row }}" class="form-control" value="{{ prixUnit }}" id=""></td>
+                                                                            <td>Frais de stockage<input type="text" name="" class="form-control" value="{{ resteBudjet }}" id=""></td>
+                                                                                <td>Devise
+                                                                                    <select type="text" name="" class="form-control" value="" id="">
+                                                                                        <option value="">FCFA</option>
+                                                                                    </select</td>
+                                                                                </tr>
+                                                                            {% endfor %}
+
+                                                                        </tbody>
+                                                                    </table>
+
+
+                                                                </div>
+                                                                <!-- /.card -->
+                                                                <br>
+                                                                    <button type="submit" name="enregistrer" class="btn btn-success">Enregistrer le stock</button>
+                                                                </form>
+                                                            </div>
+
+                                                            <table class="table table-primary table-head-fixed">
+                                                                <tr>
+                                                                    <td>
+                                                                        <div class="form-inline">
+                                                                            <form action="{{ path('stock_sessionDevis') }}" method="post" class=''>
+                                                                                Devis d'achat N°-<input type="text" name="devisNb" class="form-control" value="1"></div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                    <div class="row">
+                                                                        <div class="col-md">
+                                                                            Entrer votre budjet d'achat
+                                                                            <input type="text" name="budjet" class="form-control" placeholder="{{ '75000' | number_format(0, ' ', ' ') }}"></div>
+                                                                            <div class="col-md">
+                                                                                Entrer le prix unitaire de l'article
+                                                                                <input type="text" name="prixUnitArt" class="form-control" placeholder="{{ '27000' | number_format(0, ' ', ' ') }}"></div>
+                                                                                <div class="col-md">
+                                                                                    Sur :
+                                                                                    {{ budjet | number_format(0, ' ', ' ') }}
+                                                                                    FCFA, il vous reste
+                                                                                    <input type="text" name="resteBudjet" class="form-control" value="{{ resteBudjet | number_format(0, ' ', ' ') }} FCFA"></div>
+                                                                                    <div class="col-md">
+                                                                                        Devise
+                                                                                        <select type="text" name="" class="form-control">
+                                                                                            <option value="">FCFA</option>
+                                                                                        </select>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="row">
+
+                                                                                    <div class="col-md">
+                                                                                        Prix total des
+                                                                                        {{ nbArt }}
+                                                                                        Articles
+                                                                                        <input type="text" name="prixTotalArt" class="form-control" value="{{ depenses | number_format(0, ' ', ' ') }}"></div>
+                                                                                        <div class="col-md">
+                                                                                            Devise
+                                                                                            <select type="text" name="" class="form-control">
+                                                                                                <option value="">FCFA</option>
+                                                                                            </select>
+                                                                                        </div>
+                                                                                        <div class="col-md">
+                                                                                            Nbre Articles possibles
+                                                                                            <input type="text" name="nbArticles" class="form-control" value="{{ nbArt | number_format(0, ' ', ' ') }}">
+                                                                                                <br></div>
+                                                                                                <div class="col-md">
+                                                                                                    <br>
+                                                                                                        <button type="submit" class='btn btn-dark col-md-12'>Traiter le devis d'achat</button>
+
+                                                                                                    </div>
+                                                                                                </div>
+
+                                                                                            </form>
+
+
+                                                                                        </div>
+
+                                                                                        <!-- /.row -->
+                                                                                    </div>
+
+                                                                                </section>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <!-- /.card -->
-
                                         </div>
-                                        <table class="table table-primary table-head-fixed">
-                                            <tr>
-                                                <td>
-                                                    <div class="form-inline">
-                                                        Devis d'achat<input type="text" name="devisNb" class="form-control" value="1">
-                                                    
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                        <form action="{{path('stock_sessionDevis')}}" method="post" class=''>
-                                            <div class="row">
-                                                <div class="col-md">
-                                                    Entrer votre budjet d'achat
-                                                    <input type="text" name="budjet" class="form-control" placeholder="{{ '75000' | number_format(0, ' ', ' ') }}">
-                                                </div>
-                                                <div class="col-md">
-                                                    Entrer le prix unitaire de l'article
-                                                    <input type="text" name="prixUnitArt" class="form-control" placeholder="{{ '27000' | number_format(0, ' ', ' ') }}">
-                                                </div>
-                                                <div class="col-md">
-                                                    Sur : {{ budjet | number_format(0, ' ', ' ') }} FCFA, il vous reste
-                                                    <input type="text" name="resteBudjet" class="form-control" value="{{ resteBudjet | number_format(0, ' ', ' ') }} FCFA">
-                                                </div>
-                                                <div class="col-md">
-                                                        Devise
-                                                        <select type="text" name="" class="form-control">
-                                                            <option value="">FCFA</option>
-                                                        </select>
-                                                    </div>
-                                            </div>
-
-                                            <div class="row">
-                                                
-                                                <div class="col-md">
-                                                    Prix total des
-                                                    {{ nbArt }}
-                                                    Articles
-                                                    <input type="text" name="prixTotalArt" class="form-control" value="{{ depenses | number_format(0, ' ', ' ') }}">
-                                                </div>
-                                                <div class="col-md">
-                                                        Devise
-                                                        <select type="text" name="" class="form-control">
-                                                            <option value="">FCFA</option>
-                                                        </select>
-                                                </div>
-                                                <div class="col-md">
-                                                    Nbre Articles possibles
-                                                    <input type="text" name="nbArticles" class="form-control" value="{{ nbArt | number_format(0, ' ', ' ') }}"><br>
-                                                
-                                                </div>
-                                                <div class="col-md">
-                                                <br>
-                                                    <button type="submit" class='btn btn-dark col-md-12'>Traiter le devis d'achat</button>
-                                                
-                                                </div>
-                                            </div>
-
-                                        </form>
-
-
                                     </div>
-
-                                    <!-- /.row -->
                                 </div>
-
-                            </section>
+                            </div>
                         </div>
-                    {% endblock %}
+                    </div>
+                {% endblock %}

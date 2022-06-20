@@ -85,10 +85,10 @@ class StockController extends AbstractController
     {
         if (!empty($request->request->get('budjet')) && !empty($request->request->get('prixUnitArt'))) {
             $budjet=$request->request->get('budjet');
+            //$x=str_replace($budjet,$budjet,$budjet);
             $prixUnitArt=$request->request->get('prixUnitArt');
             $nbArt=floor($budjet / $prixUnitArt);
             $depenses=$nbArt *  $prixUnitArt;
-            $prixUnit=$depenses /$nbArt;
             $resteBudjet=$budjet - $depenses;
         }
         else{
@@ -181,7 +181,7 @@ class StockController extends AbstractController
                 $nb_row[$i] = $i;
             }
         }
-        $session_nb_row=1;
+        // $session_nb_row=1;
         //on cree la methode qui permettra d'enregistrer les infos du post dans la bd
         function insert_into_db($data,$getIdProduit,ProduitRepository $produitRepository,$getIdUval,UvalRepository $uvalRepository, ManagerRegistry $end,$user)
         {
