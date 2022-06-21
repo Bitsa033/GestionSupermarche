@@ -40,10 +40,16 @@ class Uval
      */
     private $stocks;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Achat::class, mappedBy="unitea")
+     */
+    private $achats;
+
     public function __construct()
     {
         $this->produits = new ArrayCollection();
         $this->stocks = new ArrayCollection();
+        $this->achats = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -129,6 +135,36 @@ class Uval
             // set the owning side to null (unless already changed)
             if ($stock->getUvalst() === $this) {
                 $stock->setUvalst(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Achat[]
+     */
+    public function getAchats(): Collection
+    {
+        return $this->achats;
+    }
+
+    public function addAchat(Achat $achat): self
+    {
+        if (!$this->achats->contains($achat)) {
+            $this->achats[] = $achat;
+            $achat->setUnitea($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAchat(Achat $achat): self
+    {
+        if ($this->achats->removeElement($achat)) {
+            // set the owning side to null (unless already changed)
+            if ($achat->getUnitea() === $this) {
+                $achat->setUnitea(null);
             }
         }
 

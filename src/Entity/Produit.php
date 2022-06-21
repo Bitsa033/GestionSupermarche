@@ -45,9 +45,15 @@ class Produit
      */
     private $uvalp;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Achat::class, mappedBy="produit")
+     */
+    private $achats;
+
     public function __construct()
     {
         $this->stocks = new ArrayCollection();
+        $this->achats = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -129,6 +135,36 @@ class Produit
     public function setUvalp(?Uval $uvalp): self
     {
         $this->uvalp = $uvalp;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Achat[]
+     */
+    public function getAchats(): Collection
+    {
+        return $this->achats;
+    }
+
+    public function addAchat(Achat $achat): self
+    {
+        if (!$this->achats->contains($achat)) {
+            $this->achats[] = $achat;
+            $achat->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAchat(Achat $achat): self
+    {
+        if ($this->achats->removeElement($achat)) {
+            // set the owning side to null (unless already changed)
+            if ($achat->getProduit() === $this) {
+                $achat->setProduit(null);
+            }
+        }
 
         return $this;
     }
