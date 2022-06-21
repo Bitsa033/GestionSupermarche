@@ -20,7 +20,7 @@
                 <div class="row">
 					<div class="col-md-12">
 						<div class="card">
-						 <h3 class="card-title">Liste des stocks disponibles <a href="{{path('stock_index')}}"><i class="fa fa-pen"></i></a></h3>
+						 <h3 class="card-title">Liste des profits enregistrés <a href="{{path('stock_index')}}"><i class="fa fa-pen"></i></a></h3>
 							<div class="card-body table-responsive p-0" style="height: 390px;">
                                 <br>
                                 <form action="" method="post">
@@ -36,27 +36,20 @@
 										<tr>
 											{# <th>ID</th> #}
 											<th>Produit</th>
-                                            <th>Qte totale</th>
-                                            <th>Qte d'alerte</th>
-                                            <th>Prix d'Achat</th>
-                                            <th>Prix de Vente</th>
-                                            <th>Total Achat</th>
-                                            <th>Total Vente</th>
-                                            <th>Prof.Tot</th>
+                                            <th>Unité Vente</th>
+                                            <th>Prix Unit. Vente</th>
+                                            <th>Profit Unit. Vente</th>
+                                            <th>Profit Total</th>
 											
 										</tr>
 										{% for stock in stocks %}
 											<tr>
 												{# <td>{{stock.reference}}</td> #}
                                                 <td><a href=""> {{stock.nomProduit}}</a></td>
-                                                <td>{{stock.qt| number_format(0, ' ', ' ')}}</td>
-                                                <td>{{stock.qs| number_format(0, ' ', ' ')}}</td>
-                                                <td>{{stock.pau | number_format(0, ' ', ' ')}} FCFA</td>
-                                                <td>{{stock.pvu | number_format(0, ' ', ' ')}} FCFA</td>
-                                                <td>{{stock.pat | number_format(0, ' ', ' ')}} FCFA</td>
-                                                <td>{{stock.pvt | number_format(0, ' ', ' ')}} FCFA</td>
-                                                {# <td>{{stock.bvu | number_format(0, ' ', ' ')}} FCFA</td> #}
-                                                <td>{{stock.bvt | number_format(0, ' ', ' ')}} FCFA</td>
+                                                <td>{{stock.unite}}</td>
+                                                <td>{{stock.prixDeVente | number_format(0, ' ', ' ')}} FCFA</td>
+                                                <td>{{stock.profitUnitaire | number_format(0, ' ', ' ')}} FCFA</td>
+                                                <td>{{stock.profitTotal | number_format(0, ' ', ' ')}} FCFA</td>
                                             </tr>
 
 										{% else %}

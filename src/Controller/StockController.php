@@ -36,6 +36,26 @@ class StockController extends AbstractController
     }
 
     /**
+     * @Route("listeAchat", name="stock_listeAchat")
+     */
+    public function listeAchat(StockRepository $stockRepository){
+
+        return $this->render('stock/achat.html.twig',[
+            'stocks'=>$stockRepository->ListeStocksSelonFifo()
+        ]);
+    }
+
+    /**
+     * @Route("listeProfits", name="stock_listeProfits")
+     */
+    public function listeProfits(ProduitRepository $produitRepository){
+
+        return $this->render('stock/profit.html.twig',[
+            'stocks'=>$produitRepository->ListeProfits()
+        ]);
+    }
+
+    /**
      * @Route("devis", name="stock_devis")
      */
     public function devis(StockRepository $stockRepository, Request $request){
