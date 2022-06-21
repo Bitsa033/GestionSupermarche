@@ -66,13 +66,17 @@ class ProduitController extends AbstractController
         $getIdFamille=$session->get('famille',[]);
         //on cherche l'utilisateur connecté
         $user = $this->getUser();
-        //si l'utilisateur est n'est pas connecté,
-        // on le redirige vers la page de connexion
         // if (!$user) {
         //     return $this->redirectToRoute('app_login');
         // }
         //on recupere la valeur du nb_row stocker dans la session
-        $sessionNb = $session->get('nb_row', []);
+        if (!empty($session->get('nb_row', []))) {
+            $sessionLigne = $session->get('nb_row', []);
+        }
+        else{
+            $sessionLigne = 1;
+        }
+        $sessionNb = $sessionLigne;
         //on cree un tableau qui permettra de generer plusieurs champs dans le post
         //en fonction de la valeur de nb_row
         $nb_row = array(1);
@@ -111,7 +115,7 @@ class ProduitController extends AbstractController
         if (isset($_POST['enregistrer'])) {
             $session_nb_row = $session->get('nb_row', []);
             //dd($session_nb_row);
-            for ($i = 0; $i < $session_nb_row; $i++) {
+            for ($i = 0; $i < $sessionNb; $i++) {
                 $ref=rand(001,5599);
                 $data = array(
                     'produit' => $_POST['produit' . $i],

@@ -3,11 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Catuval;
+use App\Entity\Margeprix;
 use App\Entity\Produit;
 use App\Entity\Stock;
 use App\Entity\Uval;
 use App\Repository\ProduitRepository;
 use App\Form\StockType;
+use App\Repository\MargeprixRepository;
 use App\Repository\StockRepository;
 use App\Repository\UvalRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -73,6 +75,10 @@ class StockController extends AbstractController
                 $session->set('nb_row', $nb_of_row);
             }
             $session->set('nb_row', $nb_of_row);
+            //dd($session);
+        }
+        else {
+            $session->set('nb_row', 1);
             //dd($session);
         }
         return $this->redirectToRoute('stock_index');
@@ -155,14 +161,23 @@ class StockController extends AbstractController
      * Insertion et affichage des filieres
      * @Route("index", name="stock_index")
      */
-    public function stock(SessionInterface $session, StockRepository $stockRepository,ProduitRepository $produitRepository, Request $request, ManagerRegistry $end)
+    public function stock(MargeprixRepository $margeprixRepository,SessionInterface $session, StockRepository $stockRepository,ProduitRepository $produitRepository, Request $request, ManagerRegistry $end)
     {
         //on cherche l'utilisateur connecté
         $user = $this->getUser();
         $getIdProduit=$session->get('produit',[]);
         $getSessionUval=$session->get('uval',[]);
         $repoUval=$this->getDoctrine()->getRepository(Uval::class);
-        $sessionNb = $session->get('nb_row', []);
+        //on recupere la marge des prix
+        $margep=$margeprixRepository->find(1);
+        $marge=$margep->getMarge();
+        if (!empty($session->get('nb_row', []))) {
+            $sessionLigne = $session->get('nb_row', []);
+        }
+        else{
+            $sessionLigne = 1;
+        }
+        $sessionNb = $sessionLigne/$sessionLigne;
         $sessionBudjet=$session->get('budjet',[]);
         $sessionPrixUnitArt=$session->get('prixUnitArt',[]);
         $sessionNbArt=$session->get('nbArt',[]);
@@ -221,9 +236,9 @@ class StockController extends AbstractController
 
         //si on clic sur le boutton enregistrer et que les champs du post ne sont pas vide
         if (isset($_POST['enregistrer'])) {
-            $session_nb_row = $session->get('nb_row', []);
+            // $session_nb_row = $session->get('nb_row', []);
             //dd($session_nb_row);
-            for ($i = 0; $i < $session_nb_row; $i++) {
+            for ($i = 0; $i < $sessionNb; $i++) {
                 //on recupere la qte total du stock
                 $st=$_POST['qtet' . $i];
                 //on recupere la qte generale de valorisation du stock
@@ -233,7 +248,7 @@ class StockController extends AbstractController
                 //on calcul le prix d'achat unitaire du produit
                 $pauvs0=ceil($pau/$qgv);
                 //on calcul le prix de vente unitaire du produit
-                $pvuvs0=ceil($pauvs0 + 200);
+                $pvuvs0=ceil($pauvs0 + $marge);
                 //on initialise un diviseur($d)
                 $d=4;
                 //on calcul le stock de securite(soit 1/4 du stock total)

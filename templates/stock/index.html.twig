@@ -26,7 +26,7 @@
                                     <div class="form-inline">
                                         <form action="{{ path('stock_nb') }}" method="post">
                                             Nb stocks:
-                                            <input type="number" name="nb_row" class="form-control" placeholder="Ex: 5">
+                                            <input type="number" name="nb_row" min='1' max='1' class="form-control" value="1">
                                                 <button type="submit" class="form-control">Ok</button>
                                             </form>
 
@@ -143,10 +143,10 @@
                                                                     <div class="row">
                                                                         <div class="col-md">
                                                                             Entrer votre budjet d'achat
-                                                                            <input type="text" name="budjet" class="form-control" placeholder="{{ '75000' | number_format(0, ' ', ' ') }}"></div>
+                                                                            <input type="text" name="budjet" class="form-control" value="{{ budjet}}"></div>
                                                                             <div class="col-md">
                                                                                 Entrer le prix unitaire de l'article
-                                                                                <input type="text" name="prixUnitArt" class="form-control" placeholder="{{ '27000' | number_format(0, ' ', ' ') }}"></div>
+                                                                                <input type="text" name="prixUnitArt" class="form-control" value="{{ prixUnit }}"></div>
                                                                                 <div class="col-md">
                                                                                     Sur :
                                                                                     {{ budjet | number_format(0, ' ', ' ') }}
