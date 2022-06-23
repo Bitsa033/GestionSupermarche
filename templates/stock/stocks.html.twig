@@ -20,7 +20,7 @@
                 <div class="row">
 					<div class="col-md-12">
 						<div class="card">
-						 <h3 class="card-title">Liste des stocks disponibles <a href="{{path('stock_index')}}"><i class="fa fa-pen"></i></a></h3>
+						 <h3 class="card-title">Liste des Stock Enregistrés <a href="{{path('stock_index')}}"><i class="fa fa-pen"></i></a></h3>
 							<div class="card-body table-responsive p-0" style="height: 390px;">
                                 <br>
                                 <form action="" method="post">
@@ -45,13 +45,18 @@
 										</tr>
 										{% for stock in stocks %}
 											<tr>
-												{# <td>{{stock.reference}}</td> #}
-                                                <td><a href=""> {{stock.nomProduit}}</a></td>
+												<td>{{stock.achat.produit.nom}}</td>
+                                                <td>{{stock.us}}</td>
+                                                <td>{{stock.qs}}</td>
+                                                <td>{{stock.achat.produit.alerte}}</td>
+                                                <td>{{stock.puvs}}</td>
+                                                <td>{{stock.ptvs}}</td>
+                                                {# <td><a href=""> {{stock.nomProduit}}</a></td>
                                                 <td>{{stock.unite}}</td>
                                                 <td>{{stock.qt| number_format(0, ' ', ' ')}}</td>
                                                 <td>{{stock.qs| number_format(0, ' ', ' ')}}</td>
                                                 <td>{{stock.pvu | number_format(0, ' ', ' ')}} FCFA</td>
-                                                <td>{{stock.pvt | number_format(0, ' ', ' ')}} FCFA</td>
+                                                <td>{{stock.pvt | number_format(0, ' ', ' ')}} FCFA</td> #}
                                             </tr>
 
 										{% else %}

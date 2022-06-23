@@ -31,11 +31,6 @@ class Uval
     private $nomuval;
 
     /**
-     * @ORM\OneToMany(targetEntity=Produit::class, mappedBy="uvalp")
-     */
-    private $produits;
-
-    /**
      * @ORM\OneToMany(targetEntity=Stock::class, mappedBy="uvalst")
      */
     private $stocks;
@@ -47,7 +42,6 @@ class Uval
 
     public function __construct()
     {
-        $this->produits = new ArrayCollection();
         $this->stocks = new ArrayCollection();
         $this->achats = new ArrayCollection();
     }
@@ -82,36 +76,6 @@ class Uval
     }
 
     /**
-     * @return Collection|Produit[]
-     */
-    public function getProduits(): Collection
-    {
-        return $this->produits;
-    }
-
-    public function addProduit(Produit $produit): self
-    {
-        if (!$this->produits->contains($produit)) {
-            $this->produits[] = $produit;
-            $produit->setUvalp($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProduit(Produit $produit): self
-    {
-        if ($this->produits->removeElement($produit)) {
-            // set the owning side to null (unless already changed)
-            if ($produit->getUvalp() === $this) {
-                $produit->setUvalp(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Stock[]
      */
     public function getStocks(): Collection
@@ -123,7 +87,7 @@ class Uval
     {
         if (!$this->stocks->contains($stock)) {
             $this->stocks[] = $stock;
-            $stock->setUvalst($this);
+            $stock->setUniteStockage($this);
         }
 
         return $this;
@@ -133,8 +97,8 @@ class Uval
     {
         if ($this->stocks->removeElement($stock)) {
             // set the owning side to null (unless already changed)
-            if ($stock->getUvalst() === $this) {
-                $stock->setUvalst(null);
+            if ($stock->getUniteStockage() === $this) {
+                $stock->setUniteStockage(null);
             }
         }
 
@@ -153,7 +117,7 @@ class Uval
     {
         if (!$this->achats->contains($achat)) {
             $this->achats[] = $achat;
-            $achat->setUnitea($this);
+            $achat->setUniteAchat($this);
         }
 
         return $this;
@@ -163,8 +127,8 @@ class Uval
     {
         if ($this->achats->removeElement($achat)) {
             // set the owning side to null (unless already changed)
-            if ($achat->getUnitea() === $this) {
-                $achat->setUnitea(null);
+            if ($achat->getUniteAchat() === $this) {
+                $achat->setUniteAchat(null);
             }
         }
 

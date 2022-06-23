@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AchatRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -26,28 +28,38 @@ class Achat
     /**
      * @ORM\Column(type="bigint")
      */
-    private $qtep;
+    private $qa; //qte d'achat
 
     /**
      * @ORM\Column(type="bigint")
      */
-    private $pau;
+    private $patp; //prix d'achat total du produit
 
     /**
      * @ORM\Column(type="bigint")
      */
-    private $pat;
+    private $paup; //prix d'achat unitaire du produit
 
     /**
      * @ORM\ManyToOne(targetEntity=Uval::class, inversedBy="achats")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $unitea;
+    private $ua; //unite d'achat
 
     /**
      * @ORM\Column(type="datetime")
      */
     private $dateachat;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Stock::class, mappedBy="achat")
+     */
+    private $stocks;
+
+    public function __construct()
+    {
+        $this->stocks = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -66,50 +78,50 @@ class Achat
         return $this;
     }
 
-    public function getQtep(): ?string
+    public function getQteAchat(): ?string
     {
-        return $this->qtep;
+        return $this->qa;
     }
 
-    public function setQtep(string $qtep): self
+    public function setQteAchat(string $qa): self
     {
-        $this->qtep = $qtep;
+        $this->qa = $qa;
 
         return $this;
     }
 
-    public function getPau(): ?string
+    public function getPrixAchatTotal(): ?string
     {
-        return $this->pau;
+        return $this->patp;
+    }
+    
+    public function setPrixAchatTotal(string $patp): self
+    {
+        $this->patp = $patp;
+        
+        return $this;
     }
 
-    public function setPau(string $pau): self
+    public function getPrixAchatUnitaire(): ?string
     {
-        $this->pau = $pau;
+        return $this->paup;
+    }
+
+    public function setPrixAchatUnitaire(string $paup): self
+    {
+        $this->paup = $paup;
 
         return $this;
     }
 
-    public function getPat(): ?string
+    public function getUniteAchat(): ?Uval
     {
-        return $this->pat;
+        return $this->ua;
     }
 
-    public function setPat(string $pat): self
+    public function setUniteAchat(?Uval $ua): self
     {
-        $this->pat = $pat;
-
-        return $this;
-    }
-
-    public function getUnitea(): ?Uval
-    {
-        return $this->unitea;
-    }
-
-    public function setUnitea(?Uval $unitea): self
-    {
-        $this->unitea = $unitea;
+        $this->ua = $ua;
 
         return $this;
     }
@@ -122,6 +134,36 @@ class Achat
     public function setDateachat(\DateTimeInterface $dateachat): self
     {
         $this->dateachat = $dateachat;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Stock[]
+     */
+    public function getStocks(): Collection
+    {
+        return $this->stocks;
+    }
+
+    public function addStock(Stock $stock): self
+    {
+        if (!$this->stocks->contains($stock)) {
+            $this->stocks[] = $stock;
+            $stock->setAchat($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStock(Stock $stock): self
+    {
+        if ($this->stocks->removeElement($stock)) {
+            // set the owning side to null (unless already changed)
+            if ($stock->getAchat() === $this) {
+                $stock->setAchat(null);
+            }
+        }
 
         return $this;
     }

@@ -27,23 +27,17 @@ class Produit
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $ref;
+    private $codep;
+
+    /**
+     * @ORM\Column(type="bigint")
+     */
+    private $alerte; //alerte de securite
 
     /**
      * @ORM\ManyToOne(targetEntity=Famille::class, inversedBy="produits")
      */
     private $famille;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Stock::class, mappedBy="produit")
-     */
-    private $stocks;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Uval::class, inversedBy="produits")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $uvalp;
 
     /**
      * @ORM\OneToMany(targetEntity=Achat::class, mappedBy="produit")
@@ -52,7 +46,6 @@ class Produit
 
     public function __construct()
     {
-        $this->stocks = new ArrayCollection();
         $this->achats = new ArrayCollection();
     }
 
@@ -73,14 +66,26 @@ class Produit
         return $this;
     }
 
-    public function getRef(): ?string
+    public function getCode(): ?string
     {
-        return $this->ref;
+        return $this->codep;
     }
 
-    public function setRef(string $ref): self
+    public function setCode(string $codep): self
     {
-        $this->ref = $ref;
+        $this->codep = $codep;
+
+        return $this;
+    }
+
+    public function getAlerte(): ?string
+    {
+        return $this->alerte;
+    }
+
+    public function setAlerte(string $alerte): self
+    {
+        $this->alerte = $alerte;
 
         return $this;
     }
@@ -93,48 +98,6 @@ class Produit
     public function setFamille(?Famille $famille): self
     {
         $this->famille = $famille;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Stock[]
-     */
-    public function getStocks(): Collection
-    {
-        return $this->stocks;
-    }
-
-    public function addStock(Stock $stock): self
-    {
-        if (!$this->stocks->contains($stock)) {
-            $this->stocks[] = $stock;
-            $stock->setProduit($this);
-        }
-
-        return $this;
-    }
-
-    public function removeStock(Stock $stock): self
-    {
-        if ($this->stocks->removeElement($stock)) {
-            // set the owning side to null (unless already changed)
-            if ($stock->getProduit() === $this) {
-                $stock->setProduit(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getUvalp(): ?Uval
-    {
-        return $this->uvalp;
-    }
-
-    public function setUvalp(?Uval $uvalp): self
-    {
-        $this->uvalp = $uvalp;
 
         return $this;
     }

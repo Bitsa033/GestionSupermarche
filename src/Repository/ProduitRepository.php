@@ -19,26 +19,6 @@ class ProduitRepository extends ServiceEntityRepository
         parent::__construct($registry, Produit::class);
     }
 
-    public function ListeProduitsSelonFifo()
-    {
-        //SELECT * FROM `stock` WHERE id=(SELECT max(id) FROM stock) AND qt>0
-        $conn = $this->getEntityManager()->getConnection();
-        $sql = '
-        
-        SELECT produit.ref as reference,nomcatval as catUnite,nomuval as unite , produit.nom as nomProduit,
-        famille.nom_fam as nomFamille, qtv as qt, pvuv as prixDeVente, pvt as prixTotalVente,bvu/qgv as profitUnitaire,
-        bvt as profitTotal FROM produit inner join uval on  uval.id=produit.uvalp_id inner join catuval on 
-        catuval.id=uval.catuval_id inner join famille on famille.id=produit.famille_id LEFT join stock on 
-        stock.produit_id =produit.id 
-
-        ';
-        $stmt = $conn->prepare($sql);
-        $stmt->executeQuery();
-
-        // returns an array of arrays (i.e. a raw data set)
-        return $stmt;
-    }
-
     public function ListeProfits()
     {
         //SELECT * FROM `stock` WHERE id=(SELECT max(id) FROM stock) AND qt>0

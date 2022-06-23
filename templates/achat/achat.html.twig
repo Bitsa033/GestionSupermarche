@@ -20,7 +20,7 @@
                 <div class="row">
 					<div class="col-md-12">
 						<div class="card">
-						 <h3 class="card-title">Liste des achats enregistrés <a href="{{path('stock_index')}}"><i class="fa fa-pen"></i></a></h3>
+						 <h3 class="card-title">Liste des Achat Enregistrés <a href="{{path('achat_new')}}"><i class="fa fa-pen"></i></a></h3>
 							<div class="card-body table-responsive p-0" style="height: 390px;">
                                 <br>
                                 <form action="" method="post">
@@ -38,20 +38,23 @@
 											<th>Produit</th>
                                             <th>Unité</th>
                                             <th>Qté Tot.</th>
-                                            <th>Prix Unit. Achat</th>
+                                            <th>Prix Unit.</th>
                                             <th>Prix Total</th>
-                                            <th>Date Livraison</th>
 											
 										</tr>
-										{% for stock in stocks %}
+										{% for achat in achats %}
 											<tr>
-												{# <td>{{stock.reference}}</td> #}
-                                                <td><a href=""> {{stock.nomProduit}}</a></td>
+												<td>{{achat.produit.nom}}</td>
+                                                <td>{{achat.getUniteAchat.getNomuval}}</td>
+                                                <td>{{achat.getQteAchat| number_format(0, ' ', ' ')}}</td>
+                                                <td>{{achat.getPrixAchatUnitaire| number_format(0, ' ', ' ')}} FCFA</td>
+                                                <td>{{achat.getPrixAchatTotal| number_format(0, ' ', ' ')}} FCFA</td>
+                                                {# <td><a href=""> {{stock.nomProduit}}</a></td>
                                                 <td>{{stock.unite}}</td>
                                                 <td>{{stock.qt| number_format(0, ' ', ' ')}}</td>
-                                                <td>{{stock.pau | number_format(0, ' ', ' ')}} FCFA</td>
-                                                <td>{{stock.pat | number_format(0, ' ', ' ')}} FCFA</td>
-                                                <td>date("${m/d/Y}")</td>
+                                                <td>{{stock.qs| number_format(0, ' ', ' ')}}</td>
+                                                <td>{{stock.pvu | number_format(0, ' ', ' ')}} FCFA</td>
+                                                <td>{{stock.pvt | number_format(0, ' ', ' ')}} FCFA</td> #}
                                             </tr>
 
 										{% else %}

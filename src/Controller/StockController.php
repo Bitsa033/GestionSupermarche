@@ -9,6 +9,7 @@ use App\Entity\Stock;
 use App\Entity\Uval;
 use App\Repository\ProduitRepository;
 use App\Form\StockType;
+use App\Repository\AchatRepository;
 use App\Repository\MargeprixRepository;
 use App\Repository\StockRepository;
 use App\Repository\UvalRepository;
@@ -36,50 +37,12 @@ class StockController extends AbstractController
     }
 
     /**
-     * @Route("listeAchat", name="stock_listeAchat")
-     */
-    public function listeAchat(StockRepository $stockRepository){
-
-        return $this->render('stock/achat.html.twig',[
-            'stocks'=>$stockRepository->ListeStocksSelonFifo()
-        ]);
-    }
-
-    /**
      * @Route("listeProfits", name="stock_listeProfits")
      */
     public function listeProfits(ProduitRepository $produitRepository){
 
         return $this->render('stock/profit.html.twig',[
             'stocks'=>$produitRepository->ListeProfits()
-        ]);
-    }
-
-    /**
-     * @Route("devis", name="stock_devis")
-     */
-    public function devis(StockRepository $stockRepository, Request $request){
-
-        if (!empty($request->request->get('budjet')) && !empty($request->request->get('prixUnitArt'))) {
-            $budjet=$request->request->get('budjet');
-            $prixUnitArt=$request->request->get('prixUnitArt');
-            $nbArt=floor($budjet / $prixUnitArt);
-            $depenses=$nbArt *  $prixUnitArt;
-            $resteBudjet=$budjet - $depenses;
-        }
-        else{
-            $nbArt='XXX ...';
-            $depenses='XXX ...';
-            $resteBudjet='XXX ...';
-            $budjet='XXX ...';
-        }
-
-        return $this->render('stock/devis.html.twig',[
-            'stocks'=>$stockRepository->ListeStocksSelonFifo(),
-            'budjet'=>$budjet,
-            'nbArt'=>$nbArt,
-            'depenses'=>$depenses,
-            'resteBudjet'=>$resteBudjet
         ]);
     }
     
@@ -118,11 +81,7 @@ class StockController extends AbstractController
             $resteBudjet=$budjet - $depenses;
         }
         else{
-            $nbArt='XXX ...';
-            $depenses='XXX ...';
-            $resteBudjet='XXX ...';
-            $budjet='XXX ...';
-            $prixUnit='XXX ...';
+           
         }
 
         $get_budjet = $session->get('budjet', []);
@@ -178,19 +137,18 @@ class StockController extends AbstractController
     }
 
     /**
-     * Insertion et affichage des filieres
      * @Route("index", name="stock_index")
      */
-    public function stock(MargeprixRepository $margeprixRepository,SessionInterface $session, StockRepository $stockRepository,ProduitRepository $produitRepository, Request $request, ManagerRegistry $end)
+    public function stock(MargeprixRepository $margeprixRepository,SessionInterface $session,AchatRepository $achatRepository, ManagerRegistry $end)
     {
         //on cherche l'utilisateur connecté
         $user = $this->getUser();
-        $getIdProduit=$session->get('produit',[]);
-        $getSessionUval=$session->get('uval',[]);
+        $sessionProduit=$session->get('produit',[]);
+        $sessionUval=$session->get('uval',[]);
         $repoUval=$this->getDoctrine()->getRepository(Uval::class);
         //on recupere la marge des prix
-        $margep=$margeprixRepository->find(1);
-        $marge=$margep->getMarge();
+        $idMarge=$margeprixRepository->find(1);
+        $margeFamille=$idMarge->getMarge();
         if (!empty($session->get('nb_row', []))) {
             $sessionLigne = $session->get('nb_row', []);
         }
@@ -216,9 +174,8 @@ class StockController extends AbstractController
                 $nb_row[$i] = $i;
             }
         }
-        // $session_nb_row=1;
         //on cree la methode qui permettra d'enregistrer les infos du post dans la bd
-        function insert_into_db($data,$getIdProduit,ProduitRepository $produitRepository,$getIdUval,UvalRepository $uvalRepository, ManagerRegistry $end,$user)
+        function insert_into_db($data,$idProduit,ProduitRepository $produitRepository,$idUval,UvalRepository $uvalRepository, ManagerRegistry $end)
         {
             foreach ($data as $key => $value) {
                 $k[] = $key;
@@ -226,28 +183,25 @@ class StockController extends AbstractController
             }
             $k = implode(",", $k);
             $v = implode(",", $v);
-            //echo $data['filiere'];
-            $getProduit=$produitRepository->find($getIdProduit);
-            $getUval1=$uvalRepository->find($getIdUval);
-            $getUval=$getProduit->getUvalp();
+           
+            $produit=$produitRepository->find($idProduit);
+            $uniteStockage=$uvalRepository->find($idUval);
+            $uniteVente=$uvalRepository->find($idUval);
             
             $stock = new Stock();
-            $stock->setProduit($getProduit);
-            $stock->setQt($data['Qt']);
-            $stock->setQs($data['Qs']);
-            $stock->setPau($data['Pau']);
-            $stock->setPat($data['Pat']);
-            $stock->setPvu($data['Pvu']);
-            $stock->setPvt($data['Pvt']);
-            $stock->setBvu($data['Bvu']);
-            $stock->setBvt($data['Bvt']);
-            $stock->setUvalst($getUval1);
-            $stock->setQgc(1);
+            $stock->setAchat($produit);
+            $stock->setQteStockage($data['Qs']);
+            $stock->setPrixVenteUnitaireStock($data['Pvus']);
+            $stock->setPrixVenteTotaleStock($data['Pvts']);
+            $stock->setProfitUnitaireStock($data['pus']);
+            $stock->setProfitTotalStock($data['pts']);
+            $stock->setUniteStockage($uniteStockage);
+            $stock->setQteGenValStock(1);
             $stock->setC("=");
-            $stock->setQgv($data['qgv']);
-            $stock->setUgv($getUval);
-            $stock->setQtv($data['qtv']);
-            $stock->setPvuv($data['pvuv']);
+            $stock->setQteGenUnite($data['qgu']);
+            $stock->setUniteVenteStock($uniteVente);
+            $stock->setQteTotaleUnite($data['qtu']);
+            $stock->setPrixUniteVenteStock($data['puvs']);
             // $stock->setRef(strtoupper($data['ref']));
             $manager = $end->getManager();
             $manager->persist($stock);
@@ -256,71 +210,26 @@ class StockController extends AbstractController
 
         //si on clic sur le boutton enregistrer et que les champs du post ne sont pas vide
         if (isset($_POST['enregistrer'])) {
-            // $session_nb_row = $session->get('nb_row', []);
             //dd($session_nb_row);
             for ($i = 0; $i < $sessionNb; $i++) {
-                //on recupere la qte total du stock
-                $st=$_POST['qtet' . $i];
-                //on recupere la qte generale de valorisation du stock
-                $qgv=$_POST['qgv'];
-                //on recupere le prix d'achat unitaire du stock obtenu du post
-                $pau=$_POST['prixu' . $i];
-                //on calcul le prix d'achat unitaire du produit
-                $pauvs0=ceil($pau/$qgv);
-                //on calcul le prix de vente unitaire du produit
-                $pvuvs0=ceil($pauvs0 + $marge);
-                //on initialise un diviseur($d)
-                $d=4;
-                //on calcul le stock de securite(soit 1/4 du stock total)
-                $ss=floor($st / $d);
-                //on calcul le prix d'achat total du stock
-                $pat=ceil($pau * $st);
-                //on calcul le prix de vente unitaire/unite de stock
-                $pvu=ceil($pvuvs0 * $qgv);
-                //on calcul le prix de vente total du stock
-                $pvt=ceil($pvu * $st);
-                //on calcul le benefice de vente unitaire du stock
-                $bvu=ceil($pvu - $pau);
-                //on calcul le benefice de vente total du stock
-                $bvt=ceil($bvu * $st);
-                
-                //qte totale de valorisation du produit
-                $qtv=$qgv * $st;
                 
                 //on stocke toutes les donnees dans le tableau
                 $data = array(
-                    'Qt' => $st,
-                    'Qs'=>$ss,
-                    'Pau'=>$pau,
-                    'Pat' => $pat,
-                    'Pvu'=>$pvu,
-                    'Pvt'=>$pvt,
-                    'Bvu'=>$bvu,
-                    'Bvt'=>$bvt,
-                    'qgv'=>$qgv,
-                    'qtv'=>$qtv,
-                    'pvuv'=>$pvuvs0
+                    'Qs' =>" ",
+                    'Pvus'=>"",
+                    'Pvts'=>"",
+                    'pus'=>"",
+                    'pts'=>"",
+                    'qgu'=>"",
+                    'qtu'=>"",
+                    'puvs'=>""
                 );
                
-                insert_into_db($data,$getIdProduit,$produitRepository,$getSessionUval,$repoUval ,$end,$user);
+                insert_into_db($data,$sessionProduit,$achatRepository,$sessionUval,$repoUval ,$end);
             }
 
         }
 
-        //affichage de l'unite de vente du produit
-        if (!empty($getIdProduit)) {
-            $uvp=$produitRepository->find($getIdProduit);
-        }
-        else{
-            $uvp='';
-        }
-        //affichage de l'unite de stockage du produit
-        if (!empty($getSessionUval)) {
-            $uvs=$repoUval->find($getSessionUval);
-        }
-        else{
-            $uvs='';
-        }
         //repository de la classe Catuval
         $repoCatuval=$this->getDoctrine()->getRepository(Catuval::class);
         // devis d'achat pour le stock[]
@@ -341,11 +250,8 @@ class StockController extends AbstractController
 
         return $this->render('stock/index.html.twig', [
             'nb_rows' => $nb_row,
-            'stocks'=>$stockRepository->findAll(),
-            'produits'=>$produitRepository->findAll(),
+            'achats'=>$achatRepository->findAll(),
             'catuvals'=>$repoCatuval->findAll(),
-            'uvalprod'=>$uvp,
-            'uvs'=>$uvs,
             'uvals' => $repoUval->findBy([
                 'catuval' => 2
             ]),

@@ -61,15 +61,15 @@ class ProduitController extends AbstractController
      * Insertion et affichage des filieres
      * @Route("index", name="produit_index")
      */
-    public function produit(SessionInterface $session,UvalRepository $uniteDeValorisation,FamilleRepository $familleRepository,ProduitRepository $produitRepository, Request $request, ManagerRegistry $end)
+    public function produit(SessionInterface $session,FamilleRepository $familleRepository,ProduitRepository $produitRepository, ManagerRegistry $end)
     {
-        $getIdFamille=$session->get('famille',[]);
+        $sessionFamille=$session->get('famille',[]);
         //on cherche l'utilisateur connecté
         $user = $this->getUser();
         // if (!$user) {
         //     return $this->redirectToRoute('app_login');
         // }
-        //on recupere la valeur du nb_row stocker dans la session
+       
         if (!empty($session->get('nb_row', []))) {
             $sessionLigne = $session->get('nb_row', []);
         }
@@ -77,20 +77,17 @@ class ProduitController extends AbstractController
             $sessionLigne = 1;
         }
         $sessionNb = $sessionLigne;
-        //on cree un tableau qui permettra de generer plusieurs champs dans le post
-        //en fonction de la valeur de nb_row
         $nb_row = array(1);
-        //pour chaque valeur du compteur i, on ajoutera un champs de plus en consirerant que 
-        //nb_row par defaut=1
+
         if (!empty( $sessionNb)) {
            
             for ($i = 0; $i < $sessionNb; $i++) {
                 $nb_row[$i] = $i;
             }
         }
-        $session_nb_row=1;
+       
         //on cree la methode qui permettra d'enregistrer les infos du post dans la bd
-        function insert_into_db($data,UvalRepository $uniteDeValorisation,$getIdFamille,FamilleRepository $familleRepository, ManagerRegistry $end,$user)
+        function insert_into_db($data,$idFamille,FamilleRepository $familleRepository, ManagerRegistry $end)
         {
             foreach ($data as $key => $value) {
                 $k[] = $key;
@@ -98,14 +95,13 @@ class ProduitController extends AbstractController
             }
             $k = implode(",", $k);
             $v = implode(",", $v);
-            //echo $data['filiere'];
-            $getFamille=$familleRepository->find($getIdFamille);
-            $getMesure=$uniteDeValorisation->find($data['mesure']);
+            
+            $famille=$familleRepository->find($idFamille);
             $produit = new Produit();
-            $produit->setFamille($getFamille);
+            $produit->setFamille($famille);
             $produit->setNom(ucfirst($data['produit']));
-            $produit->setUvalp($getMesure);
-            $produit->setRef(strtoupper($data['ref']));
+            $produit->setAlerte($data['alerte']);
+            $produit->setCode(strtoupper($data['code']));
             $manager = $end->getManager();
             $manager->persist($produit);
             $manager->flush();
@@ -113,17 +109,17 @@ class ProduitController extends AbstractController
 
         //si on clic sur le boutton enregistrer et que les champs du post ne sont pas vide
         if (isset($_POST['enregistrer'])) {
-            $session_nb_row = $session->get('nb_row', []);
+            
             //dd($session_nb_row);
             for ($i = 0; $i < $sessionNb; $i++) {
                 $ref=rand(001,5599);
                 $data = array(
                     'produit' => $_POST['produit' . $i],
-                    'ref'    => 'ref_'.$ref,
-                    'mesure' => $_POST['mesure'. $i]
+                    'code'    => 'code_'.$ref,
+                    'alerte' => $_POST['alerte'. $i]
                 );
                
-                insert_into_db($data,$uniteDeValorisation,$getIdFamille,$familleRepository ,$end,$user);
+                insert_into_db($data,$sessionFamille,$familleRepository ,$end);
             }
 
             // return $this->redirectToRoute('niveaux_index');
@@ -132,8 +128,7 @@ class ProduitController extends AbstractController
         return $this->render('produit/index.html.twig', [
             'nb_rows' => $nb_row,
             'familles'=>$familleRepository->findAll(),
-            'produits'=>$produitRepository->ListeProduitsSelonFifo(),
-            'mesures'=>$uniteDeValorisation->findAll()
+            'produits'=>$produitRepository->findAll()
         ]);
     }
 
@@ -143,7 +138,7 @@ class ProduitController extends AbstractController
     public function produitsListe(ProduitRepository $produitRepository){
 
         return $this->render('produit/produits.html.twig',[
-            'produits'=>$produitRepository->ListeProduitsSelonFifo()
+            'produits'=>$produitRepository->findAll()
         ]);
     }
 

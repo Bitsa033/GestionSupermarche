@@ -24,13 +24,13 @@ class="content-wrapper">
             <div class="card">
                 <div class="card-header">
                     <div class="form-inline">
-                        <form action="{{ path('stock_nb') }}" method="post">
-                            Nb Stocks:
+                        <form action="{{ path('achat_nb') }}" method="post">
+                            Nb Achat:
                             <input type="number" name="nb_row" min='1' max='1' class="form-control" value="1">
                                 <button type="submit" class="form-control">Ok</button>
                             </form>
 
-                            <form action="{{ path('stock_sessionProduit') }}" method="post" class='marge'>
+                            <form action="{{ path('achat_sessionProduit') }}" method="post" class='marge'>
                                 Unité:
                                 <select class="form-control" name="" id="">
                                     {% for catuval in catuvals %}
@@ -44,8 +44,8 @@ class="content-wrapper">
                                 <button class="btn btn-default" type="submit">Ok</button>
                             </form>
 
-                            <form action="{{ path('stock_Uval') }}" method="post" class='marge'>
-                                Unité de Stockage:
+                            <form action="{{ path('achat_Uval') }}" method="post" class='marge'>
+                                Unité d'Achat:
                                 <select class="form-control" name="uval" id="">
                                     {% for uval in uvals %}
                                         <option value="{{ uval.id }}">{{ uval.nomuval }}</option>
@@ -62,7 +62,7 @@ class="content-wrapper">
                     <table class=" table-head-fixed">
                         <thead class="table table-primary table-head-fixed">
                             <tr>
-                                <td colspan='2'>Creation du stock produit</td>
+                                <td colspan='2'>Enregistrement d'Achat</td>
                             </tr>
 
                         </thead>
@@ -70,11 +70,11 @@ class="content-wrapper">
                     <!-- /.card-header -->
                     <div class="card-header form-inline">
                         Produit:
-                        <form action="{{ path('stock_sessionProduit') }}" method="post">
+                        <form action="{{ path('achat_sessionProduit') }}" method="post">
                             <select class="form-control" name="produit" id="">
-                                {% for achat in achats %}
-                                    <option value="{{ achat.id }}">{{ achat.produit.famille.nom }}
-                                        {{ achat.produit.nom }}</option>
+                                {% for produit in produits %}
+                                    <option value="{{ produit.id }}">{{produit.famille.nom }}
+                                        {{ produit.nom }}</option>
 
                                 {% else %}
                                     <option value="">Liste vide...</option>
@@ -83,37 +83,27 @@ class="content-wrapper">
                             <button class="btn btn-default" type="submit">Ok</button>
                         </form>
 
-
-                        <form action="{{ path('stock_Uval') }}" method="post" class='marge'>
-                            Unité de Vente:
-                            <select class="form-control" name="uval" id="">
-                                {% for uval in uvals %}
-                                    <option value="{{ uval.id }}">{{ uval.nomuval }}</option>
-
-                                {% else %}
-                                    <option value="">Liste vide...</option>
-                                {% endfor %}
+                        <div class='marge'>
+                            Devise
+                            <select type="text" name="" class="form-control" value="" id="">
+                                <option value="">FCFA</option>
                             </select>
-                            <button class="btn btn-default" type="submit">Ok</button>
-                        </form>
+                        </div>
 
                         <div class="card-body table-responsive p-0" style="height: 150px;">
                             <table class="table table-head-fixed">
 
-                                <form action="{{ path('stock_index') }}" method="post">
+                                <form action="{{ path('achat_new') }}" method="post">
 
                                     <tbody class="table table-light">
                                         {% for nb_row in nb_rows %}
                                             <tr>
-                                                <td>Qte total stock n°{{ nb_row +1 }}<input type="text" name="qtet{{ nb_row }}" class="form-control" value="{{ nbArt }}" id=""></td>
-                                                    <td>Prix total d'achat<input type="text" name="" class="form-control" value="{{ depenses }}" id=""></td>
-                                                        <td>Prix unitaire d'achat<input type="text" name="prixu{{ nb_row }}" class="form-control" value="{{ prixUnit }}" id=""></td>
+                                                <td>Qte total stock n°{{ nb_row +1 }}<input type="text" name="quantiteAchat{{ nb_row }}" class="form-control" value="{{ nbArt }}" id=""></td>
+                                                    <td>Prix total d'achat<input type="text" name="prixAchatTotal{{nb_row}}" class="form-control" value="{{ depenses }}" id=""></td>
+                                                        <td>Prix unitaire d'achat<input type="text" name="prixAchatUnitaire{{ nb_row }}" class="form-control" value="{{ prixUnit }}" id=""></td>
                                                             <td>Frais de stockage<input type="text" name="" class="form-control" value="{{ resteBudjet }}" id=""></td>
-                                                                <td>Devise
-                                                                    <select type="text" name="" class="form-control" value="" id="">
-                                                                        <option value="">FCFA</option>
-                                                                    </select</td>
-                                                                </tr>
+                                                                
+                                                </tr>
                                                             {% endfor %}
 
                                                         </tbody>
@@ -123,7 +113,7 @@ class="content-wrapper">
                                                 </div>
                                                 <!-- /.card -->
                                                 <br>
-                                                    <button type="submit" name="enregistrer" class="btn btn-success">Enregistrer le stock</button>
+                                                    <button type="submit" name="enregistrer" class="btn btn-success">Enregistrer l'Achat</button>
                                                 </form>
                                             </div>
 
@@ -131,7 +121,7 @@ class="content-wrapper">
                                                 <tr>
                                                     <td>
                                                         <div class="form-inline">
-                                                            <form action="{{ path('stock_sessionDevis') }}" method="post" class=''>
+                                                            <form action="{{ path('achat_sessionDevis') }}" method="post" class=''>
                                                                 Devis d'achat N°-<input type="text" name="devisNb" class="form-control" value="1"></div>
                                                             </td>
                                                         </tr>

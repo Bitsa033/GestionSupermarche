@@ -21,15 +21,9 @@ class StockRepository extends ServiceEntityRepository
 
     public function ListeStocksSelonFifo()
     {
-        //SELECT * FROM `stock` WHERE id=(SELECT max(id) FROM stock) AND qt>0
         $conn = $this->getEntityManager()->getConnection();
         $sql = '
-        
-        SELECT pau,pvu,qs,c,pau,pat,pvt,bvt,bvu,nomcatval as catUnite,nomuval as unite, produit.nom as nomProduit,famille.nom_fam as nomFamille,
-        qt as qt, pvu as prixDeVente, pvt as prixTotalVente FROM stock INNER join produit on produit.id =stock.produit_id inner join famille on famille.id
-        =produit.famille_id inner join uval on uval.id=stock.uvalst_id inner join catuval on catuval.id=uval.catuval_id
-          
-
+            select * from stock
         ';
         $stmt = $conn->prepare($sql);
         $stmt->executeQuery();
@@ -43,12 +37,7 @@ class StockRepository extends ServiceEntityRepository
         //SELECT * FROM `stock` WHERE id=(SELECT max(id) FROM stock) AND qt>0
         $conn = $this->getEntityManager()->getConnection();
         $sql = '
-        
-        SELECT produit.ref as reference,pau,pvu,qs,pau,pat,pvt,bvt,nomcatval as catUnite,nomuval as unite, produit.nom as nomProduit,famille.nom_fam as nomFamille,
-        qt as qt, pvu as prixDeVente, pvt as prixTotalVente FROM produit inner join famille on famille.id
-        =produit.famille_id inner join uval on uval.id=produit.uvalp_id inner join catuval on catuval.id=uval.catuval_id
-          INNER join stock on stock.produit_id =produit.id
-
+            select * from stock
         ';
         $stmt = $conn->prepare($sql);
         $stmt->executeQuery();

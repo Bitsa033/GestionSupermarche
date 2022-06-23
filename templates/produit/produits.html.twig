@@ -26,22 +26,26 @@
 
 									<tbody>
 										<tr>
+                                            <th>Famille</th>
 											<th>Produit</th>
-                                            <th>Unité</th>
-                                            <th>Qté Totale</th>
+                                            <th>Code</th>
+                                            {# <th>Qté Totale</th>
                                             <th>Prix Unitaire</th>
-                                            <th>Prix Totoal</th>
+                                            <th>Prix Totoal</th> #}
 											
 										</tr>
 										{% for produit in produits %}
 											<tr>
-                                                <td>
+                                                <td>{{produit.famille.nom}}</td>
+                                                <td>{{produit.nom}}</td>
+                                                <td>{{produit.code}}</td>
+                                                {# <td>
                                                     {{produit.nomFamille}} {{produit.nomProduit}} 
                                                 </td>
                                                 <td>{{produit.unite}}</td>
                                                 <td>{{produit.qt| number_format(0, ' ', ' ')}}</td>
                                                 <td>{{produit.prixDeVente| number_format(0, ' ', ' ')}} FCFA</td>
-                                                <td>{{produit.prixTotalVente| number_format(0, ' ', ' ')}} FCFA</td>
+                                                <td>{{produit.prixTotalVente| number_format(0, ' ', ' ')}} FCFA</td> #}
                                             </tr>
 
 										{% else %}

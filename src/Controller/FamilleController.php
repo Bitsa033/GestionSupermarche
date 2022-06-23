@@ -68,7 +68,7 @@ class FamilleController extends AbstractController
         }
         
         //on cree la methode qui permettra d'enregistrer les infos du post dans la bd
-        function insert_into_db($data, ManagerRegistry $end,$user)
+        function insert_into_db($data, ManagerRegistry $end)
         {
             foreach ($data as $key => $value) {
                 $k[] = $key;
@@ -76,7 +76,7 @@ class FamilleController extends AbstractController
             }
             $k = implode(",", $k);
             $v = implode(",", $v);
-            //echo $data['filiere'];
+           
             $famille = new Famille();
             // $famille->setUser($user);
             $famille->setNom(ucfirst($data['famille']));
@@ -87,16 +87,15 @@ class FamilleController extends AbstractController
 
         //si on clic sur le boutton enregistrer et que les champs du post ne sont pas vide
         if (isset($_POST['enregistrer'])) {
-            $session_nb_row = $session->get('nb_row', []);
+           
             //dd($session_nb_row);
             for ($i = 0; $i < $sessionNb; $i++) {
-                $ref=rand(001,5599);
+                
                 $data = array(
-                    'famille' => $_POST['famille' . $i],
-                    'ref'    => 'ref_'.$ref
+                    'famille' => $_POST['famille' . $i]
                 );
                
-                insert_into_db($data, $end,$user);
+                insert_into_db($data, $end);
             }
 
             // return $this->redirectToRoute('niveaux_index');

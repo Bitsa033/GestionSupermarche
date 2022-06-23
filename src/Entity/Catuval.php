@@ -22,7 +22,7 @@ class Catuval
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $nomcatval;
+    private $nomcatuval;
 
     /**
      * @ORM\OneToMany(targetEntity=Uval::class, mappedBy="catuval")
@@ -39,14 +39,14 @@ class Catuval
         return $this->id;
     }
 
-    public function getNomcatval(): ?string
+    public function getNomcatuval(): ?string
     {
-        return $this->nomcatval;
+        return $this->nomcatuval;
     }
 
-    public function setNomcatval(string $nomcatval): self
+    public function setNomcatuval(string $nomcatval): self
     {
-        $this->nomcatval = $nomcatval;
+        $this->nomcatuval = $nomcatval;
 
         return $this;
     }

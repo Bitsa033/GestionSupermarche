@@ -22,7 +22,7 @@ class Famille
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $nomFam;
+    private $nomfam;
 
     /**
      * @ORM\OneToMany(targetEntity=Produit::class, mappedBy="famille")
@@ -47,12 +47,12 @@ class Famille
 
     public function getNom(): ?string
     {
-        return $this->nomFam;
+        return $this->nomfam;
     }
 
     public function setNom(string $nom): self
     {
-        $this->nomFam = $nom;
+        $this->nomfam = $nom;
 
         return $this;
     }

@@ -20,21 +20,19 @@
                 <div class="row">
 					<div class="col-md-4">
 						<div class="card">
-						 <h3 class="card-title">Liste des produits disponibles</h3>
+						 <h3 class="card-title">Produits Enregistrés</h3>
 							<div class="card-body table-responsive p-0" style="height: 390px;">
 								<table class="table table-head-fixed text-nowrap">
 
 									<tbody>
 										<tr>
-											<th style="width:3%;">Code</th>
-											{# <th>Produit</th> #}
-											<th>Prix</th>
+											<th>Nom</th>
+											<th>Code</th>
 										</tr>
 										{% for produit in produits %}
 											<tr>
-												<td>{{produit.reference}}</td>
-                                                {# <td>{{produit.nomFamille}} {{produit.nomProduit}}</td> #}
-                                                <td>{{produit.prixDeVente| number_format(0, ' ', ' ')}} FCFA</td>
+												<td>{{produit.nom}}</td>
+                                                <td>{{produit.code}}</td>
                                             </tr>
 										{% else %}
 											<tr>
@@ -56,8 +54,8 @@
                             <div class="card-header">
 								<form action="{{ path('produit_nb') }}" method="post">
 								<div class="form-inline">
-									Nb de produits:
-									<input type="number" name="nb_row" class="form-control" placeholder="Ex: 5">
+									Nb Produits:
+									<input type="number" name="nb_row" class="form-control" value="1">
 									<button type="submit" class="btn btn-default">Ok</button>
 								</div>
 								</form>
@@ -78,14 +76,13 @@
 									<button class="btn btn-default" type="submit">Ok</button>
 								</form>
 							</div>
-                            <div class="card-body table-responsive p-0" style="height: 350px;">
+                            <div class="card-body table-responsive p-0" style="height: 200px;">
                                 <form action="{{ path('produit_index') }}" method="post">
                                     <table class="table table-head-fixed text-nowrap">
                                         <tbody>
                                             <tr>
                                                 <th>Produit</th>
-                                                <th>Masse</th>
-												<th>Mesure</th>
+                                                <th>Qte d'alerte</th>
                                             </tr>
 
 											{% for nb_row in nb_rows %}
@@ -94,18 +91,9 @@
                                                     <input type="text" name="produit{{nb_row}}" class="form-control" placeholder="Nom du produit" id="">
 												</th>
                                                 <th>
-                                                    <input type="number" name="masse{{nb_row}}" class="form-control" placeholder="Masse en qté Ex: 300" id="">
+                                                    <input type="number" name="alerte{{nb_row}}" class="form-control" placeholder="Qte d'alerte" id="">
 												</th>
-												<th>
-													<select type="text" name="mesure{{nb_row}}" class="form-control">
-														{% for mesure in mesures %}
-															<option value="{{mesure.id}}">{{mesure.nomuval}}</option>
-															
-														{% else %}
-																<option value="">Liste vide</option>
-														{% endfor %}
-													</select>
-												</th>
+							
                                             </tr>
 												
 											{% endfor %}
@@ -114,13 +102,13 @@
                                         </tbody>
 										<!-- /.tbody -->
                                     </table>
-                                    <button type="submit" name="enregistrer" class="btn btn-success form-control offset-1 col-10">Enregistrer</button>
-									<br><br>
-                                </form>
                                 <!-- /.form -->
 
 								</div>
 								<!-- /.card-body -->
+								<button type="submit" name="enregistrer" class="btn btn-success form-control offset-1 col-10">Enregistrer</button>
+								<br><br>
+                                </form>
                                 </div>
 
                             </div>

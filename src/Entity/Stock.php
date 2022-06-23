@@ -18,220 +18,169 @@ class Stock
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Produit::class, inversedBy="stocks")
+     * @ORM\ManyToOne(targetEntity=Achat::class, inversedBy="stocks")
      */
-    private $produit;
+    private $achat;
 
     /**
      * @ORM\Column(type="bigint")
      */
-    private $qt;
+    private $qs;//qte de stockage
 
     /**
      * @ORM\Column(type="bigint")
      */
-    private $qs;
+    private $pvts; //prix de vente total du stock
 
     /**
      * @ORM\Column(type="bigint")
      */
-    private $pat;
+    private $pvus; //prix de vente unitaire du stock
 
     /**
      * @ORM\Column(type="bigint")
      */
-    private $pau;
+    private $pts; //profit total du stock
 
     /**
      * @ORM\Column(type="bigint")
      */
-    private $pvt;
-
-    /**
-     * @ORM\Column(type="bigint")
-     */
-    private $pvu;
-
-    /**
-     * @ORM\Column(type="bigint")
-     */
-    private $bvt;
-
-    /**
-     * @ORM\Column(type="bigint")
-     */
-    private $bvu;
+    private $pus; //profit unitaire du stock
 
     /**
      * @ORM\ManyToOne(targetEntity=Uval::class, inversedBy="stocks")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $uvalst;
+    private $us; //unite de stockage
 
     /**
      * @ORM\Column(type="bigint")
      */
-    private $qgc;
+    private $qgvs; //qte generale de valorisation du stock
 
     /**
      * @ORM\Column(type="string", length=5)
      */
-    private $c;
+    private $c; //comparateur
 
     /**
      * @ORM\Column(type="bigint")
      */
-    private $qgv;
+    private $qgu; //qte generale d'unites
 
     /**
      * @ORM\ManyToOne(targetEntity=Uval::class, inversedBy="stocks")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $ugv;
+    private $uvs; //unite de vente du stock
 
     /**
      * @ORM\Column(type="bigint")
      */
-    private $qtv;
+    private $qtu; //qte totale d'unites
 
     /**
      * @ORM\Column(type="bigint")
      */
-    private $pvuv;
+    private $puvs;//prix de l'unite de vente du stock
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getProduit(): ?Produit
+    public function getAchat(): ?Achat
     {
-        return $this->produit;
+        return $this->achat;
     }
 
-    public function setProduit(?Produit $produit): self
+    public function setAchat(?Achat $achat): self
     {
-        $this->produit = $produit;
+        $this->achat = $achat;
 
         return $this;
     }
 
-    public function getQt(): ?string
-    {
-        return $this->qt;
-    }
-
-    public function setQt(string $qt): self
-    {
-        $this->qt = $qt;
-
-        return $this;
-    }
-
-    public function getQs(): ?string
+    public function getQteStockage(): ?string
     {
         return $this->qs;
     }
 
-    public function setQs(string $qs): self
+    public function setQteStockage(string $qs): self
     {
         $this->qs = $qs;
 
         return $this;
     }
 
-    public function getPat(): ?string
+    public function getPrixVenteTotaleStock(): ?string
     {
-        return $this->pat;
+        return $this->pvts;
     }
 
-    public function setPat(string $pat): self
+    public function setPrixVenteTotaleStock(string $pvts): self
     {
-        $this->pat = $pat;
+        $this->pvts = $pvts;
 
         return $this;
     }
 
-    public function getPau(): ?string
+    public function getPrixVenteUnitaireStock(): ?string
     {
-        return $this->pau;
+        return $this->pvus;
     }
 
-    public function setPau(string $pau): self
+    public function setPrixVenteUnitaireStock(string $pvus): self
     {
-        $this->pau = $pau;
+        $this->pvus = $pvus;
 
         return $this;
     }
 
-    public function getPvt(): ?string
+    public function getProfitTotalStock(): ?string
     {
-        return $this->pvt;
+        return $this->pts;
     }
 
-    public function setPvt(string $pvt): self
+    public function setProfitTotalStock(string $pts): self
     {
-        $this->pvt = $pvt;
+        $this->pts = $pts;
 
         return $this;
     }
 
-    public function getPvu(): ?string
+    public function getProfitUnitaireStock(): ?string
     {
-        return $this->pvu;
+        return $this->pus;
     }
 
-    public function setPvu(string $pvu): self
+    public function setProfitUnitaireStock(string $pus): self
     {
-        $this->pvu = $pvu;
+        $this->pus = $pus;
 
         return $this;
     }
 
-    public function getBvt(): ?string
+    public function getUniteStockage(): ?Uval
     {
-        return $this->bvt;
+        return $this->us;
     }
 
-    public function setBvt(string $bvt): self
+    public function setUniteStockage(?Uval $us): self
     {
-        $this->bvt = $bvt;
+        $this->us = $us;
 
         return $this;
     }
 
-    public function getBvu(): ?string
+    public function getQteGenValStock(): ?string
     {
-        return $this->bvu;
+        return $this->qgvs;
     }
 
-    public function setBvu(string $bvu): self
+    public function setQteGenValStock(string $qgvs): self
     {
-        $this->bvu = $bvu;
-
-        return $this;
-    }
-
-    public function getUvalst(): ?Uval
-    {
-        return $this->uvalst;
-    }
-
-    public function setUvalst(?Uval $uvalst): self
-    {
-        $this->uvalst = $uvalst;
-
-        return $this;
-    }
-
-    public function getQgc(): ?string
-    {
-        return $this->qgc;
-    }
-
-    public function setQgc(string $qgc): self
-    {
-        $this->qgc = $qgc;
+        $this->qgvs = $qgvs;
 
         return $this;
     }
@@ -248,50 +197,50 @@ class Stock
         return $this;
     }
 
-    public function getQgv(): ?string
+    public function getQteGenUnite(): ?string
     {
-        return $this->qgv;
+        return $this->qgu;
     }
 
-    public function setQgv(string $qgv): self
+    public function setQteGenUnite(string $qgu): self
     {
-        $this->qgv = $qgv;
+        $this->qgu = $qgu;
 
         return $this;
     }
 
-    public function getUgv(): ?Uval
+    public function getUniteVenteStock(): ?Uval
     {
-        return $this->ugv;
+        return $this->uvs;
     }
 
-    public function setUgv(?Uval $ugv): self
+    public function setUniteVenteStock(?Uval $uvs): self
     {
-        $this->ugv = $ugv;
+        $this->uvs = $uvs;
 
         return $this;
     }
 
-    public function getQtv(): ?string
+    public function getQteTotaleUnite(): ?string
     {
-        return $this->qtv;
+        return $this->qtu;
     }
 
-    public function setQtv(string $qtv): self
+    public function setQteTotaleUnite(string $qtu): self
     {
-        $this->qtv = $qtv;
+        $this->qtu = $qtu;
 
         return $this;
     }
 
-    public function getPvuv(): ?string
+    public function getPrixUniteVenteStock(): ?string
     {
-        return $this->pvuv;
+        return $this->puvs;
     }
 
-    public function setPvuv(string $pvuv): self
+    public function setPrixUniteVenteStock(string $puvs): self
     {
-        $this->pvuv = $pvuv;
+        $this->puvs = $puvs;
 
         return $this;
     }
