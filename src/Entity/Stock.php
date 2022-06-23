@@ -18,7 +18,7 @@ class Stock
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Achat::class, inversedBy="stocks")
+     * @ORM\ManyToOne(targetEntity=Achat::class, inversedBy="stock")
      */
     private $achat;
 
