@@ -68,52 +68,17 @@ class StockController extends AbstractController
     }
 
     /**
-     * @Route("sessionDevis", name="stock_sessionDevis")
-     */
-    public function sessionDevis(SessionInterface $session, Request $request)
-    {
-        if (!empty($request->request->get('budjet')) && !empty($request->request->get('prixUnitArt'))) {
-            $budjet=$request->request->get('budjet');
-            //$x=str_replace($budjet,$budjet,$budjet);
-            $prixUnitArt=$request->request->get('prixUnitArt');
-            $nbArt=floor($budjet / $prixUnitArt);
-            $depenses=$nbArt *  $prixUnitArt;
-            $resteBudjet=$budjet - $depenses;
-        }
-        else{
-           
-        }
-
-        $get_budjet = $session->get('budjet', []);
-        if (!empty($get_budjet)) {
-            $session->set('budjet', $budjet);
-            $session->set('prixUnitArt', $prixUnitArt);
-            $session->set('depenses', $depenses);
-            $session->set('nbArt', $nbArt);
-            $session->set('resteBudjet', $resteBudjet);
-        }
-        $session->set('budjet', $budjet);
-        $session->set('prixUnitArt', $prixUnitArt);
-        $session->set('depenses', $depenses);
-        $session->set('nbArt', $nbArt);
-        $session->set('resteBudjet', $resteBudjet);
-        //dd($session);
-
-        return $this->redirectToRoute('stock_new');
-    }
-
-    /**
-     * @Route("sessionProduit", name="stock_sessionProduit")
+     * @Route("sessionAchat", name="stock_sessionAchat")
      */
     public function sessionProduit(SessionInterface $session, Request $request)
     {
         if (!empty($request->request->get('produit'))) {
-            $produit = $request->request->get('produit');
-            $get_produit = $session->get('produit', []);
-            if (!empty($get_produit)) {
-                $session->set('produit', $produit);
+            $achat = $request->request->get('produit');
+            $get_achat = $session->get('produit', []);
+            if (!empty($get_achat)) {
+                $session->set('achat', $achat);
             }
-            $session->set('produit', $produit);
+            $session->set('achat', $achat);
             // dd($session);
         }
         return $this->redirectToRoute('stock_new');
@@ -150,14 +115,12 @@ class StockController extends AbstractController
      */
     public function stock(UvalRepository $uvalRepository,MargeprixRepository $margeprixRepository,SessionInterface $session,AchatRepository $achatRepository, ManagerRegistry $end)
     {
-        //on cherche l'utilisateur connecté
-        $user = $this->getUser();
-        $sessionProduit=$session->get('produit',[]);
+        $user = $this->getUser(); //on cherche l'utilisateur connecté
+        $sessionProduit=$session->get('achat',[]);//on recupere l'id de l'achat dans la session [achat]
+        $repoCatuval=$this->getDoctrine()->getRepository(Catuval::class); //repository de la classe Catuval
         $sessionUval=$session->get('uval',[]);
         $sessionUvalVente=$session->get('uvalVente',[]);
-        
-        //on recupere la marge des prix
-        $idMarge=$margeprixRepository->find(1);
+        $idMarge=$margeprixRepository->find(1);//on recupere la marge des prix
         $margeFamille=$idMarge->getMarge();
         if (!empty($session->get('nb_row', []))) {
             $sessionLigne = $session->get('nb_row', []);
@@ -166,11 +129,13 @@ class StockController extends AbstractController
             $sessionLigne = 1;
         }
         $sessionNb = $sessionLigne/$sessionLigne;
-        $sessionBudjet=$session->get('budjet',[]);
-        $sessionPrixUnitArt=$session->get('prixUnitArt',[]);
-        $sessionNbArt=$session->get('nbArt',[]);
-        $sessionDepenses=$session->get('depenses',[]);
-        $sessionResteBudjet=$session->get('resteBudjet',[]);
+        if (!empty($sessionProduit)) {
+            $achat=$achatRepository->find($sessionProduit);//on recupere tous les infos d'achat de [sessionProduit]
+           
+        }
+        else{
+            $achat=null;
+        }
         
         //si l'utilisateur est n'est pas connecté, on le redirige vers la page de connexion
         // if (!$user) {
@@ -195,7 +160,8 @@ class StockController extends AbstractController
             $v = implode(",", $v);
            
             $achat=$achatRepository->find($idProduit);
-            $uniteStockage=$uvalRepository->find($idUvalStock);
+            $uniteAchat=$achatRepository->find($idProduit);
+            $uniteStockage=$uniteAchat->getUniteAchat();
             $uniteVente=$uvalRepository->find($idUvalVente);
             
             $stock = new Stock();
@@ -251,24 +217,6 @@ class StockController extends AbstractController
 
         }
 
-        //repository de la classe Catuval
-        $repoCatuval=$this->getDoctrine()->getRepository(Catuval::class);
-        // devis d'achat pour le stock[]
-        if (!empty($sessionBudjet) && !empty($sessionPrixUnitArt)) {
-            $budjet=$sessionBudjet;
-            $prixUnitArt=$sessionPrixUnitArt;
-            $nbArt=$sessionNbArt;
-            $depenses=$sessionDepenses;
-            $resteBudjet=$sessionResteBudjet;
-        }
-        else{
-            $budjet='XXX ...';
-            $prixUnitArt='XXX ...';
-            $nbArt='XXX ...';
-            $depenses='XXX ...';
-            $resteBudjet='XXX ...';
-        }
-
         return $this->render('stock/new.html.twig', [
             'nb_rows' => $nb_row,
             'achats'=>$achatRepository->findAll(),
@@ -276,11 +224,7 @@ class StockController extends AbstractController
             'uvals' => $uvalRepository->findBy([
                 'catuval' => 1
             ]),
-            'budjet'=>$budjet,
-            'prixUnit'=>$prixUnitArt,
-            'nbArt'=>$nbArt,
-            'depenses'=>$depenses,
-            'resteBudjet'=>$resteBudjet
+            'achat'=>$achat
         ]);
     }
 
