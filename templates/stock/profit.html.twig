@@ -20,7 +20,7 @@
                 <div class="row">
 					<div class="col-md-12">
 						<div class="card">
-						 <h3 class="card-title">Liste des profits enregistrés <a href="{{path('stock_index')}}"><i class="fa fa-pen"></i></a></h3>
+						 <h3 class="card-title">Liste des profits enregistrés <a href=""><i class="fa fa-pen"></i></a></h3>
 							<div class="card-body table-responsive p-0" style="height: 390px;">
                                 <br>
                                 <form action="" method="post">
@@ -45,11 +45,11 @@
 										{% for stock in stocks %}
 											<tr>
 												{# <td>{{stock.reference}}</td> #}
-                                                <td><a href=""> {{stock.nomProduit}}</a></td>
-                                                <td>{{stock.unite}}</td>
-                                                <td>{{stock.prixDeVente | number_format(0, ' ', ' ')}} FCFA</td>
-                                                <td>{{stock.profitUnitaire | number_format(0, ' ', ' ')}} FCFA</td>
-                                                <td>{{stock.profitTotal | number_format(0, ' ', ' ')}} FCFA</td>
+                                                <td><a href=""> {{stock.achat.produit.nom}}</a></td>
+                                                <td>{{stock.getUniteStockage.nomuval}}</td>
+                                                <td>{{stock.getPrixVenteUnitaireStock | number_format(0, ' ', ' ')}} FCFA</td>
+                                                <td>{{stock.getProfitUnitaireStock | number_format(0, ' ', ' ')}} FCFA</td>
+                                                <td>{{stock.getProfitTotalStock | number_format(0, ' ', ' ')}} FCFA</td>
                                             </tr>
 
 										{% else %}
