@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Uval{% endblock %}
+
+{% block body %}
+    <h1>Uval</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ uval.id }}</td>
+            </tr>
+            <tr>
+                <th>Nomuval</th>
+                <td>{{ uval.nomuval }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('uval_index') }}">back to list</a>
+
+    <a href="{{ path('uval_edit', {'id': uval.id}) }}">edit</a>
+
+    {{ include('uval/_delete_form.html.twig') }}
+{% endblock %}

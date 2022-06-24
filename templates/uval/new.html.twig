@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Uval{% endblock %}
+
+{% block body %}
+   <div class="content-wrapper">
+        <section class="content">
+            <div class="card col-6 offset-2">
+                <div class="card-body table-responsive p-0" style="height: 290px;">
+                    {{ include('uval/_form.html.twig') }}
+                </div>
+            </div>
+
+        </section>
+   </div>
+
+{% endblock %}

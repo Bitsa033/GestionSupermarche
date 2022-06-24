@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Uval index{% endblock %}
+
+{% block body %}
+
+    <div class="content-wrapper">
+        <section class="content">
+            <div class="card col-6 offset-2">
+                <div class="card-header"><p class="h5">Unités de Gestion</p></div>
+                <div class="card-body table-responsive p-0" style="height: 390px;">
+                
+                    <table class="table table-head-fixed table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Nom</th>
+                                <th>actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for uval in uvals %}
+                            <tr>
+                                <td>{{ uval.id }}</td>
+                                <td>{{ uval.nomuval }}</td>
+                                <td>
+                                    <a href="{{ path('uval_show', {'id': uval.id}) }}">show</a>
+                                    <a href="{{ path('uval_edit', {'id': uval.id}) }}">edit</a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="3">no records found</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer">
+                    Creer une <a href="{{ path('uval_new') }}">Nouvelle Unité</a>
+                </div>
+            </div>
+        
+        </section>
+    </div>
+
+{% endblock %}
