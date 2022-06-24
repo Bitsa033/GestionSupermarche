@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Margeprix{% endblock %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+{% block body %}
+
+    <div class="content-wrapper">
+        <section class="content">
+            <div class="card col-5 offset-2">
+                <div class="card-header"><p class="h5">Creation d'une nouvelle Marge de Prix</p></div>
+                <div class="card-body">
+                    {{ include('margeprix/_form.html.twig') }}
+                </div>
+            </div>
+        </section>
+    </div>
+
+{% endblock %}

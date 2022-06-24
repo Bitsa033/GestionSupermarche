@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Margeprix index{% endblock %}
+
+{% block body %}
+    <div class="content-wrapper">
+        <section class="content">
+
+            <h1>Marge des Prix</h1>
+
+            <div class="card">
+                <div class="card-body table-responsive p-0" style="height: 390px;">
+                
+                    <table class="table table-head-fixed table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Marge</th>
+                                <th>actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for margeprix in margeprixes %}
+                            <tr>
+                                <td>{{ margeprix.id }}</td>
+                                <td>{{ margeprix.marge }}</td>
+                                <td>
+                                    <a href="{{ path('margeprix_show', {'id': margeprix.id}) }}">show</a>
+                                    <a href="{{ path('margeprix_edit', {'id': margeprix.id}) }}">edit</a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="3">no records found</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+                <!--/card-body-->
+                <div class="card-footer">
+                    Creer une <a href="{{ path('margeprix_new') }}">Nouvelle marge</a>
+                
+                </div>
+            
+            </div>
+
+        </section>
+    </div>
+{% endblock %}

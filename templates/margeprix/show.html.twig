@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Margeprix{% endblock %}
+
+{% block body %}
+    <h1>Margeprix</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ margeprix.id }}</td>
+            </tr>
+            <tr>
+                <th>Marge</th>
+                <td>{{ margeprix.marge }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('margeprix_index') }}">back to list</a>
+
+    <a href="{{ path('margeprix_edit', {'id': margeprix.id}) }}">edit</a>
+
+    {{ include('margeprix/_delete_form.html.twig') }}
+{% endblock %}
