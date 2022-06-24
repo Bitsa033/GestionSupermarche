@@ -89,13 +89,13 @@ class StockController extends AbstractController
      */
     public function sessionUval(SessionInterface $session, Request $request)
     {
-        if (!empty($request->request->get('uval'))) {
-            $uval = $request->request->get('uval');
-            $get_uval = $session->get('uval', []);
-            if (!empty($get_uval)) {
-                $session->set('uval', $uval);
+        if (!empty($request->request->get('margeprix'))) {
+            $margeprix = $request->request->get('margeprix');
+            $get_margeprix = $session->get('margePrix', []);
+            if (!empty($get_margeprix)) {
+                $session->set('margePrix', $margeprix);
             }
-            $session->set('uval', $uval);
+            $session->set('margePrix', $margeprix);
             //dd($session);
         }
         elseif (!empty($request->request->get('uvalVente'))) {
@@ -118,10 +118,15 @@ class StockController extends AbstractController
         $user = $this->getUser(); //on cherche l'utilisateur connecté
         $sessionProduit=$session->get('achat',[]);//on recupere l'id de l'achat dans la session [achat]
         $repoCatuval=$this->getDoctrine()->getRepository(Catuval::class); //repository de la classe Catuval
-        $sessionUval=$session->get('uval',[]);
+        $sessionMargePrix=$session->get('margePrix',[]);
         $sessionUvalVente=$session->get('uvalVente',[]);
-        $idMarge=$margeprixRepository->find(1);//on recupere la marge des prix
-        $margeFamille=$idMarge->getMarge();
+        if (!empty($sessionMargePrix)) {
+            $idMarge=$margeprixRepository->find($sessionMargePrix);//on recupere la marge des prix
+            $margeFamille=$idMarge->getMarge();
+        }
+        else{
+            $idMarge=null;
+        }
         if (!empty($session->get('nb_row', []))) {
             $sessionLigne = $session->get('nb_row', []);
         }
@@ -150,7 +155,7 @@ class StockController extends AbstractController
             }
         }
         //on cree la methode qui permettra d'enregistrer les infos du post dans la bd
-        function insert_into_db($data,$idProduit,AchatRepository $achatRepository,$idUvalStock,$idUvalVente,UvalRepository $uvalRepository, ManagerRegistry $end)
+        function insert_into_db($data,$idProduit,AchatRepository $achatRepository,$idUvalVente,UvalRepository $uvalRepository, ManagerRegistry $end)
         {
             foreach ($data as $key => $value) {
                 $k[] = $key;
@@ -212,7 +217,7 @@ class StockController extends AbstractController
                     'prixUniteVenteStock'=>0
                 );
                
-                insert_into_db($data,$sessionProduit,$achatRepository,$sessionUval,$sessionUvalVente,$uvalRepository ,$end);
+                insert_into_db($data,$sessionProduit,$achatRepository,$sessionUvalVente,$uvalRepository ,$end);
             }
 
         }
@@ -224,7 +229,8 @@ class StockController extends AbstractController
             'uvals' => $uvalRepository->findBy([
                 'catuval' => 1
             ]),
-            'achat'=>$achat
+            'achat'=>$achat,//on affiche toutes les infos de cette variable
+            'margePrix'=>$margeprixRepository->findAll()//on affiche toutes les marges de prix
         ]);
     }
 

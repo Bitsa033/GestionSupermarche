@@ -44,12 +44,19 @@
                                                 <button class="btn btn-default" type="submit">Ok</button>
                                             </form>
 
-                                            <div class='marge'>
-                                                Devise
-                                                <select type="text" name="" class="form-control" value="" id="">
-                                                    <option value="">FCFA</option>
+                                            <form action="{{ path('stock_Uval') }}" method="post" class='marge'>
+                                                Unité de Vente:
+                                                <select class="form-control" name="uvalVente" id="">
+                                                    {% for uval in uvals %}
+                                                        <option value="{{ uval.id }}">{{ uval.nomuval }}</option>
+
+                                                    {% else %}
+                                                        <option value="">Liste vide...</option>
+                                                    {% endfor %}
                                                 </select>
-                                            </div>
+                                                <button class="btn btn-default" type="submit">Ok</button>
+                                            </form>
+
                                         </div>
 
                                     </div>
@@ -79,10 +86,10 @@
 
 
                                         <form action="{{ path('stock_Uval') }}" method="post" class='marge'>
-                                            Unité de Vente:
-                                            <select class="form-control" name="uvalVente" id="">
-                                                {% for uval in uvals %}
-                                                    <option value="{{ uval.id }}">{{ uval.nomuval }}</option>
+                                            Marge de Prix:
+                                            <select class="form-control" name="margeprix" id="">
+                                                {% for margep in margePrix %}
+                                                    <option value="{{ margep.id }}">{{ margep.marge| number_format(0, ' ', ' ')}} FCFA</option>
 
                                                 {% else %}
                                                     <option value="">Liste vide...</option>
@@ -90,6 +97,13 @@
                                             </select>
                                             <button class="btn btn-default" type="submit">Ok</button>
                                         </form>
+
+                                        <div class='marge'>
+                                            Devise
+                                            <select type="text" name="" class="form-control" value="" id="">
+                                                <option value="">FCFA</option>
+                                            </select>
+                                        </div>
 
                                         <div class="card-body table-responsive p-0" style="height: 150px;">
                                             <table class="table table-head-fixed">
