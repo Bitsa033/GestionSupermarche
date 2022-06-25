@@ -28,54 +28,38 @@
                                             Nb Stocks:
                                             <input type="number" name="nb_row" min='1' max='1' class="form-control" value="1">
                                                 <button type="submit" class="form-control">Ok</button>
-                                            </form>
+                                        </form>
 
-                                            {# <form action="{{ path('stock_sessionAchat') }}" method="post" class='marge'>
-                                                Unité:
-                                                <select class="form-control" name="" id="">
-                                                    {% for catuval in catuvals %}
-                                                        <option value="{{ catuval.id }}">{{ catuval.nomcatuval }}
-                                                        </option>
-
-                                                    {% else %}
-                                                        <option value="">Liste vide...</option>
-                                                    {% endfor %}
+                                        <div class='marge'>
+                                            <form action="{{ path('stock_nb') }}" method="post">
+                                                Type de Modification
+                                                <select type="text" name="" class="form-control" value="" id="">
+                                                    <option value="soustraction">Retirer la Marge</option>
+                                                    <option value="addition">Ajouter la Marge</option>
                                                 </select>
-                                                <button class="btn btn-default" type="submit">Ok</button>
-                                            </form> #}
-
-                                            <form action="{{ path('stock_Uval') }}" method="post" class='marge'>
-                                                Unité de Vente:
-                                                <select class="form-control" name="uvalVente" id="">
-                                                    {% for uval in uvals %}
-                                                        <option value="{{ uval.id }}">{{ uval.nomuval }}</option>
-
-                                                    {% else %}
-                                                        <option value="">Liste vide...</option>
-                                                    {% endfor %}
-                                                </select>
-                                                <button class="btn btn-default" type="submit">Ok</button>
+                                                <button type="submit" class="form-control">Ok</button>
                                             </form>
-
+                                        </div>
+                                            
                                         </div>
 
                                     </div>
                                     <table class=" table-head-fixed">
                                         <thead class="table table-primary table-head-fixed">
                                             <tr>
-                                                <td colspan='2'>Creation du stock produit</td>
+                                                <td colspan='2'>Modification du stock produit</td>
                                             </tr>
 
                                         </thead>
                                     </table>
                                     <!-- /.card-header -->
                                     <div class="card-header form-inline">
-                                        Produit:
-                                        <form action="{{ path('stock_sessionAchat') }}" method="post">
+                                        Stock Produit:
+                                        <form action="{{ path('stock_sessionStock') }}" method="post">
                                             <select class="form-control" name="produit" id="">
-                                                {% for achat in achats %}
-                                                    <option value="{{ achat.id }}">{{ achat.produit.famille.nom }}
-                                                        {{ achat.produit.nom }}</option>
+                                                {% for stock in stocks %}
+                                                    <option value="{{ stock.id }}">{{ stock.achat.produit.famille.nom }}
+                                                        {{ stock.achat.produit.nom }}</option>
 
                                                 {% else %}
                                                     <option value="">Liste vide...</option>
@@ -85,7 +69,7 @@
                                         </form>
 
 
-                                        <form action="{{ path('stock_Uval') }}" method="post" class='marge'>
+                                        <form action="{{ path('stock_sessionStock') }}" method="post" class='marge'>
                                             Marge de Prix:
                                             <select class="form-control" name="margeprix" id="">
                                                 {% for margep in margePrix %}
@@ -98,25 +82,18 @@
                                             <button class="btn btn-default" type="submit">Ok</button>
                                         </form>
 
-                                        <div class='marge'>
-                                            Devise
-                                            <select type="text" name="" class="form-control" value="" id="">
-                                                <option value="">FCFA</option>
-                                            </select>
-                                        </div>
-
                                         <div class="card-body table-responsive p-0" style="height: 150px;">
                                             <table class="table table-head-fixed">
 
-                                                <form action="{{ path('stock_new') }}" method="post">
+                                                <form action="" method="post">
 
                                                     <tbody class="table table-light">
-                                                        {% if app.session.get('achat') %}
+                                                        {% if app.session.get('stock') %}
                                                             {% for nb_row in nb_rows %}
                                                                 <tr>
-                                                                    <td>Qte total stock n°{{ nb_row +1 }}<input type="text" name="qteStock{{ nb_row }}" class="form-control" value="{{ achat.getQteAchat }}" id=""></td>
-                                                                        <td>Prix total d'achat<input type="text" name="" class="form-control" value="{{ achat.getPrixAchatTotal }}" id=""></td>
-                                                                            <td>Prix unitaire d'achat<input type="text" name="prixUnit{{ nb_row }}" class="form-control" value="{{ achat.getPrixAchatUnitaire }}" id=""></td>
+                                                                    <td>Qte total stock<input type="text" name="qteStock{{ nb_row }}" class="form-control" value="{{ stock.getQteStockage }}" id=""></td>
+                                                                        <td>Prix total de Vente<input type="text" name="" class="form-control" value="{{ stock.getPrixVenteTotaleStock }}" id=""></td>
+                                                                            <td>Prix unitaire de Vente<input type="text" name="prixUnit{{ nb_row }}" class="form-control" value="{{ stock.getPrixVenteUnitaireStock}}" id=""></td>
                                                                                 <td>Frais de stockage<input type="text" name="" class="form-control" value="Ex: 10000" id=""></td>
                                                                                     </tr>
                                                                                 {% endfor %}
@@ -130,7 +107,7 @@
                                                                 <!-- /.card -->
                                                                 <br>
                                                                 {% if app.session.get('achat') %}
-                                                                    <button type="submit" name="enregistrer" class="btn btn-success">Enregistrer le stock</button>
+                                                                    <button type="submit" name="enregistrer" class="btn btn-success">Modifier le stock</button>
                                                                     </form>
                                                                     
                                                                 {% endif %}

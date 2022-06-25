@@ -5,10 +5,8 @@
 {% block body %}
     <div class="content-wrapper">
         <section class="content">
-
-            <h1>Marge des Prix</h1>
-
-            <div class="card">
+            <div class="card col-6 offset-2">
+                <div class="card-header"><p class="h5">Marge des prix | <a href="{{ path('margeprix_new') }}">Nouvelle Marge</a></p></div>
                 <div class="card-body table-responsive p-0" style="height: 390px;">
                 
                     <table class="table table-head-fixed table-bordered">
@@ -16,18 +14,13 @@
                             <tr>
                                 <th>Id</th>
                                 <th>Marge</th>
-                                <th>actions</th>
                             </tr>
                         </thead>
                         <tbody>
                         {% for margeprix in margeprixes %}
                             <tr>
                                 <td>{{ margeprix.id }}</td>
-                                <td>{{ margeprix.marge }}</td>
-                                <td>
-                                    <a href="{{ path('margeprix_show', {'id': margeprix.id}) }}">show</a>
-                                    <a href="{{ path('margeprix_edit', {'id': margeprix.id}) }}">edit</a>
-                                </td>
+                                <td>{{ margeprix.marge | number_format(0, ' ', ' ') }} FCFA</td>
                             </tr>
                         {% else %}
                             <tr>
@@ -40,8 +33,7 @@
                 </div>
                 <!--/card-body-->
                 <div class="card-footer">
-                    Creer une <a href="{{ path('margeprix_new') }}">Nouvelle marge</a>
-                
+                    @Developpeur: BITSA NZDZIE PASCAL
                 </div>
             
             </div>

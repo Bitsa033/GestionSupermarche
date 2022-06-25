@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Form;
-
-use App\Entity\Famille;
 use App\Entity\Margeprix;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -16,10 +14,7 @@ class MargeprixType extends AbstractType
     {
         $builder
             ->add('marge')
-            ->add('famille', EntityType::class,[
-                'class'=>Famille::class,
-                'choice_label'=>'nom'
-             ])
+            
         ;
     }
 

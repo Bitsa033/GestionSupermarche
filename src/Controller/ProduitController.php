@@ -37,7 +37,7 @@ class ProduitController extends AbstractController
             $session->set('nb_row', $nb_of_row);
             //dd($session);
         }
-        return $this->redirectToRoute('produit_index');
+        return $this->redirectToRoute('produit_new');
     }
 
     /**
@@ -54,12 +54,12 @@ class ProduitController extends AbstractController
             $session->set('famille', $famille);
             // dd($session);
         }
-        return $this->redirectToRoute('produit_index');
+        return $this->redirectToRoute('produit_new');
     }
 
     /**
      * Insertion et affichage des filieres
-     * @Route("index", name="produit_index")
+     * @Route("new", name="produit_new")
      */
     public function produit(SessionInterface $session,FamilleRepository $familleRepository,ProduitRepository $produitRepository, ManagerRegistry $end)
     {
@@ -125,7 +125,7 @@ class ProduitController extends AbstractController
             // return $this->redirectToRoute('niveaux_index');
         }
 
-        return $this->render('produit/index.html.twig', [
+        return $this->render('produit/new.html.twig', [
             'nb_rows' => $nb_row,
             'familles'=>$familleRepository->findAll(),
             'produits'=>$produitRepository->findAll()

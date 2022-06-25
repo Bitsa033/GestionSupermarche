@@ -22,12 +22,6 @@ class Margeprix
      */
     private $marge;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Famille::class, inversedBy="margeprixes")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $famille;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -45,15 +39,5 @@ class Margeprix
         return $this;
     }
 
-    public function getFamille(): ?Famille
-    {
-        return $this->famille;
-    }
-
-    public function setFamille(?Famille $famille): self
-    {
-        $this->famille = $famille;
-
-        return $this;
-    }
+    
 }

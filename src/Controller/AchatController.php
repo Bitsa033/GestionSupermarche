@@ -201,8 +201,6 @@ class AchatController extends AbstractController
  
          }
  
-         //repository de la classe Catuval
-         $repoCatuval=$this->getDoctrine()->getRepository(Catuval::class);
          // devis d'achat pour le stock[]
          if (!empty($sessionBudjet) && !empty($sessionPrixUnitArt)) {
              $budjet=$sessionBudjet;
@@ -222,10 +220,7 @@ class AchatController extends AbstractController
          return $this->render('achat/new.html.twig', [
              'nb_rows' => $nb_row,
              'produits'=>$produitRepository->findAll(),
-             'catuvals'=>$repoCatuval->findAll(),
-             'uvals' => $uvalRepository->findBy([
-                 'catuval' => 1
-             ]),
+             'uvals' => $uvalRepository->findAll(),
              'budjet'=>$budjet,
              'prixUnit'=>$prixUnitArt,
              'nbArt'=>$nbArt,

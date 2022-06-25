@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Form;
-
-use App\Entity\Catuval;
 use App\Entity\Uval;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -15,10 +13,6 @@ class UvalType extends AbstractType
     {
         $builder
             ->add('nomuval')
-            ->add('catuval',EntityType::class,[
-                'class'=> Catuval::class,
-                'choice_label'=>'nomcatuval'
-            ])
         ;
     }
 

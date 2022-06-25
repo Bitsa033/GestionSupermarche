@@ -20,12 +20,6 @@ class Uval
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Catuval::class, inversedBy="uvals")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $catuval;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $nomuval;
@@ -49,18 +43,6 @@ class Uval
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getCatuval(): ?Catuval
-    {
-        return $this->catuval;
-    }
-
-    public function setCatuval(?Catuval $catuval): self
-    {
-        $this->catuval = $catuval;
-
-        return $this;
     }
 
     public function getNomuval(): ?string

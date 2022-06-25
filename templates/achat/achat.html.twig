@@ -20,16 +20,15 @@
                 <div class="row">
 					<div class="col-md-12">
 						<div class="card">
-						 <h3 class="card-title">Liste des Achat Enregistrés <a href="{{path('achat_new')}}"><i class="fa fa-pen"></i></a></h3>
-							<div class="card-body table-responsive p-0" style="height: 390px;">
-                                <br>
+						  <div class="card-header"><p class="h5">Liste des Achat Enregistrés | <a href="{{path('achat_new')}}">Nouvel Achat</a></p></div>
+							<div class="card-body table-responsive p-0" style="height: 310px;">
+                                {# <br>
                                 <form action="" method="post">
                                     <div class="form-inline">
                                         <input type="text" name="" class="form-control">
                                         <button type="submit" class='btn btn-dark'><i class="fa fa-search"></i></button>
                                     </div>
-                                </form>
-                                <br>
+                                </form> #}
 								<table class="table table-head-fixed table-bordered">
 
 									<tbody>
@@ -68,6 +67,9 @@
 
 							</div>
 							<!-- /.card-body -->
+                            <div class="card-footer">
+                                @Developpeur: BITSA NZDZIE PASCAL
+                            </div>
 						</div>
 					</div>
 

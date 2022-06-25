@@ -29,15 +29,10 @@ class Famille
      */
     private $produits;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Margeprix::class, mappedBy="famille")
-     */
-    private $margeprixes;
 
     public function __construct()
     {
         $this->produits = new ArrayCollection();
-        $this->margeprixes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -81,36 +76,6 @@ class Famille
             // set the owning side to null (unless already changed)
             if ($produit->getFamille() === $this) {
                 $produit->setFamille(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Margeprix[]
-     */
-    public function getMargeprixes(): Collection
-    {
-        return $this->margeprixes;
-    }
-
-    public function addMargeprix(Margeprix $margeprix): self
-    {
-        if (!$this->margeprixes->contains($margeprix)) {
-            $this->margeprixes[] = $margeprix;
-            $margeprix->setFamille($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMargeprix(Margeprix $margeprix): self
-    {
-        if ($this->margeprixes->removeElement($margeprix)) {
-            // set the owning side to null (unless already changed)
-            if ($margeprix->getFamille() === $this) {
-                $margeprix->setFamille(null);
             }
         }
 
