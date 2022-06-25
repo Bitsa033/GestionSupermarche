@@ -99,6 +99,16 @@ class StockController extends AbstractController
             //dd($session);
         }
 
+        elseif (!empty($request->request->get('optionModifStock'))) {
+            $optionModifStock = $request->request->get('optionModifStock');
+            $get_optionModifStock = $session->get('optionModifStock', []);
+            if (!empty($get_optionModifStock)) {
+                $session->set('optionModifStock', $optionModifStock);
+            }
+            $session->set('optionModifStock', $optionModifStock);
+            //dd($session);
+        }
+
         elseif (!empty($request->request->get('produit'))) {
             $stock = $request->request->get('produit');
             $get_stock = $session->get('stock', []);
@@ -263,7 +273,10 @@ class StockController extends AbstractController
     public function updateStock(UvalRepository $uvalRepository,MargeprixRepository $margeprixRepository,SessionInterface $session,StockRepository $stockRepository, ManagerRegistry $end)
     {
         $user = $this->getUser(); //on cherche l'utilisateur connecté
-        $sessionProduit=$session->get('stock',[]);//on recupere l'id de l'achat dans la session [achat]
+        $sessionProduit=$session->get('stock',[]);//on recupere l'id de l'achat dans la session [stock]
+        //optionModifStock
+        $sessionoptionModifStock=$session->get('optionModifStock',[]);//on recupere l'id  dans la session [optionModifStock]
+
         $sessionMargePrix=$session->get('margePrix',[]);
         if (!empty($sessionMargePrix)) {
             $idMarge=$margeprixRepository->find($sessionMargePrix);//on recupere la marge des prix
@@ -326,7 +339,12 @@ class StockController extends AbstractController
                 //on recupere le prix unitaire d'achat
                 $prixUnitAchat=$_POST['prixUnit'.$i];
                 //on calcule le prix unitaire de vente
-                $prixUnitVente=$prixUnitAchat - $margeFamille;
+                if ($sessionoptionModifStock=='addition') {
+                    $prixUnitVente=$prixUnitAchat +  $margeFamille;
+                }
+                elseif ($sessionoptionModifStock=='soustraction') {
+                    $prixUnitVente=$prixUnitAchat - $margeFamille;
+                }
                 //on calcul le prix total de vente
                 $prixTotalVente=$prixUnitVente * $qteStock;
                 //on recupere le profit unitaire
