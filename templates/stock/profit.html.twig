@@ -41,8 +41,8 @@
                                                 <td><a href=""> {{stock.achat.produit.nom}}</a></td>
                                                 <td>{{stock.getUniteStockage.nomuval}}</td>
                                                 <td>{{stock.getPrixVenteUnitaireStock | number_format(0, ' ', ' ')}} FCFA</td>
-                                                <td>{{stock.getPrixVenteUnitaireStock - stock.achat.getPrixAchatUnitaire }} FCFA</td>
-                                                <td>{{(stock.getPrixVenteUnitaireStock - stock.achat.getPrixAchatUnitaire) * stock.getQteStockage  }} FCFA</td>
+                                                <td>{{(stock.getPrixVenteUnitaireStock - stock.achat.getPrixAchatUnitaire) | number_format(0, ' ', ' ') }} FCFA</td>
+                                                <td>{{((stock.getPrixVenteUnitaireStock - stock.achat.getPrixAchatUnitaire) * stock.getQteStockage)| number_format(0, ' ', ' ')  }} FCFA</td>
                                             </tr>
 
 										{% else %}
