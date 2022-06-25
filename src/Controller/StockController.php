@@ -191,7 +191,7 @@ class StockController extends AbstractController
             }
         }
         //on cree la methode qui permettra d'enregistrer les infos du post dans la bd
-        function insert_into_db($data,$idProduit,AchatRepository $achatRepository,$idUvalVente,UvalRepository $uvalRepository, ManagerRegistry $end)
+        function insert_into_db($data,$idProduit,AchatRepository $achatRepository, ManagerRegistry $end)
         {
             foreach ($data as $key => $value) {
                 $k[] = $key;
@@ -203,7 +203,6 @@ class StockController extends AbstractController
             $achat=$achatRepository->find($idProduit);
             $uniteAchat=$achatRepository->find($idProduit);
             $uniteStockage=$uniteAchat->getUniteAchat();
-            $uniteVente=$uvalRepository->find($idUvalVente);
             
             $stock = new Stock();
             $stock->setAchat($achat);
@@ -216,7 +215,7 @@ class StockController extends AbstractController
             $stock->setQteGenValStock(1);
             $stock->setC("=");
             $stock->setQteGenUnite($data['qteGenUnite']);
-            $stock->setUniteVenteStock($uniteVente);
+            
             $stock->setQteTotaleUnite($data['qteTotaleUnite']);
             $stock->setPrixUniteVenteStock($data['prixUniteVenteStock']);
             // $stock->setRef(strtoupper($data['ref']));
@@ -253,7 +252,7 @@ class StockController extends AbstractController
                     'prixUniteVenteStock'=>0
                 );
                
-                insert_into_db($data,$sessionProduit,$achatRepository,$sessionUvalVente,$uvalRepository ,$end);
+                insert_into_db($data,$sessionProduit,$achatRepository,$end);
             }
 
         }

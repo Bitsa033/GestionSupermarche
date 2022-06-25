@@ -70,7 +70,7 @@ class Stock
 
     /**
      * @ORM\ManyToOne(targetEntity=Uval::class, inversedBy="stocks")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $uvs; //unite de vente du stock
 

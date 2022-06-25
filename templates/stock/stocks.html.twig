@@ -34,29 +34,19 @@
 
 									<tbody>
 										<tr>
-											{# <th>ID</th> #}
 											<th>Produit</th>
                                             <th>Unité</th>
                                             <th>Qté Tot.</th>
-                                            {# <th>Qté Sec</th> #}
                                             <th>Prix Unit.</th>
                                             <th>Prix Total</th>
-											
 										</tr>
 										{% for stock in stocks %}
 											<tr>
 												<td>{{stock.achat.produit.nom}}</td>
                                                 <td>{{stock.getUniteStockage.nomuval}}</td>
                                                 <td>{{stock.getQteStockage| number_format(0, ' ', ' ')}}</td>
-                                                {# <td>{{stock.achat.produit.alerte}}</td> #}
                                                 <td>{{stock.getPrixVenteUnitaireStock| number_format(0, ' ', ' ')}} FCFA</td>
                                                 <td>{{stock.getPrixVenteTotaleStock| number_format(0, ' ', ' ')}} FCFA</td>
-                                                {# <td><a href=""> {{stock.nomProduit}}</a></td>
-                                                <td>{{stock.unite}}</td>
-                                                <td>{{stock.qt| number_format(0, ' ', ' ')}}</td>
-                                                <td>{{stock.qs| number_format(0, ' ', ' ')}}</td>
-                                                <td>{{stock.pvu | number_format(0, ' ', ' ')}} FCFA</td>
-                                                <td>{{stock.pvt | number_format(0, ' ', ' ')}} FCFA</td> #}
                                             </tr>
 
 										{% else %}

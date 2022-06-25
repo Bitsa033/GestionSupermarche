@@ -30,33 +30,6 @@
                                                 <button type="submit" class="form-control">Ok</button>
                                             </form>
 
-                                            {# <form action="{{ path('stock_sessionAchat') }}" method="post" class='marge'>
-                                                Unité:
-                                                <select class="form-control" name="" id="">
-                                                    {% for catuval in catuvals %}
-                                                        <option value="{{ catuval.id }}">{{ catuval.nomcatuval }}
-                                                        </option>
-
-                                                    {% else %}
-                                                        <option value="">Liste vide...</option>
-                                                    {% endfor %}
-                                                </select>
-                                                <button class="btn btn-default" type="submit">Ok</button>
-                                            </form> #}
-
-                                            <form action="{{ path('stock_Uval') }}" method="post" class='marge'>
-                                                Unité de Vente:
-                                                <select class="form-control" name="uvalVente" id="">
-                                                    {% for uval in uvals %}
-                                                        <option value="{{ uval.id }}">{{ uval.nomuval }}</option>
-
-                                                    {% else %}
-                                                        <option value="">Liste vide...</option>
-                                                    {% endfor %}
-                                                </select>
-                                                <button class="btn btn-default" type="submit">Ok</button>
-                                            </form>
-
                                         </div>
 
                                     </div>
