@@ -40,9 +40,9 @@ class StockController extends AbstractController
      * @Route("listeProfits", name="stock_listeProfits")
      */
     public function listeProfits(StockRepository $stockRepository){
-
+        
         return $this->render('stock/profit.html.twig',[
-            'stocks'=>$stockRepository->findAll()
+            'stocks'=>$stockRepository->findAll(),
         ]);
     }
     
