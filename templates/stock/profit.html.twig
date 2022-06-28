@@ -30,7 +30,7 @@
 											{# <th>ID</th> #}
 											<th>Produit</th>
                                             <th>Unité Vente</th>
-                                            <th>Prix Unit. Vente</th>
+                                            <th>Qte Tot.</th>
                                             <th>Profit Unit. Vente</th>
                                             <th>Profit Total</th>
 											
@@ -40,7 +40,7 @@
 												{# <td>{{stock.reference}}</td> #}
                                                 <td><a href=""> {{stock.achat.produit.nom}}</a></td>
                                                 <td>{{stock.getUniteStockage.nomuval}}</td>
-                                                <td>{{stock.getPrixVenteUnitaireStock | number_format(0, ' ', ' ')}} FCFA</td>
+                                                <td>{{stock.getQteStockage | number_format(0, ' ', ' ')}}</td>
                                                 <td>{{(stock.getPrixVenteUnitaireStock - stock.achat.getPrixAchatUnitaire) | number_format(0, ' ', ' ') }} FCFA</td>
                                                 <td>{{((stock.getPrixVenteUnitaireStock - stock.achat.getPrixAchatUnitaire) * stock.getQteStockage)| number_format(0, ' ', ' ')  }} FCFA</td>
                                             </tr>
