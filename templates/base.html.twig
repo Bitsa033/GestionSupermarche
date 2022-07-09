@@ -186,6 +186,18 @@
             </nav>
             <!-- /.navbar -->
 
+            {% for message in app.flashes('error') %}
+            <div class="alert alert-danger col-5 offset-4">
+                {{ message }}
+            </div>
+            {% endfor %}
+
+            {% for message in app.flashes('success') %}
+            <div class="alert alert-success col-5 offset-4">
+                {{ message }}
+            </div>
+            {% endfor %}
+
             <!-- Main Sidebar Container -->
             <aside
                 class="main-sidebar sidebar-dark-primary elevation-4">

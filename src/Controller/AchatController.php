@@ -57,31 +57,25 @@ class AchatController extends AbstractController
      */
     public function sessionDevis(SessionInterface $session, Request $request)
     {
-        if (!empty($request->request->get('budjet')) && !empty($request->request->get('prixUnitArt'))) {
-            $budjet=$request->request->get('budjet');
-            //$x=str_replace($budjet,$budjet,$budjet);
+        if (!empty($request->request->get('nbArt')) && !empty($request->request->get('prixUnitArt'))) {
+            $nbArt=$request->request->get('nbArt');
+            
             $prixUnitArt=$request->request->get('prixUnitArt');
-            $nbArt=floor($budjet / $prixUnitArt);
-            $depenses=$nbArt *  $prixUnitArt;
-            $resteBudjet=$budjet - $depenses;
+            $prixTotalArt=$nbArt *  $prixUnitArt;
         }
         else{
            
         }
 
-        $get_budjet = $session->get('budjet', []);
-        if (!empty($get_budjet)) {
-            $session->set('budjet', $budjet);
-            $session->set('prixUnitArt', $prixUnitArt);
-            $session->set('depenses', $depenses);
+        $get_nbArt = $session->get('nbArt', []);
+        if (!empty($get_nbArt)) {
             $session->set('nbArt', $nbArt);
-            $session->set('resteBudjet', $resteBudjet);
+            $session->set('prixUnitArt', $prixUnitArt);
+            $session->set('prixTotalArt', $prixTotalArt);
         }
-        $session->set('budjet', $budjet);
-        $session->set('prixUnitArt', $prixUnitArt);
-        $session->set('depenses', $depenses);
         $session->set('nbArt', $nbArt);
-        $session->set('resteBudjet', $resteBudjet);
+        $session->set('prixUnitArt', $prixUnitArt);
+        $session->set('prixTotalArt', $prixTotalArt);
         //dd($session);
 
         return $this->redirectToRoute('achat_new');
@@ -138,11 +132,9 @@ class AchatController extends AbstractController
              $sessionLigne = 1;
          }
          $sessionNb = $sessionLigne/$sessionLigne;
-         $sessionBudjet=$session->get('budjet',[]);
-         $sessionPrixUnitArt=$session->get('prixUnitArt',[]);
          $sessionNbArt=$session->get('nbArt',[]);
-         $sessionDepenses=$session->get('depenses',[]);
-         $sessionResteBudjet=$session->get('resteBudjet',[]);
+         $sessionPrixUnitArt=$session->get('prixUnitArt',[]);
+         $prixTotalArt=$session->get('prixTotalArt',[]);
          
          //si l'utilisateur est n'est pas connecté, on le redirige vers la page de connexion
          // if (!$user) {
@@ -202,30 +194,24 @@ class AchatController extends AbstractController
          }
  
          // devis d'achat pour le stock[]
-         if (!empty($sessionBudjet) && !empty($sessionPrixUnitArt)) {
-             $budjet=$sessionBudjet;
-             $prixUnitArt=$sessionPrixUnitArt; 
+         if (!empty($sessionNbArt) && !empty($sessionPrixUnitArt)) {
              $nbArt=$sessionNbArt;
-             $depenses=$sessionDepenses;
-             $resteBudjet=$sessionResteBudjet;
+             $prixUnitArt=$sessionPrixUnitArt; 
+             $prixTotalArt=$prixTotalArt;
          }
          else{
-             $budjet='XXX ...';
-             $prixUnitArt='XXX ...';
              $nbArt='XXX ...';
-             $depenses='XXX ...';
-             $resteBudjet='XXX ...';
+             $prixUnitArt='XXX ...';
+             $prixTotalArt='XXX ...';
          }
  
          return $this->render('achat/new.html.twig', [
              'nb_rows' => $nb_row,
              'produits'=>$produitRepository->findAll(),
              'uvals' => $uvalRepository->findAll(),
-             'budjet'=>$budjet,
-             'prixUnit'=>$prixUnitArt,
              'nbArt'=>$nbArt,
-             'depenses'=>$depenses,
-             'resteBudjet'=>$resteBudjet
+             'prixUnit'=>$prixUnitArt,
+             'prixTotal'=>$prixTotalArt,
          ]);
     }
 

@@ -94,7 +94,7 @@
                                                                     <td>Qte total stock<input type="text" name="qteStock{{ nb_row }}" class="form-control" value="{{ stock.getQteStockage }}" id=""></td>
                                                                         <td>Prix total de Vente<input type="text" name="" class="form-control" value="{{ stock.getPrixVenteTotaleStock }}" id=""></td>
                                                                             <td>Prix unitaire de Vente<input type="text" name="prixUnit{{ nb_row }}" class="form-control" value="{{ stock.getPrixVenteUnitaireStock}}" id=""></td>
-                                                                                <td>Frais de stockage<input type="text" name="" class="form-control" value="Ex: 10000" id=""></td>
+                                                                                <td>Profit Unitaire de Vente<input type="text" name="" class="form-control" value="{{profit.getProfitUnitaireStock|  number_format(0, ' ', ' ')}} FCFA" id="" disabled></td>
                                                                                     </tr>
                                                                                 {% endfor %}
 

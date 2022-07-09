@@ -329,15 +329,23 @@ class StockController extends AbstractController
                     $prixUnitVente=$prixUnitAchat +  $margeFamille;
                     //on calcul le profit unitaire
                     $profUnit=$ancienProfit+$margeFamille;
+                    $this->addFlash('success','Modification réussie avec succès !');
                 }
                 elseif ($sessionoptionModifStock=='soustraction') {
-                    $prixUnitVente=$prixUnitAchat - $margeFamille;
-                    if ($margeFamille<$ancienProfit) {
-                        $profUnit=$ancienProfit-$margeFamille;
+                   
+                    if ($margeFamille==$ancienProfit) {
+                        $this->addFlash('error','Echec de modification car la marge de prix est nulle !');
+                        return $this->redirectToRoute('stock_update');
                     }
                     elseif ($margeFamille>$ancienProfit) {
-                        $profUnit=$margeFamille-$ancienProfit;
+                        $this->addFlash('error','Echec de modification car la nouvelle marge de prix est plus
+                        grande que la récente !');
+                        return $this->redirectToRoute('stock_update');
                     }
+
+                    $prixUnitVente=$prixUnitAchat - $margeFamille;
+                    $profUnit=$ancienProfit-$margeFamille;
+                    $this->addFlash('success','Modification réussie avec succès !');
                 }
                 //on calcul le prix total de vente
                 $prixTotalVente=$prixUnitVente * $qteStock;
@@ -366,7 +374,8 @@ class StockController extends AbstractController
             'stocks'=>$stockRepository->findAll(),
             'uvals' => $uvalRepository->findAll(),
             'stock'=>$stock,//on affiche toutes les infos de cette variable
-            'margePrix'=>$margeprixRepository->findAll()//on affiche toutes les marges de prix
+            'margePrix'=>$margeprixRepository->findAll(),//on affiche toutes les marges de prix
+            'profit'=>$stockRepository->find($sessionProduit)
         ]);
     }
 
