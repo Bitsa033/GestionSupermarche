@@ -2,13 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Catuval;
-use App\Entity\Margeprix;
-use App\Entity\Produit;
 use App\Entity\Stock;
-use App\Entity\Uval;
-use App\Repository\ProduitRepository;
-use App\Form\StockType;
 use App\Repository\AchatRepository;
 use App\Repository\MargeprixRepository;
 use App\Repository\StockRepository;
@@ -87,7 +81,7 @@ class StockController extends AbstractController
      /**
      * @Route("sessionStock", name="stock_sessionStock")
      */
-    public function sessionStock(SessionInterface $session, Request $request)
+    public function sessionMargePrix(SessionInterface $session, Request $request)
     {
         if (!empty($request->request->get('margeprix'))) {
             $margeprix = $request->request->get('margeprix');
@@ -329,16 +323,25 @@ class StockController extends AbstractController
                 //on recupere le prix unitaire d'achat
                 $prixUnitAchat=$_POST['prixUnit'.$i];
                 //on calcule le prix unitaire de vente
+                $idStock=$stockRepository->find($sessionProduit);
+                $ancienProfit=$idStock->getProfitUnitaireStock();
                 if ($sessionoptionModifStock=='addition') {
                     $prixUnitVente=$prixUnitAchat +  $margeFamille;
+                    //on calcul le profit unitaire
+                    $profUnit=$ancienProfit+$margeFamille;
                 }
                 elseif ($sessionoptionModifStock=='soustraction') {
                     $prixUnitVente=$prixUnitAchat - $margeFamille;
+                    if ($margeFamille<$ancienProfit) {
+                        $profUnit=$ancienProfit-$margeFamille;
+                    }
+                    elseif ($margeFamille>$ancienProfit) {
+                        $profUnit=$margeFamille-$ancienProfit;
+                    }
                 }
                 //on calcul le prix total de vente
                 $prixTotalVente=$prixUnitVente * $qteStock;
-                //on recupere le profit unitaire
-                $profUnit=$margeFamille;
+                
                 //on calcul le profit total
                 $profTot=$profUnit * $qteStock;
                 //on stocke toutes les donnees dans le tableau
@@ -364,26 +367,6 @@ class StockController extends AbstractController
             'uvals' => $uvalRepository->findAll(),
             'stock'=>$stock,//on affiche toutes les infos de cette variable
             'margePrix'=>$margeprixRepository->findAll()//on affiche toutes les marges de prix
-        ]);
-    }
-
-    /**
-     * @Route("{id}_edit", name="stock_edit", methods={"GET", "POST"})
-     */
-    public function edit(Request $request, Stock $stock, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(StockType::class, $stock);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('stock_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('stock/edit.html.twig', [
-            'stock' => $stock,
-            'form' => $form->createView(),
         ]);
     }
 
