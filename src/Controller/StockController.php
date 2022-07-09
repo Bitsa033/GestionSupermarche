@@ -155,7 +155,7 @@ class StockController extends AbstractController
         $user = $this->getUser(); //on cherche l'utilisateur connecté
         $sessionProduit=$session->get('achat',[]);//on recupere l'id de l'achat dans la session [achat]
         $sessionMargePrix=$session->get('margePrix',[]);
-        $sessionUvalVente=$session->get('uvalVente',[]);
+        // $sessionUvalVente=$session->get('uvalVente',[]);
         if (!empty($sessionMargePrix)) {
             $idMarge=$margeprixRepository->find($sessionMargePrix);//on recupere la marge des prix
             $margeFamille=$idMarge->getMarge();
@@ -212,12 +212,6 @@ class StockController extends AbstractController
             $stock->setProfitUnitaireStock($data['profitUnitaireStock']);
             $stock->setProfitTotalStock($data['profitTotalStock']);
             $stock->setUniteStockage($uniteStockage);
-            $stock->setQteGenValStock(1);
-            $stock->setC("=");
-            $stock->setQteGenUnite($data['qteGenUnite']);
-            
-            $stock->setQteTotaleUnite($data['qteTotaleUnite']);
-            $stock->setPrixUniteVenteStock($data['prixUniteVenteStock']);
             // $stock->setRef(strtoupper($data['ref']));
             $manager = $end->getManager();
             $manager->persist($stock);
@@ -247,9 +241,6 @@ class StockController extends AbstractController
                     'prixVenteTotaleStock'=>$prixTotalVente,
                     'profitUnitaireStock'=>$profUnit,
                     'profitTotalStock'=>$profTot,
-                    'qteGenUnite'=>0,
-                    'qteTotaleUnite'=>0,
-                    'prixUniteVenteStock'=>0
                 );
                
                 insert_into_db($data,$sessionProduit,$achatRepository,$end);

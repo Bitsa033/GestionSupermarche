@@ -25,17 +25,17 @@ class Stock
     /**
      * @ORM\Column(type="bigint")
      */
-    private $qs;//qte de stockage
+    private $qts;//qte totale de stockage
 
     /**
      * @ORM\Column(type="bigint")
      */
-    private $pvts; //prix de vente total du stock
+    private $prixvts; //prix de vente total du stock
 
     /**
      * @ORM\Column(type="bigint")
      */
-    private $pvus; //prix de vente unitaire du stock
+    private $prixvus; //prix de vente unitaire du stock
 
     /**
      * @ORM\Column(type="bigint")
@@ -51,22 +51,7 @@ class Stock
      * @ORM\ManyToOne(targetEntity=Uval::class, inversedBy="stocks")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $us; //unite de stockage
-
-    /**
-     * @ORM\Column(type="bigint")
-     */
-    private $qgvs; //qte generale de valorisation du stock
-
-    /**
-     * @ORM\Column(type="string", length=5)
-     */
-    private $c; //comparateur
-
-    /**
-     * @ORM\Column(type="bigint")
-     */
-    private $qgu; //qte generale d'unites
+    private $unitest; //unite de stockage
 
     /**
      * @ORM\ManyToOne(targetEntity=Uval::class, inversedBy="stocks")
@@ -74,15 +59,6 @@ class Stock
      */
     private $uvs; //unite de vente du stock
 
-    /**
-     * @ORM\Column(type="bigint")
-     */
-    private $qtu; //qte totale d'unites
-
-    /**
-     * @ORM\Column(type="bigint")
-     */
-    private $puvs;//prix de l'unite de vente du stock
 
     public function getId(): ?int
     {
@@ -103,36 +79,36 @@ class Stock
 
     public function getQteStockage(): ?string
     {
-        return $this->qs;
+        return $this->qts;
     }
 
-    public function setQteStockage(string $qs): self
+    public function setQteStockage(string $qts): self
     {
-        $this->qs = $qs;
+        $this->qts = $qts;
 
         return $this;
     }
 
     public function getPrixVenteTotaleStock(): ?string
     {
-        return $this->pvts;
+        return $this->prixvts;
     }
 
-    public function setPrixVenteTotaleStock(string $pvts): self
+    public function setPrixVenteTotaleStock(string $prixvts): self
     {
-        $this->pvts = $pvts;
+        $this->prixvts = $prixvts;
 
         return $this;
     }
 
     public function getPrixVenteUnitaireStock(): ?string
     {
-        return $this->pvus;
+        return $this->prixvus;
     }
 
-    public function setPrixVenteUnitaireStock(string $pvus): self
+    public function setPrixVenteUnitaireStock(string $prixvus): self
     {
-        $this->pvus = $pvus;
+        $this->prixvus = $prixvus;
 
         return $this;
     }
@@ -163,48 +139,12 @@ class Stock
 
     public function getUniteStockage(): ?Uval
     {
-        return $this->us;
+        return $this->unitest;
     }
 
-    public function setUniteStockage(?Uval $us): self
+    public function setUniteStockage(?Uval $unitest): self
     {
-        $this->us = $us;
-
-        return $this;
-    }
-
-    public function getQteGenValStock(): ?string
-    {
-        return $this->qgvs;
-    }
-
-    public function setQteGenValStock(string $qgvs): self
-    {
-        $this->qgvs = $qgvs;
-
-        return $this;
-    }
-
-    public function getC(): ?string
-    {
-        return $this->c;
-    }
-
-    public function setC(string $c): self
-    {
-        $this->c = $c;
-
-        return $this;
-    }
-
-    public function getQteGenUnite(): ?string
-    {
-        return $this->qgu;
-    }
-
-    public function setQteGenUnite(string $qgu): self
-    {
-        $this->qgu = $qgu;
+        $this->unitest = $unitest;
 
         return $this;
     }
@@ -221,27 +161,4 @@ class Stock
         return $this;
     }
 
-    public function getQteTotaleUnite(): ?string
-    {
-        return $this->qtu;
-    }
-
-    public function setQteTotaleUnite(string $qtu): self
-    {
-        $this->qtu = $qtu;
-
-        return $this;
-    }
-
-    public function getPrixUniteVenteStock(): ?string
-    {
-        return $this->puvs;
-    }
-
-    public function setPrixUniteVenteStock(string $puvs): self
-    {
-        $this->puvs = $puvs;
-
-        return $this;
-    }
 }
