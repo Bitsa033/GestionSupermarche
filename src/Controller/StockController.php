@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Services\Service;
 
 /**
  * @Route("stock_")
@@ -147,17 +148,14 @@ class StockController extends AbstractController
             $qta=$achat->getQteAchat();
             $qtps = $request->request->get('qtps');//qte totale des produits par stock
             $qts=$qta * $qtps;
-            $pup = $request->request->get('pup');//prix unitaire du produit
             $get_qts = $session->get('qts', []);
 
             if (!empty($get_qts)) {
                 $session->set('qts', $qts);
                 $session->set('qtps', $qtps);
-                $session->set('pup', $pup);
             }
             $session->set('qts', $qts);
             $session->set('qtps', $qtps);
-            $session->set('pup', $pup);
             //dd($session);
         }
         return $this->redirectToRoute('stock_new');
@@ -166,7 +164,7 @@ class StockController extends AbstractController
     /**
      * @Route("new", name="stock_new")
      */
-    public function newStock(UvalRepository $uvalRepository,MargeprixRepository $margeprixRepository,SessionInterface $session,AchatRepository $achatRepository, ManagerRegistry $end)
+    public function newStock(Service $serviceStock,UvalRepository $uvalRepository,MargeprixRepository $margeprixRepository,SessionInterface $session,AchatRepository $achatRepository, ManagerRegistry $end)
     {
         $user = $this->getUser(); //on cherche l'utilisateur connecté
         $sessionProduit=$session->get('achat',[]);//on recupere l'id de l'achat dans la session [achat]
@@ -230,12 +228,6 @@ class StockController extends AbstractController
         }
         $sessionNb = $sessionLigne/$sessionLigne;
         
-        
-        //si l'utilisateur est n'est pas connecté, on le redirige vers la page de connexion
-        // if (!$user) {
-        //     return $this->redirectToRoute('app_login');
-        // }
-        
         $nb_row = array(1);
         //pour chaque valeur du compteur i, on ajoutera un champs de plus en consirerant que nb_row par defaut=1
         if (!empty( $sessionNb)) {
@@ -243,34 +235,7 @@ class StockController extends AbstractController
                 $nb_row[$i] = $i;
             }
         }
-        //on cree la methode qui permettra d'enregistrer les infos du post dans la bd
-        function insert_into_db($data,$idProduit,AchatRepository $achatRepository, ManagerRegistry $end)
-        {
-            foreach ($data as $key => $value) {
-                $k[] = $key;
-                $v[] = $value;
-            }
-            $k = implode(",", $k);
-            $v = implode(",", $v);
-           
-            $achat=$achatRepository->find($idProduit);
-            $uniteAchat=$achatRepository->find($idProduit);
-            $uniteStockage=$uniteAchat->getUniteAchat();
-            
-            $stock = new Stock();
-            $stock->setAchat($achat);
-            $stock->setQteStockage($data['quantiteStockage']);
-            $stock->setPrixVenteUnitaireStock($data['prixVenteUnitaireStock']);
-            $stock->setPrixVenteTotaleStock($data['prixVenteTotaleStock']);
-            $stock->setProfitUnitaireStock($data['profitUnitaireStock']);
-            $stock->setProfitTotalStock($data['profitTotalStock']);
-            $stock->setUniteStockage($uniteStockage);
-            // $stock->setRef(strtoupper($data['ref']));
-            $manager = $end->getManager();
-            $manager->persist($stock);
-            $manager->flush();
-        }
-
+       
         //si on clic sur le boutton enregistrer et que les champs du post ne sont pas vide
         if (isset($_POST['enregistrer'])) {
             //dd($session_nb_row);
@@ -289,14 +254,16 @@ class StockController extends AbstractController
                 $profTot=$profUnit * $qteStock;
                 //on stocke toutes les donnees dans le tableau
                 $data = array(
+                    'achat'=>$sessionProduit,
+                    'uniteVente'=>$sessionUvalVente,
                     'quantiteStockage' =>$qteStock,
                     'prixVenteUnitaireStock'=>$prixUnitVente,
                     'prixVenteTotaleStock'=>$prixTotalVente,
                     'profitUnitaireStock'=>$profUnit,
                     'profitTotalStock'=>$profTot,
                 );
-               
-                insert_into_db($data,$sessionProduit,$achatRepository,$end);
+                //on cree le service qui permettra d'enregistrer les infos du post dans la bd
+               $serviceStock->StockInsertion($data,$uvalRepository,$achatRepository,$end);
             }
 
         }
@@ -318,7 +285,7 @@ class StockController extends AbstractController
     /**
      * @Route("update", name="stock_update")
      */
-    public function updateStock(UvalRepository $uvalRepository,MargeprixRepository $margeprixRepository,SessionInterface $session,StockRepository $stockRepository, ManagerRegistry $end)
+    public function updateStock(Service $service,UvalRepository $uvalRepository,MargeprixRepository $margeprixRepository,SessionInterface $session,StockRepository $stockRepository, ManagerRegistry $end)
     {
         $user = $this->getUser(); //on cherche l'utilisateur connecté
         $sessionProduit=$session->get('stock',[]);//on recupere l'id de l'achat dans la session [stock]
@@ -348,11 +315,6 @@ class StockController extends AbstractController
             $stock=null;
         }
         
-        //si l'utilisateur est n'est pas connecté, on le redirige vers la page de connexion
-        // if (!$user) {
-        //     return $this->redirectToRoute('app_login');
-        // }
-        
         $nb_row = array(1);
         //pour chaque valeur du compteur i, on ajoutera un champs de plus en consirerant que nb_row par defaut=1
         if (!empty( $sessionNb)) {
@@ -360,24 +322,7 @@ class StockController extends AbstractController
                 $nb_row[$i] = $i;
             }
         }
-        //on cree la methode qui permettra d'enregistrer les infos du post dans la bd
-        function update_db($data,Stock $stock, ManagerRegistry $end)
-        {
-            foreach ($data as $key => $value) {
-                $k[] = $key;
-                $v[] = $value;
-            }
-            $k = implode(",", $k);
-            $v = implode(",", $v);
-            
-            $stock->setPrixVenteUnitaireStock($data['prixVenteUnitaireStock']);
-            $stock->setPrixVenteTotaleStock($data['prixVenteTotaleStock']);
-            $stock->setProfitUnitaireStock($data['profitUnitaireStock']);
-            $stock->setProfitTotalStock($data['profitTotalStock']);
-            $manager = $end->getManager();
-            $manager->flush();
-        }
-
+        
         //si on clic sur le boutton enregistrer et que les champs du post ne sont pas vide
         if (isset($_POST['enregistrer'])) {
             //dd($session_nb_row);
@@ -427,8 +372,8 @@ class StockController extends AbstractController
                     // 'qteTotaleUnite'=>0,
                     // 'prixUniteVenteStock'=>0
                 );
-               
-                update_db($data,$stock ,$end);
+               //on cree le service qui permettra d'enregistrer les infos du post dans la bd
+                $service->StockUpdate($data,$stock ,$end);
             }
 
         }

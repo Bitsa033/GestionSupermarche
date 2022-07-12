@@ -46,13 +46,11 @@
                                             </form>
                                         </div>
                                         <div class='marge2'>
-                                            {% if app.session.get('uvalVente') and app.session.get('achat') and uniteAchat == uniteVente %}
+                                            {% if app.session.get('uvalVente') and app.session.get('achat') and uniteAchat != uniteVente %}
                                                 Qté de produits / {{achat.getUniteAchat.nomuval}} --------
-                                                Prix d'un produit
                                                 <form action="{{ path('stock_Uval') }}" method="post">
                                                 <input type="number" name="qtps" min='1' class="form-control" placeholder="Nb produits par {{achat.getUniteAchat.nomuval}}" required>
-                                                <input type="number" name="nb_row" min='1' class="form-control" placeholder="Prix d'un produit" required>
-                                                    <button type="submit" class="form-control">Ok</button>
+                                                <button type="submit" class="form-control">Ok</button>
                                                 </form>
                                             {% endif %}
                                         </div>

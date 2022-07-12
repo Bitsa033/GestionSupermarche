@@ -22,18 +22,12 @@
 						<div class="card">
 						 <div class="card-header"><p class="h5">Liste des Stock Enregistrés | <a href="{{path('stock_new')}}">Nouveau Stock</a> | <a href="{{path('stock_update')}}">Modifier Stock</a></p></div>
 							<div class="card-body table-responsive p-0" style="height: 390px;">
-                                {# <br>
-                                <form action="" method="post">
-                                    <div class="form-inline">
-                                        <input type="text" name="" class="form-control">
-                                        <button type="submit" class='btn btn-dark'><i class="fa fa-search"></i></button>
-                                    </div>
-                                </form>
-                                <br> #}
+                                
 								<table class="table table-head-fixed table-bordered">
 
 									<tbody>
 										<tr>
+                                            <th>ID</th>
 											<th>Produit</th>
                                             <th>Unité</th>
                                             <th>Qté Tot.</th>
@@ -42,6 +36,7 @@
 										</tr>
 										{% for stock in stocks %}
 											<tr>
+                                                <td>{{stock.id}}</td>
 												<td>{{stock.achat.produit.nom}}</td>
                                                 <td>{{stock.getUniteStockage.nomuval}}</td>
                                                 <td>{{stock.getQteStockage| number_format(0, ' ', ' ')}}</td>
