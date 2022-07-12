@@ -147,15 +147,17 @@ class StockController extends AbstractController
             $qta=$achat->getQteAchat();
             $qtps = $request->request->get('qtps');//qte totale des produits par stock
             $qts=$qta * $qtps;
-            // $pup = $request->request->get('pup');//prix unitaire du produit
+            $pup = $request->request->get('pup');//prix unitaire du produit
             $get_qts = $session->get('qts', []);
 
             if (!empty($get_qts)) {
                 $session->set('qts', $qts);
-                // $session->set('pup', $pup);
+                $session->set('qtps', $qtps);
+                $session->set('pup', $pup);
             }
             $session->set('qts', $qts);
-            // $session->set('pup', $pup);
+            $session->set('qtps', $qtps);
+            $session->set('pup', $pup);
             //dd($session);
         }
         return $this->redirectToRoute('stock_new');
@@ -171,9 +173,11 @@ class StockController extends AbstractController
         $sessionMargePrix=$session->get('margePrix',[]);
         $sessionUvalVente=$session->get('uvalVente',[]);
         $sessionQts=$session->get('qts',[]);
+        $sessionQtps=$session->get('qtps',[]);
+        $sessionPup=$session->get('pup',[]);
         if (!empty($sessionProduit)) {
             $achat=$achatRepository->find($sessionProduit);//on recupere tous les infos d'achat de [sessionProduit]
-            $uniteAchat=$achat->getUniteAchat();
+            $uniteAchat=$achat->getUniteAchat()->getNomuval();
         }
         else {
             $achat=null;
@@ -189,15 +193,24 @@ class StockController extends AbstractController
                 $prixUnitaire=$achat->getPrixAchatUnitaire();
      
      
-             }
-             else{
-                 $qteTotale=null;
-                 $prixTotal=null;
-                 $prixUnitaire=null;
-             }
+            }
+            elseif($uniteAchat != $uniteVente){
+                if (!empty($sessionQts)) {
+                    $qteTotale=$sessionQts;
+                    $ac= $achat->getPrixAchatUnitaire();
+                    $prixUnitaire=$ac / $sessionQtps;
+                    $prixTotal=$qteTotale * $prixUnitaire;
+                }
+                else {
+                    $qteTotale=null;
+                    $prixTotal=null;
+                    $prixUnitaire=null;
+                }
+            }
         }
         else{
             $uval=null;
+            $uniteVente=null;
             $qteTotale=null;
             $prixTotal=null;
             $prixUnitaire=null;
@@ -294,6 +307,8 @@ class StockController extends AbstractController
             'qteTotale'=>$qteTotale,
             'prixTotal'=>$prixTotal,
             'prixUnitaire'=>$prixUnitaire,
+            'uniteVente'=>$uniteVente,
+            'uniteAchat'=>$uniteAchat,
             'uvals' => $uvalRepository->findAll(),
             'achat'=>$achat,//on affiche toutes les infos de cette variable
             'margePrix'=>$margeprixRepository->findAll()//on affiche toutes les marges de prix

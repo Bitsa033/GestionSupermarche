@@ -46,7 +46,7 @@
                                             </form>
                                         </div>
                                         <div class='marge2'>
-                                            {% if app.session.get('uvalVente') %}
+                                            {% if app.session.get('uvalVente') and app.session.get('achat') and uniteAchat == uniteVente %}
                                                 Qté de produits / {{achat.getUniteAchat.nomuval}} --------
                                                 Prix d'un produit
                                                 <form action="{{ path('stock_Uval') }}" method="post">
