@@ -24,13 +24,40 @@
                             <div class="card">
                                 <div class="card-header">
                                     <div class="form-inline">
-                                        <form action="{{ path('stock_nb') }}" method="post">
+                                        <div>
                                             Nb Stocks:
+                                            <form action="{{ path('stock_nb') }}" method="post">
                                             <input type="number" name="nb_row" min='1' max='1' class="form-control" value="1">
                                                 <button type="submit" class="form-control">Ok</button>
                                             </form>
-
                                         </div>
+                                        <div class="marge2">
+                                            Unité de vente:
+                                            <form action="{{ path('stock_sessionAchat') }}" method="post">
+                                                <select class="form-control" name="uvente" id="">
+                                                    {% for achat in achats %}
+                                                        <option value="{{ achat.id }}">{{ achat.produit.famille.nom }}
+                                                            {{ achat.produit.nom }}</option>
+
+                                                    {% else %}
+                                                        <option value="">Liste vide...</option>
+                                                    {% endfor %}
+                                                </select>
+                                                <button class="btn btn-default" type="submit">Ok</button>
+                                            </form>
+                                        </div>
+                                        <div class='marge2'>
+                                            Qté de produits / {{achat.getUniteAchat.nomuval}} --------
+                                            Prix d'un produit
+                                            <form action="{{ path('stock_nb') }}" method="post">
+                                            <input type="number" name="puv" min='1' class="form-control" placeholder="Nb produits par {{achat.getUniteAchat.nomuval}}" required>
+                                            <input type="number" name="nb_row" min='1' class="form-control" placeholder="Prix d'un produit" required>
+                                                <button type="submit" class="form-control">Ok</button>
+                                            </form>
+                                        </div>
+
+                                    </div>
+                                        
 
                                     </div>
                                     <table class=" table-head-fixed">
@@ -87,9 +114,9 @@
                                                         {% if app.session.get('achat') %}
                                                             {% for nb_row in nb_rows %}
                                                                 <tr>
-                                                                    <td>Qte total stock n°{{ nb_row +1 }}<input type="text" name="qteStock{{ nb_row }}" class="form-control" value="{{ achat.getQteAchat }}" id=""></td>
-                                                                        <td>Prix total d'achat<input type="text" name="" class="form-control" value="{{ achat.getPrixAchatTotal }}" id=""></td>
-                                                                            <td>Prix unitaire d'achat<input type="text" name="prixUnit{{ nb_row }}" class="form-control" value="{{ achat.getPrixAchatUnitaire }}" id=""></td>
+                                                                    <td>Qte totale<input type="text" name="qteStock{{ nb_row }}" class="form-control" value="{{ achat.getQteAchat }}" id=""></td>
+                                                                        <td>Prix total<input type="text" name="" class="form-control" value="{{ achat.getPrixAchatTotal }}" id=""></td>
+                                                                            <td>Prix unitaire<input type="text" name="prixUnit{{ nb_row }}" class="form-control" value="{{ achat.getPrixAchatUnitaire }}" id=""></td>
                                                                                 <td>Frais de stockage<input type="text" name="" class="form-control" value="Ex: 10000" id=""></td>
                                                                                     </tr>
                                                                                 {% endfor %}
