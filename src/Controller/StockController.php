@@ -118,8 +118,9 @@ class StockController extends AbstractController
     /**
      * @Route("sessionUval", name="stock_Uval")
      */
-    public function sessionUval(SessionInterface $session, Request $request)
+    public function sessionUval(SessionInterface $session, Request $request,AchatRepository $achatRepository)
     {
+        //marge prix
         if (!empty($request->request->get('margeprix'))) {
             $margeprix = $request->request->get('margeprix');
             $get_margeprix = $session->get('margePrix', []);
@@ -129,13 +130,32 @@ class StockController extends AbstractController
             $session->set('margePrix', $margeprix);
             //dd($session);
         }
-        elseif (!empty($request->request->get('uvalVente'))) {
-            $uvalVente = $request->request->get('uvalVente');
+        //unite de vente
+        elseif (!empty($request->request->get('uvente'))) {
+            $uvalVente = $request->request->get('uvente');
             $get_uvalVente = $session->get('uvalVente', []);
             if (!empty($get_uvalVente)) {
                 $session->set('uvalVente', $uvalVente);
             }
             $session->set('uvalVente', $uvalVente);
+            //dd($session);
+        }
+        //qte de produit et prix unitaire d'un produit
+        elseif (!empty($request->request->get('qtps'))) {//si qtps n'est pas vide
+            $sessionProduit=$session->get('achat',[]);//on recupere l'id de l'achat dans la session [achat]
+            $achat=$achatRepository->find($sessionProduit);
+            $qta=$achat->getQteAchat();
+            $qtps = $request->request->get('qtps');//qte totale des produits par stock
+            $qts=$qta * $qtps;
+            // $pup = $request->request->get('pup');//prix unitaire du produit
+            $get_qts = $session->get('qts', []);
+
+            if (!empty($get_qts)) {
+                $session->set('qts', $qts);
+                // $session->set('pup', $pup);
+            }
+            $session->set('qts', $qts);
+            // $session->set('pup', $pup);
             //dd($session);
         }
         return $this->redirectToRoute('stock_new');
@@ -149,7 +169,39 @@ class StockController extends AbstractController
         $user = $this->getUser(); //on cherche l'utilisateur connecté
         $sessionProduit=$session->get('achat',[]);//on recupere l'id de l'achat dans la session [achat]
         $sessionMargePrix=$session->get('margePrix',[]);
-        // $sessionUvalVente=$session->get('uvalVente',[]);
+        $sessionUvalVente=$session->get('uvalVente',[]);
+        $sessionQts=$session->get('qts',[]);
+        if (!empty($sessionProduit)) {
+            $achat=$achatRepository->find($sessionProduit);//on recupere tous les infos d'achat de [sessionProduit]
+            $uniteAchat=$achat->getUniteAchat();
+        }
+        else {
+            $achat=null;
+            $uniteAchat=null;
+        }
+        if (!empty($sessionUvalVente)) {
+            $uval=$uvalRepository->find($sessionUvalVente);
+            $uniteVente=$uval->getNomuval();
+
+            if ($uniteAchat==$uniteVente) {
+                $qteTotale=$achat->getQteAchat();
+                $prixTotal=$achat->getPrixAchatTotal();
+                $prixUnitaire=$achat->getPrixAchatUnitaire();
+     
+     
+             }
+             else{
+                 $qteTotale=null;
+                 $prixTotal=null;
+                 $prixUnitaire=null;
+             }
+        }
+        else{
+            $uval=null;
+            $qteTotale=null;
+            $prixTotal=null;
+            $prixUnitaire=null;
+        }
         if (!empty($sessionMargePrix)) {
             $idMarge=$margeprixRepository->find($sessionMargePrix);//on recupere la marge des prix
             $margeFamille=$idMarge->getMarge();
@@ -164,13 +216,7 @@ class StockController extends AbstractController
             $sessionLigne = 1;
         }
         $sessionNb = $sessionLigne/$sessionLigne;
-        if (!empty($sessionProduit)) {
-            $achat=$achatRepository->find($sessionProduit);//on recupere tous les infos d'achat de [sessionProduit]
-           
-        }
-        else{
-            $achat=null;
-        }
+        
         
         //si l'utilisateur est n'est pas connecté, on le redirige vers la page de connexion
         // if (!$user) {
@@ -245,6 +291,9 @@ class StockController extends AbstractController
         return $this->render('stock/new.html.twig', [
             'nb_rows' => $nb_row,
             'achats'=>$achatRepository->findAll(),
+            'qteTotale'=>$qteTotale,
+            'prixTotal'=>$prixTotal,
+            'prixUnitaire'=>$prixUnitaire,
             'uvals' => $uvalRepository->findAll(),
             'achat'=>$achat,//on affiche toutes les infos de cette variable
             'margePrix'=>$margeprixRepository->findAll()//on affiche toutes les marges de prix

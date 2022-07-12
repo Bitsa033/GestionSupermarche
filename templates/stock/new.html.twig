@@ -33,11 +33,10 @@
                                         </div>
                                         <div class="marge2">
                                             Unité de vente:
-                                            <form action="{{ path('stock_sessionAchat') }}" method="post">
+                                            <form action="{{ path('stock_Uval') }}" method="post">
                                                 <select class="form-control" name="uvente" id="">
-                                                    {% for achat in achats %}
-                                                        <option value="{{ achat.id }}">{{ achat.produit.famille.nom }}
-                                                            {{ achat.produit.nom }}</option>
+                                                    {% for element in uvals %}
+                                                        <option value="{{ element.id }}">{{ element.nomuval }} </option>
 
                                                     {% else %}
                                                         <option value="">Liste vide...</option>
@@ -47,13 +46,15 @@
                                             </form>
                                         </div>
                                         <div class='marge2'>
-                                            Qté de produits / {{achat.getUniteAchat.nomuval}} --------
-                                            Prix d'un produit
-                                            <form action="{{ path('stock_nb') }}" method="post">
-                                            <input type="number" name="puv" min='1' class="form-control" placeholder="Nb produits par {{achat.getUniteAchat.nomuval}}" required>
-                                            <input type="number" name="nb_row" min='1' class="form-control" placeholder="Prix d'un produit" required>
-                                                <button type="submit" class="form-control">Ok</button>
-                                            </form>
+                                            {% if app.session.get('uvalVente') %}
+                                                Qté de produits / {{achat.getUniteAchat.nomuval}} --------
+                                                Prix d'un produit
+                                                <form action="{{ path('stock_Uval') }}" method="post">
+                                                <input type="number" name="qtps" min='1' class="form-control" placeholder="Nb produits par {{achat.getUniteAchat.nomuval}}" required>
+                                                <input type="number" name="nb_row" min='1' class="form-control" placeholder="Prix d'un produit" required>
+                                                    <button type="submit" class="form-control">Ok</button>
+                                                </form>
+                                            {% endif %}
                                         </div>
 
                                     </div>
@@ -70,39 +71,39 @@
                                     </table>
                                     <!-- /.card-header -->
                                     <div class="card-header form-inline">
-                                        Produit:
-                                        <form action="{{ path('stock_sessionAchat') }}" method="post">
-                                            <select class="form-control" name="produit" id="">
-                                                {% for achat in achats %}
-                                                    <option value="{{ achat.id }}">{{ achat.produit.famille.nom }}
-                                                        {{ achat.produit.nom }}</option>
+                                        <div>
+                                            Produit:
+                                            <form action="{{ path('stock_sessionAchat') }}" method="post">
+                                                <select class="form-control" name="produit" id="">
+                                                    {% for achat in achats %}
+                                                        <option value="{{ achat.id }}">{{ achat.produit.famille.nom }}
+                                                            {{ achat.produit.nom }}</option>
 
-                                                {% else %}
-                                                    <option value="">Liste vide...</option>
-                                                {% endfor %}
-                                            </select>
-                                            <button class="btn btn-default" type="submit">Ok</button>
-                                        </form>
+                                                    {% else %}
+                                                        <option value="">Liste vide...</option>
+                                                    {% endfor %}
+                                                </select>
+                                                <button class="btn btn-default" type="submit">Ok</button>
+                                            </form>
+                                        </div>
 
+                                        <div class="marge2">
+                                            Profit unitaire:
+                                            <form action="{{ path('stock_Uval') }}" method="post" class='marge'>
+                                                <select class="form-control" name="margeprix" id="">
+                                                    {% for margep in margePrix %}
+                                                        <option value="{{ margep.id }}">{{ margep.marge| number_format(0, ' ', ' ')}} FCFA</option>
 
-                                        <form action="{{ path('stock_Uval') }}" method="post" class='marge'>
-                                            Marge de Prix:
-                                            <select class="form-control" name="margeprix" id="">
-                                                {% for margep in margePrix %}
-                                                    <option value="{{ margep.id }}">{{ margep.marge| number_format(0, ' ', ' ')}} FCFA</option>
+                                                    {% else %}
+                                                        <option value="">Liste vide...</option>
+                                                    {% endfor %}
+                                                </select>
+                                                <button class="btn btn-default" type="submit">Ok</button>
+                                            </form>
+                                        </div>
 
-                                                {% else %}
-                                                    <option value="">Liste vide...</option>
-                                                {% endfor %}
-                                            </select>
-                                            <button class="btn btn-default" type="submit">Ok</button>
-                                        </form>
-
-                                        <div class='marge'>
-                                            Devise
-                                            <select type="text" name="" class="form-control" value="" id="">
-                                                <option value="">FCFA</option>
-                                            </select>
+                                        <div class="marge2">
+                                            
                                         </div>
 
                                         <div class="card-body table-responsive p-0" style="height: 150px;">
@@ -114,32 +115,32 @@
                                                         {% if app.session.get('achat') %}
                                                             {% for nb_row in nb_rows %}
                                                                 <tr>
-                                                                    <td>Qte totale<input type="text" name="qteStock{{ nb_row }}" class="form-control" value="{{ achat.getQteAchat }}" id=""></td>
-                                                                        <td>Prix total<input type="text" name="" class="form-control" value="{{ achat.getPrixAchatTotal }}" id=""></td>
-                                                                            <td>Prix unitaire<input type="text" name="prixUnit{{ nb_row }}" class="form-control" value="{{ achat.getPrixAchatUnitaire }}" id=""></td>
-                                                                                <td>Frais de stockage<input type="text" name="" class="form-control" value="Ex: 10000" id=""></td>
-                                                                                    </tr>
-                                                                                {% endfor %}
+                                                                    <td>Qte totale<input type="text" name="qteStock{{ nb_row }}" class="form-control" value="{{ qteTotale }}" id=""></td>
+                                                                    <td>Prix total<input type="text" name="" class="form-control" value="{{ prixTotal }}" id=""></td>
+                                                                    <td>Prix unitaire<input type="text" name="prixUnit{{ nb_row }}" class="form-control" value="{{ prixUnitaire }}" id=""></td>
+                                                                    <td>Frais de stockage<input type="text" name="" class="form-control" value="Ex: 10000" id=""></td>
+                                                                </tr>
+                                                            {% endfor %}
 
-                                                                            {% endif %}
+                                                        {% endif %}
 
-                                                                        </tbody>
-                                                                    </table>
+                                                        </tbody>
+                                                    </table>
 
-                                                                </div>
-                                                                <!-- /.card -->
-                                                                <br>
-                                                                {% if app.session.get('achat') %}
-                                                                    <button type="submit" name="enregistrer" class="btn btn-success">Enregistrer le stock</button>
-                                                                    </form>
-                                                                    
-                                                                {% endif %}
-                                                            </div>
-
-
-                                                        </section>
-                                                    </div>
                                                 </div>
+                                                <!-- /.card -->
+                                                <br>
+                                                {% if app.session.get('achat') and app.session.get('uvalVente') and app.session.get('margePrix') %}
+                                                    <button type="submit" name="enregistrer" class="btn btn-success">Enregistrer le stock</button>
+                                                    </form>
+                                                    
+                                                {% endif %}
+                                            </div>
+
+
+                                        </section>
+                                    </div>
+                                </div>
                                             </div>
                                         </div>
                                     </div>
