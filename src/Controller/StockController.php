@@ -291,7 +291,6 @@ class StockController extends AbstractController
         $sessionProduit=$session->get('stock',[]);//on recupere l'id de l'achat dans la session [stock]
         //optionModifStock
         $sessionoptionModifStock=$session->get('optionModifStock',[]);//on recupere l'id  dans la session [optionModifStock]
-
         $sessionMargePrix=$session->get('margePrix',[]);
         if (!empty($sessionMargePrix)) {
             $idMarge=$margeprixRepository->find($sessionMargePrix);//on recupere la marge des prix
@@ -300,6 +299,7 @@ class StockController extends AbstractController
         else{
             $idMarge=null;
         }
+        
         if (!empty($session->get('nb_row', []))) {
             $sessionLigne = $session->get('nb_row', []);
         }
@@ -384,7 +384,6 @@ class StockController extends AbstractController
             'uvals' => $uvalRepository->findAll(),
             'stock'=>$stock,//on affiche toutes les infos de cette variable
             'margePrix'=>$margeprixRepository->findAll(),//on affiche toutes les marges de prix
-            'profit'=>$stockRepository->find($sessionProduit)
         ]);
     }
 
