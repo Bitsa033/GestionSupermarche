@@ -36,7 +36,7 @@ class FamilleController extends AbstractController
     }
 
     /**
-     * Insertion et affichage des filieres
+     * Insertion et affichage des familles
      * @Route("index", name="famille_index")
      */
     public function famille(SessionInterface $session, FamilleRepository $familleRepository, Request $request, ManagerRegistry $end)
