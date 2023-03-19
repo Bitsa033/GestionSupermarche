@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Services\Service;
+use App\Service\Service;
 
 /**
  * @Route("stock_")
@@ -164,7 +164,7 @@ class StockController extends AbstractController
     /**
      * @Route("new", name="stock_new")
      */
-    public function newStock(Service $serviceStock,UvalRepository $uvalRepository,MargeprixRepository $margeprixRepository,SessionInterface $session,AchatRepository $achatRepository, ManagerRegistry $end)
+    public function newStock(Service $service,UvalRepository $uvalRepository,MargeprixRepository $margeprixRepository,SessionInterface $session,AchatRepository $achatRepository, ManagerRegistry $end)
     {
         $user = $this->getUser(); //on cherche l'utilisateur connecté
         $sessionProduit=$session->get('achat',[]);//on recupere l'id de l'achat dans la session [achat]
@@ -263,7 +263,8 @@ class StockController extends AbstractController
                     'profitTotalStock'=>$profTot,
                 );
                 //on cree le service qui permettra d'enregistrer les infos du post dans la bd
-               $serviceStock->StockInsertion($data,$uvalRepository,$achatRepository,$end);
+               //$stocker= $service->table_stock;
+               
             }
 
         }
@@ -373,7 +374,7 @@ class StockController extends AbstractController
                     // 'prixUniteVenteStock'=>0
                 );
                //on cree le service qui permettra d'enregistrer les infos du post dans la bd
-                $service->StockUpdate($data,$stock ,$end);
+                //$service->StockUpdate($data,$stock ,$end);
             }
 
         }

@@ -7,9 +7,6 @@ use App\Entity\Famille;
 use App\Form\ProduitType;
 use App\Repository\FamilleRepository;
 use App\Repository\ProduitRepository;
-use App\Repository\StockRepository;
-use App\Repository\UniteDeMesureRepository;
-use App\Repository\UvalRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,9 +15,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("produit_")
- */
 class ProduitController extends AbstractController
 {
     /**
@@ -59,9 +53,10 @@ class ProduitController extends AbstractController
 
     /**
      * Insertion et affichage des filieres
-     * @Route("new", name="produit_new")
+     * @Route("produit_new", name="produit_new")
      */
-    public function produit(SessionInterface $session,FamilleRepository $familleRepository,ProduitRepository $produitRepository, ManagerRegistry $end)
+    public function produit(SessionInterface $session,FamilleRepository $familleRepository,
+    ProduitRepository $produitRepository, ManagerRegistry $end)
     {
         $sessionFamille=$session->get('famille',[]);
         //on cherche l'utilisateur connecté

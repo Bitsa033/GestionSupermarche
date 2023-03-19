@@ -13,9 +13,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("famille_")
- */
 class FamilleController extends AbstractController
 {
     /**
@@ -37,7 +34,7 @@ class FamilleController extends AbstractController
 
     /**
      * Insertion et affichage des familles
-     * @Route("index", name="famille_index")
+     * @Route("familles", name="famille_index")
      */
     public function famille(SessionInterface $session, FamilleRepository $familleRepository, Request $request, ManagerRegistry $end)
     {
@@ -111,7 +108,7 @@ class FamilleController extends AbstractController
     }
 
     /**
-     * @Route("{id}", name="famille_show", methods={"GET"})
+     * @Route("famille_{id}", name="famille_show", methods={"GET"})
      */
     public function show(Famille $famille): Response
     {
@@ -121,7 +118,7 @@ class FamilleController extends AbstractController
     }
 
     /**
-     * @Route("{id}_edit", name="famille_edit", methods={"GET", "POST"})
+     * @Route("{famille_id}_edit", name="famille_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Famille $famille, EntityManagerInterface $entityManager): Response
     {
@@ -141,7 +138,7 @@ class FamilleController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="famille_delete", methods={"POST"})
+     * @Route("famille_{id}_delete", name="famille_delete", methods={"POST"})
      */
     public function delete(Request $request, Famille $famille, EntityManagerInterface $entityManager): Response
     {

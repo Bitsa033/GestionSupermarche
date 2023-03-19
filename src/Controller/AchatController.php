@@ -2,32 +2,23 @@
 
 namespace App\Controller;
 
-use App\Entity\Achat;
-use App\Entity\Catuval;
 use App\Form\AchatType;
-use App\Repository\AchatRepository;
-use App\Repository\ProduitRepository;
-use App\Repository\UvalRepository;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ManagerRegistry;
+use App\Service\Service;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("achat_")
- */
 class AchatController extends AbstractController
 {
     /**
-     * @Route("index", name="achat_index", methods={"GET"})
+     * @Route("/", name="achat_index", methods={"GET"})
      */
-    public function index(AchatRepository $achatRepository): Response
+    public function index(Service $service): Response
     {
         return $this->render('achat/achat.html.twig', [
-            'achats' => $achatRepository->findAll(),
+            'achats' => $service->repo_achat->findAll(),
         ]);
     }
 
@@ -116,11 +107,11 @@ class AchatController extends AbstractController
     }
 
     /**
-     * @Route("new", name="achat_new")
+     * @Route("achat_new", name="achat_new")
      */
-    public function new(UvalRepository $uvalRepository,SessionInterface $session,ProduitRepository $produitRepository,Request $request, ManagerRegistry $end)
+    public function new(Service $service,SessionInterface $session,Request $request,)
     {
-         //on cherche l'utilisateur connecté
+         //on cherche l'utilisateur connecté,le produit, l'unité
          $user = $this->getUser();
          $sessionProduit=$session->get('produit',[]);
          $sessionUval=$session->get('uval',[]);
@@ -148,31 +139,6 @@ class AchatController extends AbstractController
                  $nb_row[$i] = $i;
              }
          }
-         //on cree la methode qui permettra d'enregistrer les infos du post dans la bd
-         function insert_into_db($data,$idProduit,ProduitRepository $produitRepository,$idUval,UvalRepository $uvalRepository, ManagerRegistry $end)
-         {
-             foreach ($data as $key => $value) {
-                 $k[] = $key;
-                 $v[] = $value;
-             }
-             $k = implode(",", $k);
-             $v = implode(",", $v);
-            
-             $produit=$produitRepository->find($idProduit);
-             $uniteAchat=$uvalRepository->find($idUval);
-         
-             $achat = new Achat();
-             $achat->setProduit($produit);
-             $achat->setUniteAchat($uniteAchat);
-             $achat->setQteAchat($data['quantiteAchat']);
-             $achat->setPrixAchatUnitaire($data['prixAchatUnitaire']);
-             $achat->setPrixAchatTotal($data['prixAchatTotal']);
-             $achat->setDateachat(new \DateTime());
-             // $stock->setRef(strtoupper($data['ref']));
-             $manager = $end->getManager();
-             $manager->persist($achat);
-             $manager->flush();
-         }
  
          //si on clic sur le boutton enregistrer et que les champs du post ne sont pas vide
          if (isset($_POST['enregistrer'])) {
@@ -188,7 +154,8 @@ class AchatController extends AbstractController
                      'prixAchatTotal'=>$prixAchatTotal,
                  );
                 
-                 insert_into_db($data,$sessionProduit,$produitRepository,$sessionUval,$uvalRepository ,$end);
+                 //on enregistre les données dans la bd
+                 $service->new_achat($data,$sessionProduit,$sessionUval);
              }
  
          }
@@ -207,8 +174,8 @@ class AchatController extends AbstractController
  
          return $this->render('achat/new.html.twig', [
              'nb_rows' => $nb_row,
-             'produits'=>$produitRepository->findAll(),
-             'uvals' => $uvalRepository->findAll(),
+             'produits'=>$service->repo_produit->findAll(),
+             'uvals' => $service->repo_uval->findAll(),
              'nbArt'=>$nbArt,
              'prixUnit'=>$prixUnitArt,
              'prixTotal'=>$prixTotalArt,
@@ -216,10 +183,11 @@ class AchatController extends AbstractController
     }
 
     /**
-     * @Route("{id}", name="achat_show", methods={"GET"})
+     * @Route("achat_{id}", name="achat_show", methods={"GET"})
      */
-    public function show(Achat $achat): Response
+    public function show(Service $service,$id): Response
     {
+        $achat=$service->repo_achat->find($id);
         return $this->render('achat/show.html.twig', [
             'achat' => $achat,
         ]);
@@ -228,19 +196,19 @@ class AchatController extends AbstractController
     /**
      * @Route("{id}_edit", name="achat_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, Achat $achat, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request,Service $service): Response
     {
-        $form = $this->createForm(AchatType::class, $achat);
+        $form = $this->createForm(AchatType::class, $service->table_achat);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+            $service->db->flush();
 
             return $this->redirectToRoute('achat_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('achat/edit.html.twig', [
-            'achat' => $achat,
+            'achat' => $service->table_achat,
             'form' => $form->createView(),
         ]);
     }
@@ -248,9 +216,9 @@ class AchatController extends AbstractController
     /**
      * @Route("/{id}", name="achat_delete", methods={"POST"})
      */
-    public function delete(Request $request, Achat $achat, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$achat->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$$service->table_achat->getId(), $request->request->get('_token'))) {
             $entityManager->remove($achat);
             $entityManager->flush();
         }
