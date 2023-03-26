@@ -93,8 +93,7 @@ class Service{
 
     //on cree la methode qui permettra d'enregistrer les achats du post dans la bd
          
-    function new_achat($data,$idProduit,
-    $idUval)
+    function new_achat($data,$idProduit,$idUval)
     {
         $this->multiple_row($data);
 
@@ -110,6 +109,31 @@ class Service{
         $achat->setDateachat(new \DateTime());
         // $stock->setRef(strtoupper($data['ref']));
         $this->insert_to_db($achat);
+    }
+
+    //on cree la methode qui permettra d'enregistrer les produits du post dans la bd
+    function new_produit($data)
+    {
+        $this->multiple_row($data);
+        
+        $famille=$this->repo_famille->find($data['id_famille']);
+        $produit = new $this->table_produit;
+        $produit->setFamille($famille);
+        $produit->setNom(ucfirst($data['produit']));
+        $produit->setAlerte($data['alerte']);
+        $produit->setCode(strtoupper($data['code']));
+        $this->insert_to_db($produit);
+    }
+
+    //on cree la methode qui permettra d'enregistrer les familles de produits du post dans la bd
+    function new_famille($data)
+    {
+        $this->multiple_row($data);
+       
+        $famille = new $this->table_famille;
+        // $famille->setUser($user);
+        $famille->setNom(ucfirst($data['famille']));
+        $this->insert_to_db($famille);
     }
 
     // public function new_niveau($data, User $user)

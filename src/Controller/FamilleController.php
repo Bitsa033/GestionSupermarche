@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Famille;
 use App\Form\FamilleType;
 use App\Repository\FamilleRepository;
+use App\Service\Service;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class FamilleController extends AbstractController
 {
     /**
-     * @Route("nb", name="famille_nb")
+     * @Route("famille_nb", name="famille_nb")
      */
     public function nb(SessionInterface $session, Request $request)
     {
@@ -36,7 +37,7 @@ class FamilleController extends AbstractController
      * Insertion et affichage des familles
      * @Route("familles", name="famille_index")
      */
-    public function famille(SessionInterface $session, FamilleRepository $familleRepository, Request $request, ManagerRegistry $end)
+    public function famille(SessionInterface $session, Service $service)
     {
         //on cherche l'utilisateur connecté
         $user = $this->getUser();
@@ -63,24 +64,6 @@ class FamilleController extends AbstractController
                 $nb_row[$i] = $i;
             }
         }
-        
-        //on cree la methode qui permettra d'enregistrer les infos du post dans la bd
-        function insert_into_db($data, ManagerRegistry $end)
-        {
-            foreach ($data as $key => $value) {
-                $k[] = $key;
-                $v[] = $value;
-            }
-            $k = implode(",", $k);
-            $v = implode(",", $v);
-           
-            $famille = new Famille();
-            // $famille->setUser($user);
-            $famille->setNom(ucfirst($data['famille']));
-            $manager = $end->getManager();
-            $manager->persist($famille);
-            $manager->flush();
-        }
 
         //si on clic sur le boutton enregistrer et que les champs du post ne sont pas vide
         if (isset($_POST['enregistrer'])) {
@@ -92,7 +75,7 @@ class FamilleController extends AbstractController
                     'famille' => $_POST['famille' . $i]
                 );
                
-                insert_into_db($data, $end);
+                $service->new_famille($data);
             }
 
             // return $this->redirectToRoute('niveaux_index');
@@ -100,7 +83,7 @@ class FamilleController extends AbstractController
 
         return $this->render('famille/index.html.twig', [
             'nb_rows' => $nb_row,
-            'familles' => $familleRepository->findAll(),
+            'familles' => $service->repo_famille->findAll(),
             // 'famillesNb' => $familleRepository->count([
             //     'user' => $user
             // ]),

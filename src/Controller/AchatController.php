@@ -23,7 +23,7 @@ class AchatController extends AbstractController
     }
 
     /**
-     * @Route("nb", name="achat_nb")
+     * @Route("achat_nb", name="achat_nb")
      */
     public function nb(SessionInterface $session, Request $request)
     {
@@ -44,7 +44,7 @@ class AchatController extends AbstractController
     }
 
     /**
-     * @Route("sessionDevis", name="achat_sessionDevis")
+     * @Route("achat_sessionDevis", name="achat_sessionDevis")
      */
     public function sessionDevis(SessionInterface $session, Request $request)
     {
@@ -73,7 +73,7 @@ class AchatController extends AbstractController
     }
 
      /**
-     * @Route("sessionProduit", name="achat_sessionProduit")
+     * @Route("achat_sessionProduit", name="achat_sessionProduit")
      */
     public function sessionProduit(SessionInterface $session, Request $request)
     {
@@ -90,7 +90,7 @@ class AchatController extends AbstractController
     }
 
     /**
-     * @Route("sessionUval", name="achat_Uval")
+     * @Route("achat_Uval", name="achat_Uval")
      */
     public function sessionUval(SessionInterface $session, Request $request)
     {
@@ -167,9 +167,9 @@ class AchatController extends AbstractController
              $prixTotalArt=$prixTotalArt;
          }
          else{
-             $nbArt='XXX ...';
-             $prixUnitArt='XXX ...';
-             $prixTotalArt='XXX ...';
+             $nbArt='0000';
+             $prixUnitArt='0000';
+             $prixTotalArt='0000';
          }
  
          return $this->render('achat/new.html.twig', [
@@ -214,13 +214,14 @@ class AchatController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="achat_delete", methods={"POST"})
+     * @Route("achat_delete_{id}", name="achat_delete", methods={"POST"})
      */
-    public function delete(Request $request): Response
+    public function delete(Request $request,Service $service,$id): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$$service->table_achat->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($achat);
-            $entityManager->flush();
+        $achat=$service->repo_achat->find($id);
+        if ($this->isCsrfTokenValid('delete',$achat, $request->request->get('_token'))) {
+            $service->repo_achat->remove($achat);
+            $service->db->flush();
         }
 
         return $this->redirectToRoute('achat_index', [], Response::HTTP_SEE_OTHER);

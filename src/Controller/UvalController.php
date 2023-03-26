@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Uval;
 use App\Form\UvalType;
-use App\Repository\UvalRepository;
+use App\Service\Service;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,12 +17,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class UvalController extends AbstractController
 {
     /**
-     * @Route("index", name="uval_index", methods={"GET"})
+     * @Route("uval_index", name="uval_index", methods={"GET"})
      */
-    public function index(UvalRepository $uvalRepository): Response
+    public function index(Service $service): Response
     {
         return $this->render('uval/index.html.twig', [
-            'uvals' => $uvalRepository->findAll(),
+            'uvals' => $service->repo_uval->findAll(),
         ]);
     }
 

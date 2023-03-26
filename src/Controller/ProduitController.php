@@ -3,12 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Produit;
-use App\Entity\Famille;
 use App\Form\ProduitType;
-use App\Repository\FamilleRepository;
-use App\Repository\ProduitRepository;
+use App\Service\Service;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProduitController extends AbstractController
 {
     /**
-     * @Route("nb", name="produit_nb")
+     * @Route("produit_nb", name="produit_nb")
      */
     public function nb(SessionInterface $session, Request $request)
     {
@@ -52,11 +49,10 @@ class ProduitController extends AbstractController
     }
 
     /**
-     * Insertion et affichage des filieres
+     * Insertion et affichage des produits
      * @Route("produit_new", name="produit_new")
      */
-    public function produit(SessionInterface $session,FamilleRepository $familleRepository,
-    ProduitRepository $produitRepository, ManagerRegistry $end)
+    public function produit(SessionInterface $session,Service $service)
     {
         $sessionFamille=$session->get('famille',[]);
         //on cherche l'utilisateur connecté
@@ -80,27 +76,6 @@ class ProduitController extends AbstractController
                 $nb_row[$i] = $i;
             }
         }
-       
-        //on cree la methode qui permettra d'enregistrer les infos du post dans la bd
-        function insert_into_db($data,$idFamille,FamilleRepository $familleRepository, ManagerRegistry $end)
-        {
-            foreach ($data as $key => $value) {
-                $k[] = $key;
-                $v[] = $value;
-            }
-            $k = implode(",", $k);
-            $v = implode(",", $v);
-            
-            $famille=$familleRepository->find($idFamille);
-            $produit = new Produit();
-            $produit->setFamille($famille);
-            $produit->setNom(ucfirst($data['produit']));
-            $produit->setAlerte($data['alerte']);
-            $produit->setCode(strtoupper($data['code']));
-            $manager = $end->getManager();
-            $manager->persist($produit);
-            $manager->flush();
-        }
 
         //si on clic sur le boutton enregistrer et que les champs du post ne sont pas vide
         if (isset($_POST['enregistrer'])) {
@@ -109,12 +84,13 @@ class ProduitController extends AbstractController
             for ($i = 0; $i < $sessionNb; $i++) {
                 $ref=rand(001,5599);
                 $data = array(
+                    'id_famille'=>$sessionFamille,
                     'produit' => $_POST['produit' . $i],
-                    'code'    => 'code_'.$ref,
+                    'code'    => 'CE_'.$ref.'_'.$_POST['produit' . $i],
                     'alerte' => $_POST['alerte'. $i]
                 );
                
-                insert_into_db($data,$sessionFamille,$familleRepository ,$end);
+                $service->new_produit($data);
             }
 
             // return $this->redirectToRoute('niveaux_index');
@@ -122,23 +98,23 @@ class ProduitController extends AbstractController
 
         return $this->render('produit/new.html.twig', [
             'nb_rows' => $nb_row,
-            'familles'=>$familleRepository->findAll(),
-            'produits'=>$produitRepository->findAll()
+            'familles'=>$service->repo_famille->findAll(),
+            'produits'=>$service->repo_produit->findAll()
         ]);
     }
 
     /**
      * @Route("listeP", name="produit_listeP")
      */
-    public function produitsListe(ProduitRepository $produitRepository){
+    public function produitsListe(Service $service){
 
         return $this->render('produit/produits.html.twig',[
-            'produits'=>$produitRepository->findAll()
+            'produits'=>$service->repo_produit->findAll()
         ]);
     }
 
     /**
-     * @Route("_{id}", name="produit_show", methods={"GET"})
+     * @Route("produit_show_{id}", name="produit_show", methods={"GET"})
      */
     public function show(Produit $produit): Response
     {
@@ -148,7 +124,7 @@ class ProduitController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="produit_edit", methods={"GET", "POST"})
+     * @Route("produit_edit_{id}", name="produit_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Produit $produit, EntityManagerInterface $entityManager): Response
     {

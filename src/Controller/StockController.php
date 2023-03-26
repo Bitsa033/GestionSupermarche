@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Stock;
 use App\Repository\AchatRepository;
 use App\Repository\MargeprixRepository;
-use App\Repository\StockRepository;
 use App\Repository\UvalRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -22,27 +21,27 @@ use App\Service\Service;
 class StockController extends AbstractController
 {
     /**
-     * @Route("listeSt", name="stock_listeSt")
+     * @Route("stock_listeSt", name="stock_listeSt")
      */
-    public function listeSt(StockRepository $stockRepository){
+    public function listeSt(Service $service){
 
         return $this->render('stock/stocks.html.twig',[
-            'stocks'=>$stockRepository->findAll()
+            'stocks'=>$service->repo_stockt->findAll()
         ]);
     }
 
     /**
-     * @Route("listeProfits", name="stock_listeProfits")
+     * @Route("stock_listeProfits", name="stock_listeProfits")
      */
-    public function listeProfits(StockRepository $stockRepository){
+    public function listeProfits(Service $service){
         
         return $this->render('stock/profit.html.twig',[
-            'stocks'=>$stockRepository->findAll(),
+            'stocks'=>$service->repo_stockt->findAll(),
         ]);
     }
     
     /**
-     * @Route("nb", name="stock_nb")
+     * @Route("stock_nb", name="stock_nb")
      */
     public function nb(SessionInterface $session, Request $request)
     {
@@ -63,7 +62,7 @@ class StockController extends AbstractController
     }
 
     /**
-     * @Route("sessionAchat", name="stock_sessionAchat")
+     * @Route("stock_sessionAchat", name="stock_sessionAchat")
      */
     public function sessionProduit(SessionInterface $session, Request $request)
     {
@@ -80,7 +79,7 @@ class StockController extends AbstractController
     }
 
      /**
-     * @Route("sessionStock", name="stock_sessionStock")
+     * @Route("stock_sessionStock", name="stock_sessionStock")
      */
     public function sessionMargePrix(SessionInterface $session, Request $request)
     {
@@ -117,7 +116,7 @@ class StockController extends AbstractController
     }
 
     /**
-     * @Route("sessionUval", name="stock_Uval")
+     * @Route("stock_Uval", name="stock_Uval")
      */
     public function sessionUval(SessionInterface $session, Request $request,AchatRepository $achatRepository)
     {
@@ -162,7 +161,7 @@ class StockController extends AbstractController
     }
 
     /**
-     * @Route("new", name="stock_new")
+     * @Route("stock_new", name="stock_new")
      */
     public function newStock(Service $service,UvalRepository $uvalRepository,MargeprixRepository $margeprixRepository,SessionInterface $session,AchatRepository $achatRepository, ManagerRegistry $end)
     {
@@ -284,9 +283,9 @@ class StockController extends AbstractController
     }
 
     /**
-     * @Route("update", name="stock_update")
+     * @Route("stock_update", name="stock_update")
      */
-    public function updateStock(Service $service,UvalRepository $uvalRepository,MargeprixRepository $margeprixRepository,SessionInterface $session,StockRepository $stockRepository, ManagerRegistry $end)
+    public function updateStock(Service $service,SessionInterface $session)
     {
         $user = $this->getUser(); //on cherche l'utilisateur connecté
         $sessionProduit=$session->get('stock',[]);//on recupere l'id de l'achat dans la session [stock]
@@ -294,7 +293,7 @@ class StockController extends AbstractController
         $sessionoptionModifStock=$session->get('optionModifStock',[]);//on recupere l'id  dans la session [optionModifStock]
         $sessionMargePrix=$session->get('margePrix',[]);
         if (!empty($sessionMargePrix)) {
-            $idMarge=$margeprixRepository->find($sessionMargePrix);//on recupere la marge des prix
+            $idMarge=$service->repo_margeprix->find($sessionMargePrix);//on recupere la marge des prix
             $margeFamille=$idMarge->getMarge();
         }
         else{
@@ -309,7 +308,8 @@ class StockController extends AbstractController
         }
         $sessionNb = $sessionLigne/$sessionLigne;
         if (!empty($sessionProduit)) {
-            $stock=$stockRepository->find($sessionProduit);//on recupere tous les infos du stock de [sessionProduit]
+            //on recupere tous les infos du stock de [sessionProduit]
+            $stock=$service->repo_stockt->find($sessionProduit);
            
         }
         else{
@@ -333,7 +333,7 @@ class StockController extends AbstractController
                 //on recupere le prix unitaire d'achat
                 $prixUnitAchat=$_POST['prixUnit'.$i];
                 //on calcule le prix unitaire de vente
-                $idStock=$stockRepository->find($sessionProduit);
+                $idStock=$service->repo_stockt->find($sessionProduit);
                 $ancienProfit=$idStock->getProfitUnitaireStock();
                 if ($sessionoptionModifStock=='addition') {
                     $prixUnitVente=$prixUnitAchat +  $margeFamille;
@@ -381,10 +381,10 @@ class StockController extends AbstractController
 
         return $this->render('stock/edit.html.twig', [
             'nb_rows' => $nb_row,
-            'stocks'=>$stockRepository->findAll(),
-            'uvals' => $uvalRepository->findAll(),
+            'stocks'=>$service->repo_stockt->findAll(),
+            'uvals' => $service->repo_uval->findAll(),
             'stock'=>$stock,//on affiche toutes les infos de cette variable
-            'margePrix'=>$margeprixRepository->findAll(),//on affiche toutes les marges de prix
+            'margePrix'=>$service->repo_margeprix->findAll(),//on affiche toutes les marges de prix
         ]);
     }
 
