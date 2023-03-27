@@ -15,9 +15,6 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\Service;
 
-/**
- * @Route("stock_")
- */
 class StockController extends AbstractController
 {
     /**

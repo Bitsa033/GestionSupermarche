@@ -11,9 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("uval_")
- */
 class UvalController extends AbstractController
 {
     /**
@@ -27,7 +24,7 @@ class UvalController extends AbstractController
     }
 
     /**
-     * @Route("new", name="uval_new", methods={"GET", "POST"})
+     * @Route("uval_new", name="uval_new", methods={"GET", "POST"})
      */
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -49,7 +46,7 @@ class UvalController extends AbstractController
     }
 
     /**
-     * @Route("{id}", name="uval_show", methods={"GET"})
+     * @Route("uval_show_{id}", name="uval_show", methods={"GET"})
      */
     public function show(Uval $uval): Response
     {

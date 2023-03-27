@@ -136,6 +136,13 @@ class Service{
         $this->insert_to_db($famille);
     }
 
+    function new_uval($data)
+    {
+        $unite= new $this->table_uval;
+        $unite->setNomuval($data);
+        $this->insert_to_db($unite);
+    }
+
     // public function new_niveau($data, User $user)
     // {
     //     $this->multiple_row($data);
