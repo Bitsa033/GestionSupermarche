@@ -26,15 +26,14 @@ class UvalController extends AbstractController
     /**
      * @Route("uval_new", name="uval_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, Service $service): Response
     {
-        $uval = new Uval();
+        $uval=new $service->table_uval;
         $form = $this->createForm(UvalType::class, $uval);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($uval);
-            $entityManager->flush();
+            $service->insert_to_db($uval);
 
             return $this->redirectToRoute('uval_index', [], Response::HTTP_SEE_OTHER);
         }

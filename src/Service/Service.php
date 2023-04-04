@@ -60,7 +60,7 @@ class Service{
         $this->table_achat=Achat::class;
         $this->table_uval= Uval::class;
         $this->table_margeprix= Margeprix::class;
-        $this->table_stock= Stock::class;
+        $this->table_stock= new Stock;
 
         $this->db=$managerRegistry->getManager();
 
@@ -89,6 +89,29 @@ class Service{
         $v = implode(",", $v);
 
         return $array;
+    }
+
+    //on cree la methode qui permettra d'enregistrer les achats du post dans la bd
+         
+    function new_stock($data)
+    {
+        $this->multiple_row($data);
+
+        $achat=$this->repo_achat->find($data['achat']);
+        $uniteV=$this->repo_uval->find($data['uniteVente']);
+        $uniteS=$this->repo_uval->find($achat);
+    
+        $stock = $this->table_stock;
+        $stock->setAchat($achat);
+        $stock->setUniteStockage($uniteS);
+        $stock->setUniteVenteStock($uniteV);
+        $stock->setQteStockage($data['quantiteStockage']);
+        $stock->setPrixVenteUnitaireStock($data['prixVenteUnitaireStock']);
+        $stock->setPrixVenteTotaleStock($data['prixVenteTotaleStock']);
+        $stock->setProfitUnitaireStock($data['profitUnitaireStock']);
+        $stock->setProfitTotalStock($data['profitTotalStock']);
+        // $stock->setRef(strtoupper($data['ref']));
+        $this->insert_to_db($stock);
     }
 
     //on cree la methode qui permettra d'enregistrer les achats du post dans la bd

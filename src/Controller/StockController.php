@@ -259,7 +259,8 @@ class StockController extends AbstractController
                     'profitTotalStock'=>$profTot,
                 );
                 //on cree le service qui permettra d'enregistrer les infos du post dans la bd
-               //$stocker= $service->table_stock;
+                $service->new_stock($data);
+               
                
             }
 
@@ -386,7 +387,7 @@ class StockController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="stock_delete", methods={"POST"})
+     * @Route("stock_delete_{id}", name="stock_delete", methods={"POST"})
      */
     public function delete(Request $request, Stock $stock, EntityManagerInterface $entityManager): Response
     {

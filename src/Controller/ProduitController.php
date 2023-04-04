@@ -144,7 +144,7 @@ class ProduitController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="produit_delete", methods={"POST"})
+     * @Route("produit_delete_{id}", name="produit_delete", methods={"POST"})
      */
     public function delete(Request $request, Produit $produit, EntityManagerInterface $entityManager): Response
     {
