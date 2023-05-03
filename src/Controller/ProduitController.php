@@ -39,6 +39,7 @@ class ProduitController extends AbstractController
         if (!empty($request->request->get('famille'))) {
             $famille = $request->request->get('famille');
             $get_famille = $session->get('famille', []);
+            
             if (!empty($get_famille)) {
                 $session->set('famille', $famille);
             }
@@ -87,7 +88,8 @@ class ProduitController extends AbstractController
                     'id_famille'=>$sessionFamille,
                     'produit' => $_POST['produit' . $i],
                     'code'    => 'CE_'.$ref.'_'.$_POST['produit' . $i],
-                    'alerte' => $_POST['alerte'. $i]
+                    'alerte' => 5
+                    // 'alerte' =>$_POST['alerte'. $i],
                 );
                
                 $service->new_produit($data);
@@ -95,11 +97,18 @@ class ProduitController extends AbstractController
 
             // return $this->redirectToRoute('niveaux_index');
         }
+        if (!empty($sessionFamille)) {
+            $nom_famille=$service->repo_famille->find($sessionFamille)->getNom();
+        }
+        else {
+           $nom_famille="Aucune famille choisie pour l'instant!";
+        }
 
         return $this->render('produit/new.html.twig', [
             'nb_rows' => $nb_row,
             'familles'=>$service->repo_famille->findAll(),
-            'produits'=>$service->repo_produit->findAll()
+            'produits'=>$service->repo_produit->findAll(),
+            'nom_famille'=>$nom_famille
         ]);
     }
 

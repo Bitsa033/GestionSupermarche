@@ -26,7 +26,7 @@
 
 									<tbody>
 										<tr>
-                                            <th>Famille</th>
+                                            {# <th>Famille</th> #}
 											<th>Produit</th>
                                             <th>Code</th>
                                             {# <th>Qté Totale</th>
@@ -36,15 +36,12 @@
 										</tr>
 										{% for produit in produits %}
 											<tr>
-                                                <td>{{produit.famille.nom}}</td>
-                                                <td>{{produit.nom}}</td>
+                                                <td>{{produit.famille.nom}} <strong>|</strong> {{produit.nom}}</td>
                                                 <td>{{produit.code}}</td>
-                                                {# <td>
-                                                    {{produit.nomFamille}} {{produit.nomProduit}} 
-                                                </td>
-                                                <td>{{produit.unite}}</td>
+                                                
+                                                {# <td>{{produit.stock.unite}}</td>
                                                 <td>{{produit.qt| number_format(0, ' ', ' ')}}</td>
-                                                <td>{{produit.prixDeVente| number_format(0, ' ', ' ')}} FCFA</td>
+                                                <td>{{produit.stock.prixDeVente| number_format(0, ' ', ' ')}} FCFA</td>
                                                 <td>{{produit.prixTotalVente| number_format(0, ' ', ' ')}} FCFA</td> #}
                                             </tr>
 

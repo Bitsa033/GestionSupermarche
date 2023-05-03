@@ -75,6 +75,14 @@
 									</select>
 									<button class="btn btn-default" type="submit">Ok</button>
 								</form>
+								<!--on affiche ici le nom de la famille qui est dans la session-->
+								<div style="margin-left: 2%;">
+									{% if app.session.get('famille') %}
+										Famille en cours: <strong>{{nom_famille}}</strong>
+									{% else %}
+										<h6>Aucune famille choisie pour l'instant!</h6>
+									{% endif %}
+								</div>
 							</div>
                             <div class="card-body table-responsive p-0" style="height: 200px;">
                                 <form action="" method="post">
@@ -82,7 +90,7 @@
                                         <tbody>
                                             <tr>
                                                 <th>Produit</th>
-                                                <th>Qte d'alerte</th>
+                                                {# <th>Qte d'alerte</th> #}
                                             </tr>
 
 											{% for nb_row in nb_rows %}
@@ -90,9 +98,9 @@
                                                 <th>
                                                     <input type="text" name="produit{{nb_row}}" class="form-control" placeholder="Nom du produit" id="">
 												</th>
-                                                <th>
+                                                {# <th>
                                                     <input type="number" name="alerte{{nb_row}}" class="form-control" placeholder="Qte d'alerte" id="">
-												</th>
+												</th> #}
 							
                                             </tr>
 												

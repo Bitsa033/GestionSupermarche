@@ -42,6 +42,14 @@
                                                 </select>
                                                 <button class="btn btn-default" type="submit">Ok</button>
                                             </form>
+                                            <!--on afiche l'unité en cours-->
+                                            <div style="margin-left: 2%;">
+                                                {% if app.session.get('uval') %}
+                                                    Unité en cours: <strong>{{nom_unite}}</strong>
+                                                {% else %}
+                                                    <h6>Aucune unité choisie pour l'instant!</h6>
+                                                {% endif %}
+                                            </div>
                                         </div>
 
                                     </div>
@@ -69,7 +77,16 @@
                                             <button class="btn btn-default" type="submit">Ok</button>
                                         </form>
 
-                                        <div class='marge'>
+                                        <!--on afiche le produit en cours-->
+                                        <div style="margin-left: 2%;">
+                                            {% if app.session.get('produit') %}
+                                                Produit en cours: <strong>{{nom_produit}}</strong>
+                                            {% else %}
+                                                <h6>Aucun produit choisie pour l'instant!</h6>
+                                            {% endif %}
+                                        </div>
+
+                                        <div class='marge' style="margin-left: 2%;">
                                             Devise
                                             <select type="text" name="" class="form-control" value="" id="">
                                                 <option value="">FCFA</option>

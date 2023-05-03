@@ -31,7 +31,7 @@
                                                     <button type="submit" class="form-control">Ok</button>
                                                 </form>
                                             </div>
-                                            <div class="marge2">
+                                            <div class="marge2 col-md-8">
                                                 Unité de vente:
                                                 <form action="{{ path('stock_Uval') }}" method="post">
                                                     <select class="form-control" name="uvente" id="">
@@ -45,6 +45,13 @@
                                                     </select>
                                                     <button class="btn btn-default" type="submit">Ok</button>
                                                 </form>
+                                                <div style="margin-left: 2%;">
+                                                    {% if app.session.get('uvalVente') %}
+                                                        Unité en cours: <strong>{{nom_unite}}</strong>
+                                                    {% else %}
+                                                        {{nom_unite}}
+                                                    {% endif %}
+                                                </div>
                                             </div>
                                             <div class='marge2'>
                                                 {% if app.session.get('uvalVente') and app.session.get('achat') and uniteAchat != uniteVente %}
@@ -85,6 +92,13 @@
                                                     </select>
                                                     <button class="btn btn-default" type="submit">Ok</button>
                                                 </form>
+                                                <div style="margin-left: 2%;" class="col-md-12">
+                                                    {% if app.session.get('achat') %}
+                                                        Produit en cours: <strong>{{nom_produit}}</strong>
+                                                    {% else %}
+                                                        {{nom_produit}}
+                                                    {% endif %}
+                                                </div>
                                             </div>
 
                                             <div class="marge2">
@@ -101,6 +115,13 @@
                                                     </select>
                                                     <button class="btn btn-default" type="submit">Ok</button>
                                                 </form>
+                                                <div style="margin-left: 2%;" class="col-md-12">
+                                                    {% if app.session.get('margePrix') %}
+                                                        Profit en cours: <strong>{{nom_profit}}</strong>
+                                                    {% else %}
+                                                        {{nom_profit}}
+                                                    {% endif %}
+                                                </div>
                                             </div>
 
                                             <div class="marge2"></div>

@@ -171,6 +171,21 @@ class AchatController extends AbstractController
              $prixUnitArt='0000';
              $prixTotalArt='0000';
          }
+
+         if (!empty($sessionProduit)) {
+             $nom_produit=$service->repo_produit->find($sessionProduit)->getNom();
+         }
+         else {
+            $nom_produit="Aucun produit choisie pour l'instant!";
+         }
+
+         if (!empty($sessionUval)) {
+            $nom_unite=$service->repo_uval->find($sessionUval)->getNomuval();
+        }
+        else {
+           $nom_unite="Aucune unité choisie pour l'instant!";
+        }
+         
  
          return $this->render('achat/new.html.twig', [
              'nb_rows' => $nb_row,
@@ -179,6 +194,8 @@ class AchatController extends AbstractController
              'nbArt'=>$nbArt,
              'prixUnit'=>$prixUnitArt,
              'prixTotal'=>$prixTotalArt,
+             'nom_produit'=>$nom_produit,
+             'nom_unite'=>$nom_unite
          ]);
     }
 

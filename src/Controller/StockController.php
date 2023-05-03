@@ -266,6 +266,27 @@ class StockController extends AbstractController
 
         }
 
+        if (!empty($sessionProduit)) {
+            $nom_produit=$service->repo_produit->find($sessionProduit)->getNom();
+        }
+        else {
+           $nom_produit="Aucun produit choisie pour l'instant!";
+        }
+
+        if (!empty($sessionUvalVente)) {
+           $nom_unite=$service->repo_uval->find($sessionUvalVente)->getNomuval();
+       }
+       else {
+          $nom_unite="Aucune unité choisie pour l'instant!";
+       }
+
+       if (!empty($sessionMargePrix)) {
+            $nom_profit=$service->repo_margeprix->find($sessionMargePrix)->getMarge();
+        }
+        else {
+            $nom_profit="Aucun profit choisi pour l'instant!";
+        }
+
         return $this->render('stock/new.html.twig', [
             'nb_rows' => $nb_row,
             'achats'=>$achatRepository->findAll(),
@@ -276,7 +297,10 @@ class StockController extends AbstractController
             'uniteAchat'=>$uniteAchat,
             'uvals' => $uvalRepository->findAll(),
             'achat'=>$achat,//on affiche toutes les infos de cette variable
-            'margePrix'=>$margeprixRepository->findAll()//on affiche toutes les marges de prix
+            'margePrix'=>$margeprixRepository->findAll(),//on affiche toutes les marges de prix,
+            'nom_produit'=>$nom_produit,
+            'nom_unite'=>$nom_unite,
+            'nom_profit'=>$nom_profit
         ]);
     }
 
