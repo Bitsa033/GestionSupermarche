@@ -5,6 +5,9 @@ namespace App\Repository;
 use App\Entity\Achat;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @method Achat|null find($id, $lockMode = null, $lockVersion = null)
@@ -18,6 +21,22 @@ class AchatRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Achat::class);
     }
+    
+    // public function connectionToDatabase()
+    // {
+    //     $dbname='mysql:host=localhost;dbname=gps';
+    //     $user='';
+    //     $pwd='';
+    //     try {
+    //         $pdo= new \PDO($dbname,$user,$pwd);
+    //     } catch (\Exception $e) {
+    //         die("Nous ne trouvons pas la base de données ! Si votre base de données est hébergée sur un serveur,
+    //         veuillez l'activer puis recommencez.");
+    //     }
+
+    //     return $pdo;
+    // }
+
 
     // /**
     //  * @return Achat[] Returns an array of Achat objects

@@ -55,7 +55,7 @@ class UvalController extends AbstractController
     }
 
     /**
-     * @Route("{id}_edit", name="uval_edit", methods={"GET", "POST"})
+     * @Route("uval_edit_{id}", name="uval_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Uval $uval, EntityManagerInterface $entityManager): Response
     {
@@ -75,7 +75,7 @@ class UvalController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="uval_delete", methods={"POST"})
+     * @Route("uval_delete_{id}", name="uval_delete", methods={"POST"})
      */
     public function delete(Request $request, Uval $uval, EntityManagerInterface $entityManager): Response
     {

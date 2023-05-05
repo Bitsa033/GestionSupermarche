@@ -200,9 +200,10 @@ class AchatController extends AbstractController
     }
 
     /**
-     * @Route("achat_{id}", name="achat_show", methods={"GET"})
+     * on valide ou non la reception de l'achat
+     * @Route("achat_reception_{id}", name="achat_reception", methods={"GET","POST"})
      */
-    public function show(Service $service,$id): Response
+    public function reception_achat(Service $service,$id): Response
     {
         $achat=$service->repo_achat->find($id);
         return $this->render('achat/show.html.twig', [
@@ -211,7 +212,7 @@ class AchatController extends AbstractController
     }
 
     /**
-     * @Route("{id}_edit", name="achat_edit", methods={"GET", "POST"})
+     * @Route("achat_edit_{id}", name="achat_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request,Service $service): Response
     {

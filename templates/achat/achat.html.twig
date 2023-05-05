@@ -20,7 +20,7 @@
                 <div class="row">
 					<div class="col-md-12">
 						<div class="card">
-						  <div class="card-header"><p class="h5">Liste des Achat Enregistrés | <a href="{{path('achat_new')}}">Nouvel Achat</a></p></div>
+						  <div class="card-header"><p class="h5">Liste des commandes | <a href="{{path('achat_new')}}">Nouvelle commande</a></p></div>
 							<div class="card-body table-responsive p-0" style="height: 310px;">
                                 {# <br>
                                 <form action="" method="post">
@@ -33,32 +33,42 @@
 
 									<tbody>
 										<tr>
-											{# <th>ID</th> #}
+											<th>Date commande</th>
 											<th>Produit</th>
-                                            <th>Unité</th>
                                             <th>Qté Tot.</th>
                                             <th>Prix Unit.</th>
                                             <th>Prix Total</th>
+                                            <th>Livré</th>
 											
 										</tr>
 										{% for achat in achats %}
 											<tr>
-												<td>{{achat.produit.nom}}</td>
-                                                <td>{{achat.getUniteAchat.getNomuval}}</td>
-                                                <td>{{achat.getQteAchat| number_format(0, ' ', ' ')}}</td>
+                                                <td>{{achat.dateachat|date("m/d/Y")}}</td>
+												<td>{{achat.produit.famille.nom}} {{achat.produit.nom}}</td>
+                                                <td>
+                                                    {% if achat.getQteAchat >=2 %}
+                                                    {{achat.getQteAchat| number_format(0, ' ', ' ')}} {{achat.getUniteAchat.getNomuval}}{{'s'}}
+                                                    {% else %}
+                                                    {{achat.getQteAchat| number_format(0, ' ', ' ')}} {{achat.getUniteAchat.getNomuval}}  
+                                                    {% endif %}
+                                                </td>
                                                 <td>{{achat.getPrixAchatUnitaire| number_format(0, ' ', ' ')}} FCFA</td>
                                                 <td>{{achat.getPrixAchatTotal| number_format(0, ' ', ' ')}} FCFA</td>
-                                                {# <td><a href=""> {{stock.nomProduit}}</a></td>
-                                                <td>{{stock.unite}}</td>
-                                                <td>{{stock.qt| number_format(0, ' ', ' ')}}</td>
-                                                <td>{{stock.qs| number_format(0, ' ', ' ')}}</td>
-                                                <td>{{stock.pvu | number_format(0, ' ', ' ')}} FCFA</td>
-                                                <td>{{stock.pvt | number_format(0, ' ', ' ')}} FCFA</td> #}
+                                                <td>
+                                                    <a href="{{path('achat_reception',{'id': achat.id})}}" >Editer <i class="fa fa-edit"></i></a>
+                                                    {# <form action="" method="post">
+                                                        <label for="rada">Oui</label>
+                                                        <input type="radio" name="rada" id="rada" value="Oui">
+                                                        <label for="radb">Non</label>
+                                                        <input type="radio" name="radb" id="radb" checked value="Non">
+                                                    </form> #}
+                                                </td>
+                                                
                                             </tr>
 
 										{% else %}
 											<tr>
-												<td colspan="8" align='center'>Liste vide !</td>
+												<td colspan="8" class='text-center'>Liste vide !</td>
 											</tr>
 										{% endfor %}
 
