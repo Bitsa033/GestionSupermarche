@@ -24,8 +24,8 @@
                                 <td>{{ uval.id }}</td>
                                 <td>{{ uval.nomuval }}</td>
                                 <td>
-                                    <a href="{{ path('uval_show', {'id': uval.id}) }}">show</a>
-                                    <a href="{{ path('uval_edit', {'id': uval.id}) }}">edit</a>
+                                    <a class="btn btn-info" href="{{ path('uval_show', {'id': uval.id}) }}">Consulter</a>
+                                    <a class="btn btn-info" href="{{ path('uval_edit', {'id': uval.id}) }}">Editer</a>
                                 </td>
                             </tr>
                         {% else %}

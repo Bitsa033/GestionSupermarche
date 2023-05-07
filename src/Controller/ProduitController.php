@@ -83,13 +83,15 @@ class ProduitController extends AbstractController
             
             //dd($session_nb_row);
             for ($i = 0; $i < $sessionNb; $i++) {
-                $ref=rand(001,5599);
+                $ref=rand(01,299);
                 $data = array(
                     'id_famille'=>$sessionFamille,
                     'produit' => $_POST['produit' . $i],
-                    'code'    => 'CE_'.$ref.'_'.$_POST['produit' . $i],
-                    'alerte' => 5
-                    // 'alerte' =>$_POST['alerte'. $i],
+                    'code'    => 'PROD_'.$ref.'_'.$_POST['produit' . $i],
+                    'uniteAchat' =>$_POST['unite_achat'. $i],
+                    'uniteVente'=>$_POST['unite_vente'. $i],
+                    'prixAchat'=>$_POST['prix_achat'. $i],
+                    'prixVente'=>$_POST['prix_vente'. $i],
                 );
                
                 $service->new_produit($data);

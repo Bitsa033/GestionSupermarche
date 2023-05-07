@@ -36,16 +36,16 @@
 										{% for stock in stocks %}
 											<tr>
                                                 <td>{{stock.id}}</td>
-												<td>{{stock.achat.produit.famille.nom}} {{stock.achat.produit.nom}}</td>
+												<td>{{stock.achat.produit.nom}}</td>
                                                 <td>
-                                                    {% if stock.getQteStockage >=2 %}
-                                                    {{stock.getQteStockage| number_format(0, ' ', ' ')}} {{stock.getUniteStockage.nomuval}}{{'s'}}   
+                                                    {% if stock.qteStockage >=2 %}
+                                                    {{stock.qteStockage| number_format(0, ' ', ' ')}} {{stock.uniteStockage.nomuval}}{{'s'}}   
                                                     {% else %}
-                                                    {{stock.getQteStockage| number_format(0, ' ', ' ')}} {{stock.getUniteStockage.nomuval}}
+                                                    {{stock.qteStockage| number_format(0, ' ', ' ')}} {{stock.uniteStockage.nomuval}}
                                                     {% endif %}
                                                 </td>
-                                                <td>{{stock.getPrixVenteUnitaireStock| number_format(0, ' ', ' ')}} FCFA</td>
-                                                <td>{{stock.getPrixVenteTotaleStock| number_format(0, ' ', ' ')}} FCFA</td>
+                                                <td>{{stock.reception.achat.produit.prixVente| number_format(0, ' ', ' ')}} FCFA</td>
+                                                <td>{{stock.prixTotal| number_format(0, ' ', ' ')}} FCFA</td>
                                             </tr>
 
 										{% else %}

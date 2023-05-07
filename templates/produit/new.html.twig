@@ -18,37 +18,8 @@
                 </div>
                 <!-- /.row -->
                 <div class="row">
-					<div class="col-md-4">
-						<div class="card">
-						 <div class="card-header"><p class="h5">Liste des Produits Enregistrés</p></div>
-							<div class="card-body table-responsive p-0" style="height: 390px;">
-								<table class="table table-head-fixed text-nowrap">
-
-									<tbody>
-										<tr>
-											<th>Nom</th>
-											<th>Code</th>
-										</tr>
-										{% for produit in produits %}
-											<tr>
-												<td>{{produit.nom}}</td>
-                                                <td>{{produit.code}}</td>
-                                            </tr>
-										{% else %}
-											<tr>
-												<td colspan="3">Liste vide !</td>
-											</tr>
-										{% endfor %}
-
-									</tbody>
-								</table>
-
-							</div>
-							<!-- /.card-body -->
-						</div>
-					</div>
                     
-                    <div class="col-md-8">
+                    <div class="col-md-12">
 
                         <div class="card">
                             <div class="card-header">
@@ -65,7 +36,7 @@
 							<div class="card-header form-inline">
 								<form action="{{path('produit_sessionFamille')}}" method="post">
 									Famille:
-									<select class="form-control" name="famille" id="">
+									<select style="width:250px;" class="form-control" name="famille" id="">
 										{% for famille in familles %}
 										<option value="{{famille.id}}">{{famille.nom}}</option>
 											
@@ -89,8 +60,11 @@
                                     <table class="table table-head-fixed text-nowrap">
                                         <tbody>
                                             <tr>
-                                                <th>Produit</th>
-                                                {# <th>Qte d'alerte</th> #}
+                                                <th>Nom</th>
+												<th>Prix d'achat</th>
+												<th>Unité d'achat</th>
+                                                <th>Prix de vente</th>
+												<th>Unité de vente</th>
                                             </tr>
 
 											{% for nb_row in nb_rows %}
@@ -98,9 +72,18 @@
                                                 <th>
                                                     <input type="text" name="produit{{nb_row}}" class="form-control" placeholder="Nom du produit" id="">
 												</th>
-                                                {# <th>
-                                                    <input type="number" name="alerte{{nb_row}}" class="form-control" placeholder="Qte d'alerte" id="">
-												</th> #}
+                                                <th>
+                                                    <input type="number" name="prix_achat{{nb_row}}" class="form-control" placeholder="Prix d'achat" id="">
+												</th>
+												<th>
+                                                    <input type="number" name="unite_achat{{nb_row}}" class="form-control" placeholder="Unité d'achat" id="">
+												</th>
+												<th>
+                                                    <input type="number" name="prix_vente{{nb_row}}" class="form-control" placeholder="Prix de vente" id="">
+												</th>
+												<th>
+                                                    <input type="number" name="unite_vente{{nb_row}}" class="form-control" placeholder="Unité de vente" id="">
+												</th>
 							
                                             </tr>
 												
@@ -114,7 +97,10 @@
 
 								</div>
 								<!-- /.card-body -->
+								{% if app.session.get('famille') %}
 								<button type="submit" name="enregistrer" class="btn btn-success form-control offset-1 col-10">Enregistrer</button>
+								{% else %}
+								{% endif %}
 								<br><br>
                                 </form>
                                 </div>

@@ -38,22 +38,22 @@
                                             <th>Qté Tot.</th>
                                             <th>Prix Unit.</th>
                                             <th>Prix Total</th>
-                                            <th>Livré</th>
+                                            <th>Reception</th>
 											
 										</tr>
 										{% for achat in achats %}
 											<tr>
                                                 <td>{{achat.dateachat|date("m/d/Y")}}</td>
-												<td>{{achat.produit.famille.nom}} {{achat.produit.nom}}</td>
+												<td>{{achat.produit.nom}}</td>
                                                 <td>
-                                                    {% if achat.getQteAchat >=2 %}
-                                                    {{achat.getQteAchat| number_format(0, ' ', ' ')}} {{achat.getUniteAchat.getNomuval}}{{'s'}}
+                                                    {% if achat.qte >=2 %}
+                                                    {{achat.qte| number_format(0, ' ', ' ')}} {{achat.produit.uniteAchat.nomuval}}{{'s'}}
                                                     {% else %}
-                                                    {{achat.getQteAchat| number_format(0, ' ', ' ')}} {{achat.getUniteAchat.getNomuval}}  
+                                                    {{achat.qte| number_format(0, ' ', ' ')}} {{achat.produit.uniteAchat.nomuval}} 
                                                     {% endif %}
                                                 </td>
-                                                <td>{{achat.getPrixAchatUnitaire| number_format(0, ' ', ' ')}} FCFA</td>
-                                                <td>{{achat.getPrixAchatTotal| number_format(0, ' ', ' ')}} FCFA</td>
+                                                <td>{{achat.produit.prixAchat| number_format(0, ' ', ' ')}} FCFA</td>
+                                                <td>{{achat.prixTotal| number_format(0, ' ', ' ')}} FCFA</td>
                                                 <td>
                                                     <a href="{{path('achat_reception',{'id': achat.id})}}" >Editer <i class="fa fa-edit"></i></a>
                                                     {# <form action="" method="post">

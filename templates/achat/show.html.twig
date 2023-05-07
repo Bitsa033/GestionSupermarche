@@ -10,22 +10,22 @@
         <tbody>
             <tr>
                 <th>Date commande</th>
+                <th>Prix unitaire</th>
                 <th>Quantité</th>
                 <th>Prix total</th>
-                <th>Prix unitaire</th>
                 
             </tr>
             <tr>
                 <td>{{ achat.dateachat ? achat.dateachat|date('m/d/Y H:i:s') : '' }}</td>
+                <td>{{achat.produit.prixAchat}} FCFA</td>
                 <td>
-                    {% if achat.getQteAchat >=2 %}
-                    {{achat.getQteAchat| number_format(0, ' ', ' ')}} {{achat.getUniteAchat.getNomuval}}{{'s'}}
+                    {% if achat.qte >=2 %}
+                    {{achat.qte| number_format(0, ' ', ' ')}} {{achat.produit.uniteAchat.nomuval}}{{'s'}}
                     {% else %}
-                    {{achat.getQteAchat| number_format(0, ' ', ' ')}} {{achat.getUniteAchat.getNomuval}}  
+                    {{achat.qte| number_format(0, ' ', ' ')}} {{achat.produit.uniteAchat.nomuval}}  
                     {% endif %}
                 </td>
-                <td>{{ achat.getPrixAchatTotal }}</td>
-                <td>{{ achat.getPrixAchatUnitaire }}</td>
+                <td>{{ achat.prixTotal| number_format(0, ' ', ' ') }} FCFA</td>
             </tr>
         </tbody>
     </table>
@@ -45,10 +45,10 @@
         <input disabled style="margin-left: 12%;" type="text" name="nom_commande" id="nom_commande" value="{{achat.produit.nom}}"><br>
         <!--qte totale de commande-->
         <label for="qte_tot">Qté Totale</label>
-        <input style="margin-left: 8%;" type="text" name="qte_tot" id="qte_tot" value="{{achat.getQteAchat}}"><br>
+        <input style="margin-left: 8%;" type="text" name="qte_tot" id="qte_tot" value="{{achat.qte}}"><br>
         <!--prix unitaire de commande-->
         <label for="prix_tot">Prix Total</label>
-        <input style="margin-left: 9%;" type="text" name="prix_tot" id="prix_tot" value="{{achat.getPrixAchatTotal}}"><br>
+        <input style="margin-left: 9%;" type="text" name="prix_tot" id="prix_tot" value="{{achat.prixTotal}}"><br>
         <!--date de commande-->
         <label for="date_commande">Date Commnde</label>
         <input style="margin-left: 4%;" type="text" name="date_commande" id="date_commande" value="{{achat.dateachat|date('m/d/Y')}}"><br>

@@ -61,9 +61,9 @@ class Service{
         $this->repo_margeprix=$margeprixRepository;
         $this->repo_stockt=$stockRepository;
 
-        $this->table_famille=Famille::class;
-        $this->table_produit= new Produit;
-        $this->table_achat= new Achat;
+        $this->table_famille= Famille::class;
+        $this->table_produit= Produit::class;
+        $this->table_achat= Achat::class;
         $this->table_reception= new Reception;
         $this->table_uval= Uval::class;
         $this->table_margeprix= Margeprix::class;
@@ -115,14 +115,12 @@ class Service{
 
     //on cree la methode qui permettra d'enregistrer les achats du post dans la bd
          
-    function new_achat($data,$idProduit,$idUval)
+    function new_achat($data)
     {
-        $this->multiple_row($data);
 
-        $produit=$this->repo_produit->find($idProduit);
-        $uniteAchat=$this->repo_uval->find($idUval);
+        $produit=$this->repo_produit->find($data['produit']);
     
-        $achat =$this->table_achat;
+        $achat = new $this->table_achat;
         $achat->setProduit($produit);
         $achat->setQte($data['quantite']);
         $achat->setPrixATotal($data['prixTotal']);
@@ -140,7 +138,7 @@ class Service{
         $unite_achat=$this->repo_uval->find($data['uniteAchat']);
         $unite_vente=$this->repo_uval->find($data['uniteVente']);
 
-        $produit = $this->table_produit;
+        $produit = new $this->table_produit;
         $produit->setFamille($famille);
         $produit->setNom(ucfirst($data['produit']));
         $produit->setCode(strtoupper($data['code']));

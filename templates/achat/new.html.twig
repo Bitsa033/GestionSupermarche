@@ -1,176 +1,80 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <!-- Content Wrapper. Contains page content -->
-    <div
-        class="content-wrapper">
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
 
-        <!-- Main content -->
-        <section class="content">
-            <br>
-                <div
-                    class="container-fluid">
-                    <!-- Info boxes -->
-                    <div class="row">
-                        <div class="col-12 col-sm-6 col-md-3"></div>
-                        <!-- /.col -->
+    <!-- Main content -->
+    <section class="content">
+        <br>
+        <div class="container-fluid">
 
+            <div class="col-md-12">
+
+                <div class="card">
+
+                    <table class=" table-head-fixed">
+                        <thead class="table table-primary table-head-fixed">
+                            <tr>
+                                <td colspan='2'>Nouvelle(s) Commande(s)</td>
+                            </tr>
+
+                        </thead>
+                    </table>
+                    <!-- /.card-header -->
+                    <div class="card-header form-inline">
+
+                        <div class="card-body table-responsive p-0" style="height:500px;">
+                            <table class="table table-head-fixed">
+
+                                <form action="{{ path('achat_new') }}" method="post">
+
+                                    <tbody class="table table-bordered">
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Produit</th>
+                                            <th>Qte</th>
+                                            <th>Unité d'achat</th>
+                                            <th>Date de livraison</th>
+                                        </tr>
+
+                                        {% for produit in produits %}
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" name="produit_id[]" value="{{produit.id}}" class="" id="">
+                                            </td>
+                                            <td>
+                                                {{ produit.famille.nom }} {{ produit.nom }}
+                                                <input type="hidden" name="produit_name[]" value="{{produit.id}}" class="form-control" id="">
+                                            </td>
+                                            <td>
+                                                <input type="text" name="quantite[]" class="form-control" id="">
+                                            </td>
+                                            <td>
+                                                {{ produit.uniteAchat.nomuval }}
+                                            </td>
+                                            <td><input type="date" name="date_commande[]" class="form-control" id="">
+                                            </td>
+
+                                        </tr>
+                                        {% endfor %}
+
+                                    </tbody>
+                            </table>
+
+                        </div>
+                        <!-- /.card -->
+                        <br>
+                        <button type="submit" name="enregistrer" class="btn btn-success offset-4">Enregistrer
+                            la commande</button>
+                        </form>
                     </div>
-                    <!-- /.row -->
-                    <div class="row">
 
-                        <div class="col-md-12">
+                </div>
+            </div>
+        </div>
 
-                            <div class="card">
-                                <div class="card-header">
-                                    <div class="form-inline">
-                                        <form action="{{ path('achat_nb') }}" method="post">
-                                            Nb Achat:
-                                            <input type="number" name="nb_row" min='1' max='1' class="form-control" value="1">
-                                                <button type="submit" class="form-control">Ok</button>
-                                            </form>
+    </section>
+</div>
 
-                                            <form action="{{ path('achat_Uval') }}" method="post" class='marge'>
-                                                Unité d'Achat:
-                                                <select class="form-control" name="uval" id="">
-                                                    {% for uval in uvals %}
-                                                        <option value="{{ uval.id }}">{{ uval.nomuval }}</option>
-
-                                                    {% else %}
-                                                        <option value="">Liste vide...</option>
-                                                    {% endfor %}
-                                                </select>
-                                                <button class="btn btn-default" type="submit">Ok</button>
-                                            </form>
-                                            <!--on afiche l'unité en cours-->
-                                            <div style="margin-left: 2%;">
-                                                {% if app.session.get('uval') %}
-                                                    Unité en cours: <strong>{{nom_unite}}</strong>
-                                                {% else %}
-                                                    <h6>Aucune unité choisie pour l'instant!</h6>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <table class=" table-head-fixed">
-                                        <thead class="table table-primary table-head-fixed">
-                                            <tr>
-                                                <td colspan='2'>Enregistrement d'Achat</td>
-                                            </tr>
-
-                                        </thead>
-                                    </table>
-                                    <!-- /.card-header -->
-                                    <div class="card-header form-inline">
-                                        Produit:
-                                        <form action="{{ path('achat_sessionProduit') }}" method="post">
-                                            <select class="form-control" name="produit" id="">
-                                                {% for produit in produits %}
-                                                    <option value="{{ produit.id }}">{{ produit.famille.nom }}
-                                                        {{ produit.nom }}</option>
-
-                                                {% else %}
-                                                    <option value="">Liste vide...</option>
-                                                {% endfor %}
-                                            </select>
-                                            <button class="btn btn-default" type="submit">Ok</button>
-                                        </form>
-
-                                        <!--on afiche le produit en cours-->
-                                        <div style="margin-left: 2%;">
-                                            {% if app.session.get('produit') %}
-                                                Produit en cours: <strong>{{nom_produit}}</strong>
-                                            {% else %}
-                                                <h6>Aucun produit choisie pour l'instant!</h6>
-                                            {% endif %}
-                                        </div>
-
-                                        <div class='marge' style="margin-left: 2%;">
-                                            Devise
-                                            <select type="text" name="" class="form-control" value="" id="">
-                                                <option value="">FCFA</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="card-body table-responsive p-0" style="height: 150px;">
-                                            <table class="table table-head-fixed">
-
-                                                <form action="{{ path('achat_new') }}" method="post">
-
-                                                    <tbody class="table table-light">
-                                                        {% for nb_row in nb_rows %}
-                                                            <tr>
-                                                                <td>Qte total
-                                                                    <input type="text" name="quantiteAchat{{ nb_row }}" class="form-control" value="{{ nbArt }}" id=""></td>
-                                                                    <td>Prix total d'achat<input type="text" name="prixAchatTotal{{ nb_row }}" class="form-control" value="{{ prixTotal }}" id=""></td>
-                                                                        <td>Prix unitaire d'achat<input type="text" name="prixAchatUnitaire{{ nb_row }}" class="form-control" value="{{ prixUnit }}" id=""></td>
-                                                                            <td>Frais de stockage<input type="text" name="" class="form-control" value="0000" id=""></td>
-
-                                                                            </tr>
-                                                                        {% endfor %}
-
-                                                                    </tbody>
-                                                                </table>
-
-                                                                
-                                                            </div>
-                                                            <!-- /.card -->
-                                                            <br>
-                                                                <button type="submit" name="enregistrer" class="btn btn-success">Enregistrer l'Achat</button>
-                                                            </form>
-                                                        </div>
-
-                                                        <table class="table table-primary table-head-fixed">
-                                                            <tr>
-                                                                <td>
-                                                                    <div class="form-inline">
-                                                                        <form action="{{ path('achat_sessionDevis') }}" method="post" class=''>
-                                                                            Devis d'achat
-                                                                            <input type="text" name="devisNb" class="form-control" value="1"></div>
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
-                                                                <div class="row">
-                                                                    <div class="col-md">
-                                                                        Qté Totale d'Articles
-                                                                        <input type="text" name="nbArt" class="form-control" value="{{ nbArt }}"></div>
-                                                                        <div class="col-md">
-                                                                            Prix unitaire de l'article
-                                                                            <input type="text" name="prixUnitArt" class="form-control" value="{{ prixUnit }}"></div>
-
-                                                                            <div class="col-md">
-                                                                                Prix total des
-                                                                               
-                                                                                Articles
-                                                                                <input type="text" name="prixTotal" class="form-control" value="{{ prixTotal | number_format(0, ' ', ' ') }}"></div>
-
-                                                                                <div class="col-md">
-                                                                                    Devise
-                                                                                    <select type="text" name="" class="form-control">
-                                                                                        <option value="">FCFA</option>
-                                                                                    </select>
-                                                                                </div>
-
-                                                                                <div class="col-md">
-                                                                                    <br>
-                                                                                        <button type="submit" class='btn btn-dark col-md-12'>Traiter le devis d'achat</button>
-                                                                                    </div>
-
-                                                                                </form>
-                                                                                
-                                                                            </div>
-                                                                            <br><br>
-                                                                            <div class="card-footer"></div>
-                                                                        </div>
-                                                                        <!--/card-->
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                {% endblock %}
+{% endblock %}

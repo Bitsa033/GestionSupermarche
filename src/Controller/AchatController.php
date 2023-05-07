@@ -44,77 +44,12 @@ class AchatController extends AbstractController
     }
 
     /**
-     * @Route("achat_sessionDevis", name="achat_sessionDevis")
-     */
-    public function sessionDevis(SessionInterface $session, Request $request)
-    {
-        if (!empty($request->request->get('nbArt')) && !empty($request->request->get('prixUnitArt'))) {
-            $nbArt=$request->request->get('nbArt');
-            
-            $prixUnitArt=$request->request->get('prixUnitArt');
-            $prixTotalArt=$nbArt *  $prixUnitArt;
-        }
-        else{
-           
-        }
-
-        $get_nbArt = $session->get('nbArt', []);
-        if (!empty($get_nbArt)) {
-            $session->set('nbArt', $nbArt);
-            $session->set('prixUnitArt', $prixUnitArt);
-            $session->set('prixTotalArt', $prixTotalArt);
-        }
-        $session->set('nbArt', $nbArt);
-        $session->set('prixUnitArt', $prixUnitArt);
-        $session->set('prixTotalArt', $prixTotalArt);
-        //dd($session);
-
-        return $this->redirectToRoute('achat_new');
-    }
-
-     /**
-     * @Route("achat_sessionProduit", name="achat_sessionProduit")
-     */
-    public function sessionProduit(SessionInterface $session, Request $request)
-    {
-        if (!empty($request->request->get('produit'))) {
-            $produit = $request->request->get('produit');
-            $get_produit = $session->get('produit', []);
-            if (!empty($get_produit)) {
-                $session->set('produit', $produit);
-            }
-            $session->set('produit', $produit);
-            // dd($session);
-        }
-        return $this->redirectToRoute('achat_new');
-    }
-
-    /**
-     * @Route("achat_Uval", name="achat_Uval")
-     */
-    public function sessionUval(SessionInterface $session, Request $request)
-    {
-        if (!empty($request->request->get('uval'))) {
-            $uval = $request->request->get('uval');
-            $get_uval = $session->get('uval', []);
-            if (!empty($get_uval)) {
-                $session->set('uval', $uval);
-            }
-            $session->set('uval', $uval);
-            //dd($session);
-        }
-        return $this->redirectToRoute('achat_new');
-    }
-
-    /**
      * @Route("achat_new", name="achat_new")
      */
-    public function new(Service $service,SessionInterface $session,Request $request,)
+    public function new(Service $service,Request $request,SessionInterface $session)
     {
-         //on cherche l'utilisateur connecté,le produit, l'unité
+         //on cherche l'utilisateur connecté
          $user = $this->getUser();
-         $sessionProduit=$session->get('produit',[]);
-         $sessionUval=$session->get('uval',[]);
          
          if (!empty($session->get('nb_row', []))) {
              $sessionLigne = $session->get('nb_row', []);
@@ -122,10 +57,6 @@ class AchatController extends AbstractController
          else{
              $sessionLigne = 1;
          }
-         $sessionNb = $sessionLigne/$sessionLigne;
-         $sessionNbArt=$session->get('nbArt',[]);
-         $sessionPrixUnitArt=$session->get('prixUnitArt',[]);
-         $prixTotalArt=$session->get('prixTotalArt',[]);
          
          //si l'utilisateur est n'est pas connecté, on le redirige vers la page de connexion
          // if (!$user) {
@@ -134,8 +65,8 @@ class AchatController extends AbstractController
          
          $nb_row = array(1);
          //pour chaque valeur du compteur i, on ajoutera un champs de plus en consirerant que nb_row par defaut=1
-         if (!empty( $sessionNb)) {
-             for ($i = 0; $i < $sessionNb; $i++) {
+         if (!empty( $sessionLigne)) {
+             for ($i = 0; $i < $sessionLigne; $i++) {
                  $nb_row[$i] = $i;
              }
          }
@@ -143,59 +74,36 @@ class AchatController extends AbstractController
          //si on clic sur le boutton enregistrer et que les champs du post ne sont pas vide
          if (isset($_POST['enregistrer'])) {
              //dd($session_nb_row);
-             for ($i = 0; $i < $sessionNb; $i++) {
-                 $quantiteAchat=$_POST['quantiteAchat'.$i];
-                 $prixAchatUnitaire=$_POST['prixAchatUnitaire'.$i];
-                 $prixAchatTotal=$_POST['prixAchatTotal'.$i];
-                 //on stocke toutes les donnees dans le tableau
-                 $data = array(
-                     'quantiteAchat'=>$quantiteAchat,
-                     'prixAchatUnitaire'=>$prixAchatUnitaire,
-                     'prixAchatTotal'=>$prixAchatTotal,
-                 );
-                
-                 //on enregistre les données dans la bd
-                 $service->new_achat($data,$sessionProduit,$sessionUval);
-             }
+             $check_array = $_POST['produit_id'];
+            foreach ($_POST['produit_name'] as $key => $value) {
+                if (in_array($_POST['produit_name'][$key], $check_array)) {
+                    $produit=$_POST['produit_name'][$key];
+                    
+                    $quantite=$_POST["quantite"][$key];
+                    $prixUnitaire=$service->repo_produit->find($produit)->getPrixAchat();
+                    $prixTotal=$prixUnitaire * floatval($quantite);
+                    $dateCommande=$_POST['date_commande'][$key];
+
+                    $data=array(
+                        'user'=>$user,
+                        'produit'=>$produit,
+                        'quantite'=>$quantite,
+                        'prixTotal'=>$prixTotal,
+                        'dateAchat'=>$dateCommande
+                    );
+                    
+                    //on enregistre les données dans la bd
+                    $service->new_achat($data);
+                    
+                }
+            }
  
          }
- 
-         // devis d'achat pour le stock[]
-         if (!empty($sessionNbArt) && !empty($sessionPrixUnitArt)) {
-             $nbArt=$sessionNbArt;
-             $prixUnitArt=$sessionPrixUnitArt; 
-             $prixTotalArt=$prixTotalArt;
-         }
-         else{
-             $nbArt='0000';
-             $prixUnitArt='0000';
-             $prixTotalArt='0000';
-         }
-
-         if (!empty($sessionProduit)) {
-             $nom_produit=$service->repo_produit->find($sessionProduit)->getNom();
-         }
-         else {
-            $nom_produit="Aucun produit choisie pour l'instant!";
-         }
-
-         if (!empty($sessionUval)) {
-            $nom_unite=$service->repo_uval->find($sessionUval)->getNomuval();
-        }
-        else {
-           $nom_unite="Aucune unité choisie pour l'instant!";
-        }
-         
  
          return $this->render('achat/new.html.twig', [
              'nb_rows' => $nb_row,
              'produits'=>$service->repo_produit->findAll(),
              'uvals' => $service->repo_uval->findAll(),
-             'nbArt'=>$nbArt,
-             'prixUnit'=>$prixUnitArt,
-             'prixTotal'=>$prixTotalArt,
-             'nom_produit'=>$nom_produit,
-             'nom_unite'=>$nom_unite
          ]);
     }
 
