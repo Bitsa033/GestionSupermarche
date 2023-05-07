@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Produit;
 use App\Entity\Stock;
 use App\Repository\AchatRepository;
 use App\Repository\MargeprixRepository;
@@ -115,194 +116,194 @@ class StockController extends AbstractController
     /**
      * @Route("stock_Uval", name="stock_Uval")
      */
-    public function sessionUval(SessionInterface $session, Request $request,AchatRepository $achatRepository)
-    {
-        //marge prix
-        if (!empty($request->request->get('margeprix'))) {
-            $margeprix = $request->request->get('margeprix');
-            $get_margeprix = $session->get('margePrix', []);
-            if (!empty($get_margeprix)) {
-                $session->set('margePrix', $margeprix);
-            }
-            $session->set('margePrix', $margeprix);
-            //dd($session);
-        }
-        //unite de vente
-        elseif (!empty($request->request->get('uvente'))) {
-            $uvalVente = $request->request->get('uvente');
-            $get_uvalVente = $session->get('uvalVente', []);
-            if (!empty($get_uvalVente)) {
-                $session->set('uvalVente', $uvalVente);
-            }
-            $session->set('uvalVente', $uvalVente);
-            //dd($session);
-        }
-        //qte de produit et prix unitaire d'un produit
-        elseif (!empty($request->request->get('qtps'))) {//si qtps n'est pas vide
-            $sessionProduit=$session->get('achat',[]);//on recupere l'id de l'achat dans la session [achat]
-            $achat=$achatRepository->find($sessionProduit);
-            $qta=$achat->getQteAchat();
-            $qtps = $request->request->get('qtps');//qte totale des produits par stock
-            $qts=$qta * $qtps;
-            $get_qts = $session->get('qts', []);
+    // public function sessionUval(SessionInterface $session, Request $request,AchatRepository $achatRepository)
+    // {
+    //     //marge prix
+    //     if (!empty($request->request->get('margeprix'))) {
+    //         $margeprix = $request->request->get('margeprix');
+    //         $get_margeprix = $session->get('margePrix', []);
+    //         if (!empty($get_margeprix)) {
+    //             $session->set('margePrix', $margeprix);
+    //         }
+    //         $session->set('margePrix', $margeprix);
+    //         //dd($session);
+    //     }
+    //     //unite de vente
+    //     elseif (!empty($request->request->get('uvente'))) {
+    //         $uvalVente = $request->request->get('uvente');
+    //         $get_uvalVente = $session->get('uvalVente', []);
+    //         if (!empty($get_uvalVente)) {
+    //             $session->set('uvalVente', $uvalVente);
+    //         }
+    //         $session->set('uvalVente', $uvalVente);
+    //         //dd($session);
+    //     }
+    //     //qte de produit et prix unitaire d'un produit
+    //     elseif (!empty($request->request->get('qtps'))) {//si qtps n'est pas vide
+    //         $sessionProduit=$session->get('achat',[]);//on recupere l'id de l'achat dans la session [achat]
+    //         $achat=$achatRepository->find($sessionProduit);
+    //         $qta=$achat->getQteAchat();
+    //         $qtps = $request->request->get('qtps');//qte totale des produits par stock
+    //         $qts=$qta * $qtps;
+    //         $get_qts = $session->get('qts', []);
 
-            if (!empty($get_qts)) {
-                $session->set('qts', $qts);
-                $session->set('qtps', $qtps);
-            }
-            $session->set('qts', $qts);
-            $session->set('qtps', $qtps);
-            //dd($session);
-        }
-        return $this->redirectToRoute('stock_new');
-    }
+    //         if (!empty($get_qts)) {
+    //             $session->set('qts', $qts);
+    //             $session->set('qtps', $qtps);
+    //         }
+    //         $session->set('qts', $qts);
+    //         $session->set('qtps', $qtps);
+    //         //dd($session);
+    //     }
+    //     return $this->redirectToRoute('stock_new');
+    // }
 
     /**
      * @Route("stock_new", name="stock_new")
      */
-    public function newStock(Service $service,UvalRepository $uvalRepository,MargeprixRepository $margeprixRepository,SessionInterface $session,AchatRepository $achatRepository, ManagerRegistry $end)
-    {
-        $user = $this->getUser(); //on cherche l'utilisateur connecté
-        $sessionProduit=$session->get('achat',[]);//on recupere l'id de l'achat dans la session [achat]
-        $sessionMargePrix=$session->get('margePrix',[]);
-        $sessionUvalVente=$session->get('uvalVente',[]);
-        $sessionQts=$session->get('qts',[]);
-        $sessionQtps=$session->get('qtps',[]);
-        $sessionPup=$session->get('pup',[]);
-        if (!empty($sessionProduit)) {
-            $achat=$achatRepository->find($sessionProduit);//on recupere tous les infos d'achat de [sessionProduit]
-            $uniteAchat=$achat->getUniteAchat()->getNomuval();
-        }
-        else {
-            $achat=null;
-            $uniteAchat=null;
-        }
-        if (!empty($sessionUvalVente)) {
-            $uval=$uvalRepository->find($sessionUvalVente);
-            $uniteVente=$uval->getNomuval();
+    // public function newStock(Service $service,UvalRepository $uvalRepository,MargeprixRepository $margeprixRepository,SessionInterface $session,AchatRepository $achatRepository, ManagerRegistry $end)
+    // {
+    //     $user = $this->getUser(); //on cherche l'utilisateur connecté
+    //     $sessionProduit=$session->get('achat',[]);//on recupere l'id de l'achat dans la session [achat]
+    //     $sessionMargePrix=$session->get('margePrix',[]);
+    //     $sessionUvalVente=$session->get('uvalVente',[]);
+    //     $sessionQts=$session->get('qts',[]);
+    //     $sessionQtps=$session->get('qtps',[]);
+    //     $sessionPup=$session->get('pup',[]);
+    //     if (!empty($sessionProduit)) {
+    //         $achat=$achatRepository->find($sessionProduit);//on recupere tous les infos d'achat de [sessionProduit]
+    //         $uniteAchat=$achat->getUniteAchat()->getNomuval();
+    //     }
+    //     else {
+    //         $achat=null;
+    //         $uniteAchat=null;
+    //     }
+    //     if (!empty($sessionUvalVente)) {
+    //         $uval=$uvalRepository->find($sessionUvalVente);
+    //         $uniteVente=$uval->getNomuval();
 
-            if ($uniteAchat==$uniteVente) {
-                $qteTotale=$achat->getQteAchat();
-                $prixTotal=$achat->getPrixAchatTotal();
-                $prixUnitaire=$achat->getPrixAchatUnitaire();
+    //         if ($uniteAchat==$uniteVente) {
+    //             $qteTotale=$achat->getQteAchat();
+    //             $prixTotal=$achat->getPrixAchatTotal();
+    //             $prixUnitaire=$achat->getPrixAchatUnitaire();
      
      
-            }
-            elseif($uniteAchat != $uniteVente){
-                if (!empty($sessionQts)) {
-                    $qteTotale=$sessionQts;
-                    $ac= $achat->getPrixAchatUnitaire();
-                    $prixUnitaire=$ac / $sessionQtps;
-                    $prixTotal=$qteTotale * $prixUnitaire;
-                }
-                else {
-                    $qteTotale=null;
-                    $prixTotal=null;
-                    $prixUnitaire=null;
-                }
-            }
-        }
-        else{
-            $uval=null;
-            $uniteVente=null;
-            $qteTotale=null;
-            $prixTotal=null;
-            $prixUnitaire=null;
-        }
-        if (!empty($sessionMargePrix)) {
-            $idMarge=$margeprixRepository->find($sessionMargePrix);//on recupere la marge des prix
-            $margeFamille=$idMarge->getMarge();
-        }
-        else{
-            $idMarge=null;
-        }
-        if (!empty($session->get('nb_row', []))) {
-            $sessionLigne = $session->get('nb_row', []);
-        }
-        else{
-            $sessionLigne = 1;
-        }
-        $sessionNb = $sessionLigne/$sessionLigne;
+    //         }
+    //         elseif($uniteAchat != $uniteVente){
+    //             if (!empty($sessionQts)) {
+    //                 $qteTotale=$sessionQts;
+    //                 $ac= $achat->getPrixAchatUnitaire();
+    //                 $prixUnitaire=$ac / $sessionQtps;
+    //                 $prixTotal=$qteTotale * $prixUnitaire;
+    //             }
+    //             else {
+    //                 $qteTotale=null;
+    //                 $prixTotal=null;
+    //                 $prixUnitaire=null;
+    //             }
+    //         }
+    //     }
+    //     else{
+    //         $uval=null;
+    //         $uniteVente=null;
+    //         $qteTotale=null;
+    //         $prixTotal=null;
+    //         $prixUnitaire=null;
+    //     }
+    //     if (!empty($sessionMargePrix)) {
+    //         $idMarge=$margeprixRepository->find($sessionMargePrix);//on recupere la marge des prix
+    //         $margeFamille=$idMarge->getMarge();
+    //     }
+    //     else{
+    //         $idMarge=null;
+    //     }
+    //     if (!empty($session->get('nb_row', []))) {
+    //         $sessionLigne = $session->get('nb_row', []);
+    //     }
+    //     else{
+    //         $sessionLigne = 1;
+    //     }
+    //     $sessionNb = $sessionLigne/$sessionLigne;
         
-        $nb_row = array(1);
-        //pour chaque valeur du compteur i, on ajoutera un champs de plus en consirerant que nb_row par defaut=1
-        if (!empty( $sessionNb)) {
-            for ($i = 0; $i < $sessionNb; $i++) {
-                $nb_row[$i] = $i;
-            }
-        }
+    //     $nb_row = array(1);
+    //     //pour chaque valeur du compteur i, on ajoutera un champs de plus en consirerant que nb_row par defaut=1
+    //     if (!empty( $sessionNb)) {
+    //         for ($i = 0; $i < $sessionNb; $i++) {
+    //             $nb_row[$i] = $i;
+    //         }
+    //     }
        
-        //si on clic sur le boutton enregistrer et que les champs du post ne sont pas vide
-        if (isset($_POST['enregistrer'])) {
-            //dd($session_nb_row);
-            for ($i = 0; $i < $sessionNb; $i++) {
-                //on recupere la quantite de stockage
-                $qteStock=$_POST['qteStock'.$i];
-                //on recupere le prix unitaire d'achat
-                $prixUnitAchat=$_POST['prixUnit'.$i];
-                //on calcule le prix unitaire de vente
-                $prixUnitVente=$prixUnitAchat + $margeFamille;
-                //on calcul le prix total de vente
-                $prixTotalVente=$prixUnitVente * $qteStock;
-                //on recupere le profit unitaire
-                $profUnit=$margeFamille;
-                //on calcul le profit total
-                $profTot=$profUnit * $qteStock;
-                //on stocke toutes les donnees dans le tableau
-                $data = array(
-                    'achat'=>$sessionProduit,
-                    'uniteVente'=>$sessionUvalVente,
-                    'quantiteStockage' =>$qteStock,
-                    'prixVenteUnitaireStock'=>$prixUnitVente,
-                    'prixVenteTotaleStock'=>$prixTotalVente,
-                    'profitUnitaireStock'=>$profUnit,
-                    'profitTotalStock'=>$profTot,
-                );
-                //on cree le service qui permettra d'enregistrer les infos du post dans la bd
-                $service->new_stock($data);
+    //     //si on clic sur le boutton enregistrer et que les champs du post ne sont pas vide
+    //     if (isset($_POST['enregistrer'])) {
+    //         //dd($session_nb_row);
+    //         for ($i = 0; $i < $sessionNb; $i++) {
+    //             //on recupere la quantite de stockage
+    //             $qteStock=$_POST['qteStock'.$i];
+    //             //on recupere le prix unitaire d'achat
+    //             $prixUnitAchat=$_POST['prixUnit'.$i];
+    //             //on calcule le prix unitaire de vente
+    //             $prixUnitVente=$prixUnitAchat + $margeFamille;
+    //             //on calcul le prix total de vente
+    //             $prixTotalVente=$prixUnitVente * $qteStock;
+    //             //on recupere le profit unitaire
+    //             $profUnit=$margeFamille;
+    //             //on calcul le profit total
+    //             $profTot=$profUnit * $qteStock;
+    //             //on stocke toutes les donnees dans le tableau
+    //             $data = array(
+    //                 'achat'=>$sessionProduit,
+    //                 'uniteVente'=>$sessionUvalVente,
+    //                 'quantiteStockage' =>$qteStock,
+    //                 'prixVenteUnitaireStock'=>$prixUnitVente,
+    //                 'prixVenteTotaleStock'=>$prixTotalVente,
+    //                 'profitUnitaireStock'=>$profUnit,
+    //                 'profitTotalStock'=>$profTot,
+    //             );
+    //             //on cree le service qui permettra d'enregistrer les infos du post dans la bd
+    //             $service->new_stock($data);
                
                
-            }
+    //         }
 
-        }
+    //     }
 
-        if (!empty($sessionProduit)) {
-            $nom_produit=$service->repo_produit->find($sessionProduit)->getNom();
-        }
-        else {
-           $nom_produit="Aucun produit choisie pour l'instant!";
-        }
+    //     if (!empty($sessionProduit)) {
+    //         $nom_produit=$service->repo_produit->find($sessionProduit)->getNom();
+    //     }
+    //     else {
+    //        $nom_produit="Aucun produit choisie pour l'instant!";
+    //     }
 
-        if (!empty($sessionUvalVente)) {
-           $nom_unite=$service->repo_uval->find($sessionUvalVente)->getNomuval();
-       }
-       else {
-          $nom_unite="Aucune unité choisie pour l'instant!";
-       }
+    //     if (!empty($sessionUvalVente)) {
+    //        $nom_unite=$service->repo_uval->find($sessionUvalVente)->getNomuval();
+    //    }
+    //    else {
+    //       $nom_unite="Aucune unité choisie pour l'instant!";
+    //    }
 
-       if (!empty($sessionMargePrix)) {
-            $nom_profit=$service->repo_margeprix->find($sessionMargePrix)->getMarge();
-        }
-        else {
-            $nom_profit="Aucun profit choisi pour l'instant!";
-        }
+    //    if (!empty($sessionMargePrix)) {
+    //         $nom_profit=$service->repo_margeprix->find($sessionMargePrix)->getMarge();
+    //     }
+    //     else {
+    //         $nom_profit="Aucun profit choisi pour l'instant!";
+    //     }
 
-        return $this->render('stock/new.html.twig', [
-            'nb_rows' => $nb_row,
-            'achats'=>$achatRepository->findAll(),
-            'qteTotale'=>$qteTotale,
-            'prixTotal'=>$prixTotal,
-            'prixUnitaire'=>$prixUnitaire,
-            'uniteVente'=>$uniteVente,
-            'uniteAchat'=>$uniteAchat,
-            'uvals' => $uvalRepository->findAll(),
-            'achat'=>$achat,//on affiche toutes les infos de cette variable
-            'margePrix'=>$margeprixRepository->findAll(),//on affiche toutes les marges de prix,
-            'nom_produit'=>$nom_produit,
-            'nom_unite'=>$nom_unite,
-            'nom_profit'=>$nom_profit
-        ]);
-    }
+    //     return $this->render('stock/new.html.twig', [
+    //         'nb_rows' => $nb_row,
+    //         'achats'=>$achatRepository->findAll(),
+    //         'qteTotale'=>$qteTotale,
+    //         'prixTotal'=>$prixTotal,
+    //         'prixUnitaire'=>$prixUnitaire,
+    //         'uniteVente'=>$uniteVente,
+    //         'uniteAchat'=>$uniteAchat,
+    //         'uvals' => $uvalRepository->findAll(),
+    //         'achat'=>$achat,//on affiche toutes les infos de cette variable
+    //         'margePrix'=>$margeprixRepository->findAll(),//on affiche toutes les marges de prix,
+    //         'nom_produit'=>$nom_produit,
+    //         'nom_unite'=>$nom_unite,
+    //         'nom_profit'=>$nom_profit
+    //     ]);
+    // }
 
     /**
      * @Route("stock_update", name="stock_update")
@@ -413,7 +414,7 @@ class StockController extends AbstractController
     /**
      * @Route("stock_delete_{id}", name="stock_delete", methods={"POST"})
      */
-    public function delete(Request $request, Stock $stock, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Produit $stock, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$stock->getId(), $request->request->get('_token'))) {
             $entityManager->remove($stock);

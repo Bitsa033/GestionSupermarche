@@ -27,12 +27,7 @@ class Produit
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $codep;
-
-    /**
-     * @ORM\Column(type="bigint")
-     */
-    private $alerte; //alerte de securite
+    private $code;
 
     /**
      * @ORM\ManyToOne(targetEntity=Famille::class, inversedBy="produits")
@@ -43,6 +38,28 @@ class Produit
      * @ORM\OneToMany(targetEntity=Achat::class, mappedBy="produit")
      */
     private $achats;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $prix_achat;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $prix_vente;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Uval::class, inversedBy="achats")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $unite_achat; //unite d'achat
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Uval::class, inversedBy="produits")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $unite_vente;
 
     public function __construct()
     {
@@ -68,24 +85,48 @@ class Produit
 
     public function getCode(): ?string
     {
-        return $this->codep;
+        return $this->code;
     }
 
-    public function setCode(string $codep): self
+    public function setCode(string $code): self
     {
-        $this->codep = $codep;
+        $this->code = $code;
 
         return $this;
     }
 
-    public function getAlerte(): ?string
+    public function getPrixAchat(): ?float
     {
-        return $this->alerte;
+        return $this->prix_achat;
     }
 
-    public function setAlerte(string $alerte): self
+    public function setPrixAchat(float $prix_achat): self
     {
-        $this->alerte = $alerte;
+        $this->prix_achat = $prix_achat;
+
+        return $this;
+    }
+
+    public function getPrixVente(): ?float
+    {
+        return $this->prix_vente;
+    }
+
+    public function setPrixVente(float $prix_vente): self
+    {
+        $this->prix_vente = $prix_vente;
+
+        return $this;
+    }
+
+    public function getUniteAchat(): ?Uval
+    {
+        return $this->unite_achat;
+    }
+
+    public function setUniteAchat(?Uval $unite_achat): self
+    {
+        $this->unite_achat = $unite_achat;
 
         return $this;
     }
@@ -128,6 +169,18 @@ class Produit
                 $achat->setProduit(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUniteVente(): ?Uval
+    {
+        return $this->unite_vente;
+    }
+
+    public function setUniteVente(?Uval $unite_vente): self
+    {
+        $this->unite_vente = $unite_vente;
 
         return $this;
     }

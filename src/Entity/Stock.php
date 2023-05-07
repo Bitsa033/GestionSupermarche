@@ -18,145 +18,127 @@ class Stock
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Achat::class, inversedBy="stock")
+     * @ORM\ManyToOne(targetEntity=Reception::class, inversedBy="stocks")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $achat;
+    private $reception; // produit
 
     /**
      * @ORM\Column(type="bigint")
      */
-    private $qts;//qte totale de stockage
+    private $qte;//qte totale de stockage
 
     /**
      * @ORM\Column(type="bigint")
      */
-    private $prixvts; //prix de vente total du stock
+    private $prix_total; //prix de vente total du stock
 
     /**
      * @ORM\Column(type="bigint")
      */
-    private $prixvus; //prix de vente unitaire du stock
+    private $profit_unitaire; //profit unitaire du stock
 
     /**
      * @ORM\Column(type="bigint")
      */
-    private $pts; //profit total du stock
-
-    /**
-     * @ORM\Column(type="bigint")
-     */
-    private $pus; //profit unitaire du stock
+    private $profit_total; //profit total du stock
 
     /**
      * @ORM\ManyToOne(targetEntity=Uval::class, inversedBy="stocks")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $unitest; //unite de stockage
+    private $unite_stockage;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Uval::class, inversedBy="stocks")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\Column(type="datetime")
      */
-    private $uvs; //unite de vente du stock
-
+    private $date_stockage; //unite de stockage
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getAchat(): ?Achat
+    public function getQte(): ?string
     {
-        return $this->achat;
+        return $this->qte;
     }
 
-    public function setAchat(?Achat $achat): self
+    public function setQte(string $qte): self
     {
-        $this->achat = $achat;
+        $this->qte = $qte;
 
         return $this;
     }
 
-    public function getQteStockage(): ?string
+    public function getPrixTotal(): ?string
     {
-        return $this->qts;
+        return $this->prix_total;
     }
 
-    public function setQteStockage(string $qts): self
+    public function setPrixTotal(string $prix_total): self
     {
-        $this->qts = $qts;
+        $this->prix_total = $prix_total;
 
         return $this;
     }
 
-    public function getPrixVenteTotaleStock(): ?string
+    public function getProfitUnitaire(): ?string
     {
-        return $this->prixvts;
+        return $this->profit_unitaire;
     }
 
-    public function setPrixVenteTotaleStock(string $prixvts): self
+    public function setProfitUnitaire(string $profit_unitaire): self
     {
-        $this->prixvts = $prixvts;
+        $this->profit_unitaire = $profit_unitaire;
 
         return $this;
     }
 
-    public function getPrixVenteUnitaireStock(): ?string
+    public function getProfitTotal(): ?string
     {
-        return $this->prixvus;
+        return $this->profit_total;
     }
 
-    public function setPrixVenteUnitaireStock(string $prixvus): self
+    public function setProfitTotal(string $profit_total): self
     {
-        $this->prixvus = $prixvus;
-
-        return $this;
-    }
-
-    public function getProfitTotalStock(): ?string
-    {
-        return $this->pts;
-    }
-
-    public function setProfitTotalStock(string $pts): self
-    {
-        $this->pts = $pts;
-
-        return $this;
-    }
-
-    public function getProfitUnitaireStock(): ?string
-    {
-        return $this->pus;
-    }
-
-    public function setProfitUnitaireStock(string $pus): self
-    {
-        $this->pus = $pus;
+        $this->profit_total = $profit_total;
 
         return $this;
     }
 
     public function getUniteStockage(): ?Uval
     {
-        return $this->unitest;
+        return $this->unite_stockage;
     }
 
-    public function setUniteStockage(?Uval $unitest): self
+    public function setUniteStockage(?Uval $unite_stockage): self
     {
-        $this->unitest = $unitest;
+        $this->unite_stockage = $unite_stockage;
 
         return $this;
     }
 
-    public function getUniteVenteStock(): ?Uval
+    public function getReception(): ?Reception
     {
-        return $this->uvs;
+        return $this->reception;
     }
 
-    public function setUniteVenteStock(?Uval $uvs): self
+    public function setReception(?Reception $reception): self
     {
-        $this->uvs = $uvs;
+        $this->reception = $reception;
+
+        return $this;
+    }
+
+    public function getDateStockage(): ?\DateTimeInterface
+    {
+        return $this->date_stockage;
+    }
+
+    public function setDateStockage(\DateTimeInterface $date_stockage): self
+    {
+        $this->date_stockage = $date_stockage;
 
         return $this;
     }

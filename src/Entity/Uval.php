@@ -34,10 +34,16 @@ class Uval
      */
     private $achats;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Produit::class, mappedBy="unite_vente")
+     */
+    private $produits;
+
     public function __construct()
     {
         $this->stocks = new ArrayCollection();
         $this->achats = new ArrayCollection();
+        $this->produits = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -65,27 +71,27 @@ class Uval
         return $this->stocks;
     }
 
-    public function addStock(Stock $stock): self
-    {
-        if (!$this->stocks->contains($stock)) {
-            $this->stocks[] = $stock;
-            $stock->setUniteStockage($this);
-        }
+    // public function addStock(Stock $stock): self
+    // {
+    //     if (!$this->stocks->contains($stock)) {
+    //         $this->stocks[] = $stock;
+    //         $stock->setUniteStockage($this);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function removeStock(Stock $stock): self
-    {
-        if ($this->stocks->removeElement($stock)) {
-            // set the owning side to null (unless already changed)
-            if ($stock->getUniteStockage() === $this) {
-                $stock->setUniteStockage(null);
-            }
-        }
+    // public function removeStock(Stock $stock): self
+    // {
+    //     if ($this->stocks->removeElement($stock)) {
+    //         // set the owning side to null (unless already changed)
+    //         if ($stock->getUniteStockage() === $this) {
+    //             $stock->setUniteStockage(null);
+    //         }
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     /**
      * @return Collection|Achat[]
@@ -95,22 +101,52 @@ class Uval
         return $this->achats;
     }
 
-    public function addAchat(Achat $achat): self
+    // public function addAchat(Achat $achat): self
+    // {
+    //     if (!$this->achats->contains($achat)) {
+    //         $this->achats[] = $achat;
+    //         $achat->setUniteAchat($this);
+    //     }
+
+    //     return $this;
+    // }
+
+    // public function removeAchat(Achat $achat): self
+    // {
+    //     if ($this->achats->removeElement($achat)) {
+    //         // set the owning side to null (unless already changed)
+    //         if ($achat->getUniteAchat() === $this) {
+    //             $achat->setUniteAchat(null);
+    //         }
+    //     }
+
+    //     return $this;
+    // }
+
+    /**
+     * @return Collection|Produit[]
+     */
+    public function getProduits(): Collection
     {
-        if (!$this->achats->contains($achat)) {
-            $this->achats[] = $achat;
-            $achat->setUniteAchat($this);
+        return $this->produits;
+    }
+
+    public function addProduit(Produit $produit): self
+    {
+        if (!$this->produits->contains($produit)) {
+            $this->produits[] = $produit;
+            $produit->setUniteVente($this);
         }
 
         return $this;
     }
 
-    public function removeAchat(Achat $achat): self
+    public function removeProduit(Produit $produit): self
     {
-        if ($this->achats->removeElement($achat)) {
+        if ($this->produits->removeElement($produit)) {
             // set the owning side to null (unless already changed)
-            if ($achat->getUniteAchat() === $this) {
-                $achat->setUniteAchat(null);
+            if ($produit->getUniteVente() === $this) {
+                $produit->setUniteVente(null);
             }
         }
 

@@ -28,23 +28,12 @@ class Achat
     /**
      * @ORM\Column(type="bigint")
      */
-    private $qa; //qte d'achat
+    private $qte; //qte d'achat
 
     /**
      * @ORM\Column(type="bigint")
      */
-    private $patp; //prix d'achat total du produit
-
-    /**
-     * @ORM\Column(type="bigint")
-     */
-    private $paup; //prix d'achat unitaire du produit
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Uval::class, inversedBy="achats")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $ua; //unite d'achat
+    private $prix_total; //prix d'achat total du produit
 
     /**
      * @ORM\Column(type="datetime")
@@ -52,13 +41,13 @@ class Achat
     private $dateachat;
 
     /**
-     * @ORM\OneToMany(targetEntity=Stock::class, mappedBy="achat")
+     * @ORM\OneToMany(targetEntity=Reception::class, mappedBy="commande")
      */
-    private $stocks;
+    private $receptions;
 
     public function __construct()
     {
-        $this->stocks = new ArrayCollection();
+        $this->receptions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -78,51 +67,27 @@ class Achat
         return $this;
     }
 
-    public function getQteAchat(): ?string
+    public function getQte(): ?string
     {
-        return $this->qa;
+        return $this->qte;
     }
 
-    public function setQteAchat(string $qa): self
+    public function setQte(string $qte): self
     {
-        $this->qa = $qa;
+        $this->qte = $qte;
 
         return $this;
     }
 
-    public function getPrixAchatTotal(): ?string
+    public function getPrixTotal(): ?string
     {
-        return $this->patp;
+        return $this->prix_total;
     }
     
-    public function setPrixAchatTotal(string $patp): self
+    public function setPrixATotal(string $prix_total): self
     {
-        $this->patp = $patp;
+        $this->prix_total = $prix_total;
         
-        return $this;
-    }
-
-    public function getPrixAchatUnitaire(): ?string
-    {
-        return $this->paup;
-    }
-
-    public function setPrixAchatUnitaire(string $paup): self
-    {
-        $this->paup = $paup;
-
-        return $this;
-    }
-
-    public function getUniteAchat(): ?Uval
-    {
-        return $this->ua;
-    }
-
-    public function setUniteAchat(?Uval $ua): self
-    {
-        $this->ua = $ua;
-
         return $this;
     }
 
@@ -139,29 +104,29 @@ class Achat
     }
 
     /**
-     * @return Collection|Stock[]
+     * @return Collection|Reception[]
      */
-    public function getStocks(): Collection
+    public function getReceptions(): Collection
     {
-        return $this->stocks;
+        return $this->receptions;
     }
 
-    public function addStock(Stock $stock): self
+    public function addReception(Reception $reception): self
     {
-        if (!$this->stocks->contains($stock)) {
-            $this->stocks[] = $stock;
-            $stock->setAchat($this);
+        if (!$this->receptions->contains($reception)) {
+            $this->receptions[] = $reception;
+            $reception->setCommande($this);
         }
 
         return $this;
     }
 
-    public function removeStock(Stock $stock): self
+    public function removeReception(Reception $reception): self
     {
-        if ($this->stocks->removeElement($stock)) {
+        if ($this->receptions->removeElement($reception)) {
             // set the owning side to null (unless already changed)
-            if ($stock->getAchat() === $this) {
-                $stock->setAchat(null);
+            if ($reception->getCommande() === $this) {
+                $reception->setCommande(null);
             }
         }
 
