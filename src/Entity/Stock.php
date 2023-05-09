@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\StockRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -31,7 +33,7 @@ class Stock
     /**
      * @ORM\Column(type="bigint")
      */
-    private $prix_total; //prix de vente total du stock
+    private $prix_total; //prix total de stockage
 
     /**
      * @ORM\Column(type="bigint")
@@ -44,15 +46,19 @@ class Stock
     private $profit_total; //profit total du stock
 
     /**
-     * @ORM\ManyToOne(targetEntity=Uval::class, inversedBy="stocks")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $unite_stockage;
-
-    /**
      * @ORM\Column(type="datetime")
      */
-    private $date_stockage; //unite de stockage
+    private $date_stockage;
+
+    /**
+     * @ORM\OneToMany(targetEntity=SortieStock::class, mappedBy="stock")
+     */
+    private $sortieStocks;
+
+    public function __construct()
+    {
+        $this->sortieStocks = new ArrayCollection();
+    } 
 
     public function getId(): ?int
     {
@@ -107,18 +113,6 @@ class Stock
         return $this;
     }
 
-    public function getUniteStockage(): ?Uval
-    {
-        return $this->unite_stockage;
-    }
-
-    public function setUniteStockage(?Uval $unite_stockage): self
-    {
-        $this->unite_stockage = $unite_stockage;
-
-        return $this;
-    }
-
     public function getReception(): ?Reception
     {
         return $this->reception;
@@ -139,6 +133,36 @@ class Stock
     public function setDateStockage(\DateTimeInterface $date_stockage): self
     {
         $this->date_stockage = $date_stockage;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|SortieStock[]
+     */
+    public function getSortieStocks(): Collection
+    {
+        return $this->sortieStocks;
+    }
+
+    public function addSortieStock(SortieStock $sortieStock): self
+    {
+        if (!$this->sortieStocks->contains($sortieStock)) {
+            $this->sortieStocks[] = $sortieStock;
+            $sortieStock->setStock($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSortieStock(SortieStock $sortieStock): self
+    {
+        if ($this->sortieStocks->removeElement($sortieStock)) {
+            // set the owning side to null (unless already changed)
+            if ($sortieStock->getStock() === $this) {
+                $sortieStock->setStock(null);
+            }
+        }
 
         return $this;
     }
