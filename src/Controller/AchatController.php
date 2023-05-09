@@ -111,11 +111,42 @@ class AchatController extends AbstractController
      * on valide ou non la reception de l'achat
      * @Route("achat_reception_{id}", name="achat_reception", methods={"GET","POST"})
      */
-    public function reception_achat(Service $service,$id): Response
+    public function reception_achat(Service $service,$id,Request $request): Response
     {
         $achat=$service->repo_achat->find($id);
+        $qte_achat=$achat->getQte();
+        $qte_reception=$service->repo_reception->sommeQte($achat);
+        //dd($qte_achat,$qte_reception);
+        // if ($qte_achat == $qte_reception) {
+        //     dd("La commande a été finalisée");
+        //     # code...
+        // } else {
+        //     dd("La commande est en cours...");
+        //     # code...
+        // }
+        
+        
+        if (!empty($request->request->get('qte'))) {
+            $qte=$request->request->get('qte');
+            $prixUnitaire=$achat->getProduit()->getPrixAchat();
+            $prixTotal= $qte * floatval($prixUnitaire);
+
+            $data=array(
+                'achat'=>$achat,
+                'quantite'=>$qte,
+                'prixTotal'=>$prixTotal
+            );
+
+            $service->new_reception($data);
+            return $this->redirectToRoute('achat_reception',[
+                'id'=>$achat->getId()
+            ]);
+        }
+
         return $this->render('achat/show.html.twig', [
             'achat' => $achat,
+            'qte_achat'=>$qte_achat,
+            'qte_reception'=>$qte_reception
         ]);
     }
 

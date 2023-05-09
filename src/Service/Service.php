@@ -34,7 +34,7 @@ class Service{
     public $repo_famille;
     public $repo_produit;
     public $repo_achat;
-    public $repo_receptiont;
+    public $repo_reception;
     public $repo_uval;
     public $repo_margeprix;
     public $repo_stockt;
@@ -43,20 +43,20 @@ class Service{
     public $db;
 
     function __construct(
-                        FamilleRepository $familleRepository,
-                        ProduitRepository $produitRepository,
-                        AchatRepository $achatRepository,
-                        ReceptionRepository $receptionRepository,
-                        UvalRepository $uvalRepository,
-                        MargeprixRepository $margeprixRepository,
-                        StockRepository $stockRepository,
-                        ManagerRegistry $managerRegistry
+        FamilleRepository $familleRepository,
+        ProduitRepository $produitRepository,
+        AchatRepository $achatRepository,
+        ReceptionRepository $receptionRepository,
+        UvalRepository $uvalRepository,
+        MargeprixRepository $margeprixRepository,
+        StockRepository $stockRepository,
+        ManagerRegistry $managerRegistry
     )
     {
         $this->repo_famille=$familleRepository;
         $this->repo_produit=$produitRepository;
         $this->repo_achat=$achatRepository;
-        $this->repo_receptiont=$receptionRepository;
+        $this->repo_reception=$receptionRepository;
         $this->repo_uval=$uvalRepository;
         $this->repo_margeprix=$margeprixRepository;
         $this->repo_stockt=$stockRepository;
@@ -98,12 +98,10 @@ class Service{
     {
         $this->multiple_row($data);
 
-        $reception=$this->repo_receptiont->find($data['achat']);
-        $uniteS=$this->repo_uval->find($reception);
+        $reception=$this->repo_reception->find($data['achat']);
     
         $stock = $this->table_stock;
         $stock->setReception($reception);
-        $stock->setUniteStockage($uniteS);
         $stock->setQte($data['quantite']);
         $stock->setPrixTotal($data['prixTotal']);
         $stock->setProfitUnitaire($data['profitUnitaire']);
@@ -111,6 +109,22 @@ class Service{
         $stock->setDateStockage(new \datetime());
         // $stock->setRef(strtoupper($data['ref']));
         $this->insert_to_db($stock);
+    }
+
+    //on cree la methode qui permettra d'enregistrer les receptions du post dans la bd
+         
+    function new_reception($data)
+    {
+
+        $achat=$this->repo_achat->find($data['achat']);
+    
+        $reception = $this->table_reception;
+        $reception->setCommande($achat);
+        $reception->setQte($data['quantite']);
+        $reception->setPrixTotal($data['prixTotal']);
+        $reception->setDateReception(new \DateTime());
+        // $stock->setRef(strtoupper($data['ref']));
+        $this->insert_to_db($reception);
     }
 
     //on cree la methode qui permettra d'enregistrer les achats du post dans la bd

@@ -40,6 +40,11 @@ class Reception
      */
     private $stocks;
 
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $prix_total;
+
     public function __construct()
     {
         $this->stocks = new ArrayCollection();
@@ -112,6 +117,18 @@ class Reception
                 $stock->setReception(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPrixTotal(): ?float
+    {
+        return $this->prix_total;
+    }
+
+    public function setPrixTotal(float $prix_total): self
+    {
+        $this->prix_total = $prix_total;
 
         return $this;
     }

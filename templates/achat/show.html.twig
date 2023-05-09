@@ -32,32 +32,43 @@
 
 </div>
 
-<div class="offset-4 col-md-8">
+<div class="offset-3 col-md-8">
+    {% if qte_achat== qte_reception %}
+        <div class="card">
+            <div class="card-header" style="color: green;">
+                Votre commande a été finalisée !
+            </div>
+        </div>
+    {% else %}
+        <h4>Formulaire de reception  <strong>|
+        {% if qte_reception %}
+        quantité reçue:</strong> {{qte_reception}}/{{qte_achat}}</h4>
+        {% else %}
+        quantité reçue:</strong> 0</h4>
+        {% endif %}
 
-    <h4>Formulaire de la réception</h4>
+        <form action="" method="post">
+            <!--numero de commande-->
+            <label for="numero_commande">Numéro</label>
+            <input disabled style="margin-left: 10%;" type="text" name="numero_commande" id="numero_commande" value="{{achat.id}}"><br>
+            <!--nom de commande-->
+            <label for="nom_commande">Libelé</label>
+            <input disabled style="margin-left: 12%;" type="text" name="nom_commande" id="nom_commande" value="{{achat.produit.nom}}"><br>
+            <!--qte totale de commande-->
+            <label for="qte_tot">Qté Totale</label>
+            <input style="margin-left: 8%;" type="text" name="qte" id="qte"><br>
+            <!--prix unitaire de commande-->
+            <label for="prix_tot">Prix Total</label>
+            <input style="margin-left: 9%;" type="text" name="prix_tot" id="prix_tot" placeholder="----" disabled><br>
+            <!--date de reception-->
+            <label for="date_reception">Date Réception</label>
+            <input style="margin-left: 4%; width: 190px;" type="text" placeholder="Jour/Mois/Année" name="date_reception" id="date_reception"><br>
+            <!--bouton valider-->
+            <input style="margin-left: 17%; width: 190px;" type="submit" value="Valider" class="btn btn-success"><br>
+        </form>
+        
+    {% endif %}
 
-    <form action="" method="post">
-        <!--numero de commande-->
-        <label for="numero_commande">Numéro</label>
-        <input disabled style="margin-left: 10%;" type="text" name="numero_commande" id="numero_commande" value="{{achat.id}}"><br>
-        <!--nom de commande-->
-        <label for="nom_commande">Libelé</label>
-        <input disabled style="margin-left: 12%;" type="text" name="nom_commande" id="nom_commande" value="{{achat.produit.nom}}"><br>
-        <!--qte totale de commande-->
-        <label for="qte_tot">Qté Totale</label>
-        <input style="margin-left: 8%;" type="text" name="qte_tot" id="qte_tot" value="{{achat.qte}}"><br>
-        <!--prix unitaire de commande-->
-        <label for="prix_tot">Prix Total</label>
-        <input style="margin-left: 9%;" type="text" name="prix_tot" id="prix_tot" value="{{achat.prixTotal}}"><br>
-        <!--date de commande-->
-        <label for="date_commande">Date Commnde</label>
-        <input style="margin-left: 4%;" type="text" name="date_commande" id="date_commande" value="{{achat.dateachat|date('m/d/Y')}}"><br>
-        <!--date de reception-->
-        <label for="date_reception">Date Réception</label>
-        <input style="margin-left: 4%; width: 190px;" type="text" placeholder="Jour/Mois/Année" name="date_reception" id="date_reception"><br>
-        <!--bouton valider-->
-        <input style="margin-left: 17%; width: 190px;" type="submit" value="Valider" class="btn btn-success"><br>
-    </form>
 
     
 
