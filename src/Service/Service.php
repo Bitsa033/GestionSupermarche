@@ -67,7 +67,7 @@ class Service{
         $this->table_reception= new Reception;
         $this->table_uval= Uval::class;
         $this->table_margeprix= Margeprix::class;
-        $this->table_stock= new Stock;
+        $this->table_stock= Stock::class;
 
         $this->db=$managerRegistry->getManager();
 
@@ -96,11 +96,10 @@ class Service{
          
     function new_stock($data)
     {
-        $this->multiple_row($data);
 
         $reception=$this->repo_reception->find($data['achat']);
     
-        $stock = $this->table_stock;
+        $stock = new $this->table_stock;
         $stock->setReception($reception);
         $stock->setQte($data['quantite']);
         $stock->setPrixTotal($data['prixTotal']);

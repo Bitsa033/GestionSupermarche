@@ -56,7 +56,7 @@
             <input disabled style="margin-left: 12%;" type="text" name="nom_commande" id="nom_commande" value="{{achat.produit.nom}}"><br>
             <!--qte totale de commande-->
             <label for="qte_tot">Qté Totale</label>
-            <input style="margin-left: 8%;" type="text" name="qte" id="qte"><br>
+            <input style="margin-left: 8%;" type="number" name="qte" id="qte" min="1" max="{{achat.qte}}"><br>
             <!--prix unitaire de commande-->
             <label for="prix_tot">Prix Total</label>
             <input style="margin-left: 9%;" type="text" name="prix_tot" id="prix_tot" placeholder="----" disabled><br>

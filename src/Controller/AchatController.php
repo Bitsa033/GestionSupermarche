@@ -35,8 +35,7 @@ class AchatController extends AbstractController
             }
             $session->set('nb_row', $nb_of_row);
             //dd($session);
-        }
-        else {
+        } else {
             $session->set('nb_row', 1);
             //dd($session);
         }
@@ -46,114 +45,82 @@ class AchatController extends AbstractController
     /**
      * @Route("achat_new", name="achat_new")
      */
-    public function new(Service $service,Request $request,SessionInterface $session)
+    public function new(Service $service, Request $request, SessionInterface $session)
     {
-         //on cherche l'utilisateur connecté
-         $user = $this->getUser();
-         
-         if (!empty($session->get('nb_row', []))) {
-             $sessionLigne = $session->get('nb_row', []);
-         }
-         else{
-             $sessionLigne = 1;
-         }
-         
-         //si l'utilisateur est n'est pas connecté, on le redirige vers la page de connexion
-         // if (!$user) {
-         //     return $this->redirectToRoute('app_login');
-         // }
-         
-         $nb_row = array(1);
-         //pour chaque valeur du compteur i, on ajoutera un champs de plus en consirerant que nb_row par defaut=1
-         if (!empty( $sessionLigne)) {
-             for ($i = 0; $i < $sessionLigne; $i++) {
-                 $nb_row[$i] = $i;
-             }
-         }
- 
-         //si on clic sur le boutton enregistrer et que les champs du post ne sont pas vide
-         if (isset($_POST['enregistrer'])) {
-             //dd($session_nb_row);
-             $check_array = $_POST['produit_id'];
+        //on cherche l'utilisateur connecté
+        $user = $this->getUser();
+
+        //si on clic sur le boutton enregistrer et que les champs du post ne sont pas vide
+        if (isset($_POST['enregistrer'])) {
+            //dd($session_nb_row);
+            $check_array = $_POST['produit_id'];
             foreach ($_POST['produit_name'] as $key => $value) {
                 if (in_array($_POST['produit_name'][$key], $check_array)) {
-                    $produit=$_POST['produit_name'][$key];
-                    
-                    $quantite=$_POST["quantite"][$key];
-                    $prixUnitaire=$service->repo_produit->find($produit)->getPrixAchat();
-                    $prixTotal=$prixUnitaire * floatval($quantite);
-                    $dateCommande=$_POST['date_commande'][$key];
+                    $produit = $_POST['produit_name'][$key];
 
-                    $data=array(
-                        'user'=>$user,
-                        'produit'=>$produit,
-                        'quantite'=>$quantite,
-                        'prixTotal'=>$prixTotal,
-                        'dateAchat'=>$dateCommande
+                    $quantite = $_POST["quantite"][$key];
+                    $prixUnitaire = $service->repo_produit->find($produit)->getPrixAchat();
+                    $prixTotal = $prixUnitaire * floatval($quantite);
+                    $dateCommande = $_POST['date_commande'][$key];
+
+                    $data = array(
+                        'user' => $user,
+                        'produit' => $produit,
+                        'quantite' => $quantite,
+                        'prixTotal' => $prixTotal,
+                        'dateAchat' => $dateCommande
                     );
-                    
+
                     //on enregistre les données dans la bd
                     $service->new_achat($data);
-                    
                 }
             }
- 
-         }
- 
-         return $this->render('achat/new.html.twig', [
-             'nb_rows' => $nb_row,
-             'produits'=>$service->repo_produit->findAll(),
-             'uvals' => $service->repo_uval->findAll(),
-         ]);
+        }
+
+        return $this->render('achat/new.html.twig', [
+            'produits' => $service->repo_produit->findAll(),
+            'uvals' => $service->repo_uval->findAll(),
+        ]);
     }
 
     /**
-     * on valide ou non la reception de l'achat
+     * on valide la reception de l'achat
      * @Route("achat_reception_{id}", name="achat_reception", methods={"GET","POST"})
      */
-    public function reception_achat(Service $service,$id,Request $request): Response
+    public function reception_achat(Service $service, $id, Request $request): Response
     {
-        $achat=$service->repo_achat->find($id);
-        $qte_achat=$achat->getQte();
-        $qte_reception=$service->repo_reception->sommeQte($achat);
-        //dd($qte_achat,$qte_reception);
-        // if ($qte_achat == $qte_reception) {
-        //     dd("La commande a été finalisée");
-        //     # code...
-        // } else {
-        //     dd("La commande est en cours...");
-        //     # code...
-        // }
-        
-        
-        if (!empty($request->request->get('qte'))) {
-            $qte=$request->request->get('qte');
-            $prixUnitaire=$achat->getProduit()->getPrixAchat();
-            $prixTotal= $qte * floatval($prixUnitaire);
+        $achat = $service->repo_achat->find($id);
+        $qte_achat = $achat->getQte();
+        $qte_reception = $service->repo_reception->sommeQte($achat);
 
-            $data=array(
-                'achat'=>$achat,
-                'quantite'=>$qte,
-                'prixTotal'=>$prixTotal
+        if (!empty($request->request->get('qte'))) {
+            $qte = $request->request->get('qte');
+            $prixUnitaire = $achat->getProduit()->getPrixAchat();
+            $prixTotal = $qte * floatval($prixUnitaire);
+
+            $data = array(
+                'achat' => $achat,
+                'quantite' => $qte,
+                'prixTotal' => $prixTotal
             );
 
             $service->new_reception($data);
-            return $this->redirectToRoute('achat_reception',[
-                'id'=>$achat->getId()
+            return $this->redirectToRoute('achat_reception', [
+                'id' => $achat->getId()
             ]);
         }
 
         return $this->render('achat/show.html.twig', [
             'achat' => $achat,
-            'qte_achat'=>$qte_achat,
-            'qte_reception'=>$qte_reception
+            'qte_achat' => $qte_achat,
+            'qte_reception' => $qte_reception
         ]);
     }
 
     /**
      * @Route("achat_edit_{id}", name="achat_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request,Service $service): Response
+    public function edit(Request $request, Service $service): Response
     {
         $form = $this->createForm(AchatType::class, $service->table_achat);
         $form->handleRequest($request);
@@ -173,10 +140,10 @@ class AchatController extends AbstractController
     /**
      * @Route("achat_delete_{id}", name="achat_delete", methods={"POST"})
      */
-    public function delete(Request $request,Service $service,$id): Response
+    public function delete(Request $request, Service $service, $id): Response
     {
-        $achat=$service->repo_achat->find($id);
-        if ($this->isCsrfTokenValid('delete',$achat, $request->request->get('_token'))) {
+        $achat = $service->repo_achat->find($id);
+        if ($this->isCsrfTokenValid('delete', $achat, $request->request->get('_token'))) {
             $service->repo_achat->remove($achat);
             $service->db->flush();
         }
