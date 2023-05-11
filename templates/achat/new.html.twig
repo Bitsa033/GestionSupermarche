@@ -21,60 +21,61 @@
 
                         </thead>
                     </table>
-                    <!-- /.card-header -->
-                    <div class="card-header form-inline">
 
-                        <div class="card-body table-responsive p-0" style="height:500px;">
-                            <table class="table table-head-fixed">
 
-                                <form action="{{ path('achat_new') }}" method="post">
+                    <div class="card-body table-responsive p-0" style="height:500px;">
+                        <table class="table table-head-fixed">
 
-                                    <tbody class="table table-bordered">
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Produit</th>
-                                            <th>Qte</th>
-                                            <th>Unité d'achat</th>
-                                            <th>Date de livraison</th>
-                                        </tr>
+                            <form action="{{ path('achat_new') }}" method="post">
 
-                                        {% for produit in produits %}
-                                        <tr>
-                                            <td>
-                                                <input type="checkbox" name="produit_id[]" value="{{produit.id}}" class="" id="">
-                                            </td>
-                                            <td>
-                                                {{ produit.famille.nom }} {{ produit.nom }}
-                                                <input type="hidden" name="produit_name[]" value="{{produit.id}}" class="form-control" id="">
-                                            </td>
-                                            <td>
-                                                <input type="number" name="quantite[]" class="form-control" id="">
-                                            </td>
-                                            <td>
-                                                {{ produit.uniteAchat.nomuval }}
-                                            </td>
-                                            <td><input type="date" name="date_commande[]" class="form-control" id="">
-                                            </td>
+                                <tbody class="table table-bordered">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Produit</th>
+                                        <th>Qte</th>
+                                        <th>Unité d'achat</th>
+                                        <th>Date de livraison</th>
+                                    </tr>
 
-                                        </tr>
-                                        {% endfor %}
+                                    {% for produit in produits %}
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" name="produit_id[]" value="{{produit.id}}" class=""
+                                                id="">
+                                        </td>
+                                        <td>
+                                            {{ produit.famille.nom }} {{ produit.nom }}
+                                            <input type="hidden" name="produit_name[]" value="{{produit.id}}"
+                                                class="form-control" id="">
+                                        </td>
+                                        <td>
+                                            <input type="number" name="quantite[]" class="form-control" id="">
+                                        </td>
+                                        <td>
+                                            {{ produit.uniteAchat.nomuval }}
+                                        </td>
+                                        <td><input type="date" name="date_commande[]" class="form-control" id="">
+                                        </td>
 
-                                    </tbody>
-                            </table>
+                                    </tr>
+                                    {% endfor %}
 
-                        </div>
-                        <!-- /.card -->
-                        <br>
-                        <button type="submit" name="enregistrer" class="btn btn-success offset-4">Enregistrer
-                            la commande</button>
-                        </form>
+                                </tbody>
+                        </table>
+
                     </div>
-
+                    <!-- /.card -->
+                    <br>
+                    <button type="submit" name="enregistrer" class="btn btn-success offset-4">Enregistrer
+                        la commande</button>
+                    </form>
                 </div>
+
             </div>
         </div>
+</div>
 
-    </section>
+</section>
 </div>
 
 {% endblock %}

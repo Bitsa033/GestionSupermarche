@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\Achat;
 use App\Entity\Famille;
+use App\Entity\Magasin;
 use App\Entity\Margeprix;
 use App\Entity\Produit;
 use App\Entity\Reception;
@@ -12,6 +13,7 @@ use App\Repository\AchatRepository;
 use App\Entity\Stock;
 use App\Entity\Uval;
 use App\Repository\FamilleRepository;
+use App\Repository\MagasinRepository;
 use App\Repository\MargeprixRepository;
 use App\Repository\ProduitRepository;
 use App\Repository\ReceptionRepository;
@@ -29,6 +31,7 @@ class Service{
     public $table_margeprix;
     public $table_stock;
     public $table_profit;
+    public $table_magasin;
 
     public $repo_user;
     public $repo_famille;
@@ -39,6 +42,7 @@ class Service{
     public $repo_margeprix;
     public $repo_stockt;
     public $repo_profit;
+    public $repo_magasin;
 
     public $db;
 
@@ -50,7 +54,8 @@ class Service{
         UvalRepository $uvalRepository,
         MargeprixRepository $margeprixRepository,
         StockRepository $stockRepository,
-        ManagerRegistry $managerRegistry
+        ManagerRegistry $managerRegistry,
+        MagasinRepository $magasinRepository
     )
     {
         $this->repo_famille=$familleRepository;
@@ -60,14 +65,16 @@ class Service{
         $this->repo_uval=$uvalRepository;
         $this->repo_margeprix=$margeprixRepository;
         $this->repo_stockt=$stockRepository;
+        $this->repo_magasin=$magasinRepository;
 
         $this->table_famille= Famille::class;
         $this->table_produit= Produit::class;
         $this->table_achat= Achat::class;
-        $this->table_reception= new Reception;
+        $this->table_reception= Reception::class;
         $this->table_uval= Uval::class;
         $this->table_margeprix= Margeprix::class;
         $this->table_stock= Stock::class;
+        $this->table_magasin= Magasin::class;
 
         $this->db=$managerRegistry->getManager();
 
@@ -116,11 +123,13 @@ class Service{
     {
 
         $achat=$this->repo_achat->find($data['achat']);
+        $magasin=$this->repo_magasin->find($data['magasin']);
     
-        $reception = $this->table_reception;
+        $reception = new $this->table_reception;
         $reception->setCommande($achat);
         $reception->setQte($data['quantite']);
         $reception->setPrixTotal($data['prixTotal']);
+        $reception->setMagasin($magasin);
         $reception->setDateReception(new \DateTime());
         // $stock->setRef(strtoupper($data['ref']));
         $this->insert_to_db($reception);

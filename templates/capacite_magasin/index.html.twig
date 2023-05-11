@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CapaciteMagasin index{% endblock %}
+
+{% block body %}
+<div class="offset-4 col-4">
+    
+    <h1>CapaciteMagasin index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>NbInitial</th>
+                <th>NbActuel</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for capacite_magasin in capacite_magasins %}
+            <tr>
+                <td>{{ capacite_magasin.id }}</td>
+                <td>{{ capacite_magasin.nbInitial }}</td>
+                <td>{{ capacite_magasin.nbActuel }}</td>
+                <td>
+                    <a href="{{ path('capacite_magasin_show', {'id': capacite_magasin.id}) }}">show</a>
+                    <a href="{{ path('capacite_magasin_edit', {'id': capacite_magasin.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('capacite_magasin_new') }}">Create new</a>
+</div>
+{% endblock %}

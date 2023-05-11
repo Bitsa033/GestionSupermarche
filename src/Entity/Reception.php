@@ -45,6 +45,12 @@ class Reception
      */
     private $prix_total;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Magasin::class, inversedBy="receptions")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $magasin;
+
     public function __construct()
     {
         $this->stocks = new ArrayCollection();
@@ -129,6 +135,18 @@ class Reception
     public function setPrixTotal(float $prix_total): self
     {
         $this->prix_total = $prix_total;
+
+        return $this;
+    }
+
+    public function getMagasin(): ?Magasin
+    {
+        return $this->magasin;
+    }
+
+    public function setMagasin(?Magasin $magasin): self
+    {
+        $this->magasin = $magasin;
 
         return $this;
     }

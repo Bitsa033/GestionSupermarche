@@ -13,7 +13,7 @@
                 <th>Prix unitaire</th>
                 <th>Quantité</th>
                 <th>Prix total</th>
-                
+
             </tr>
             <tr>
                 <td>{{ achat.dateachat ? achat.dateachat|date('m/d/Y H:i:s') : '' }}</td>
@@ -22,7 +22,7 @@
                     {% if achat.qte >=2 %}
                     {{achat.qte| number_format(0, ' ', ' ')}} {{achat.produit.uniteAchat.nomuval}}{{'s'}}
                     {% else %}
-                    {{achat.qte| number_format(0, ' ', ' ')}} {{achat.produit.uniteAchat.nomuval}}  
+                    {{achat.qte| number_format(0, ' ', ' ')}} {{achat.produit.uniteAchat.nomuval}}
                     {% endif %}
                 </td>
                 <td>{{ achat.prixTotal| number_format(0, ' ', ' ') }} FCFA</td>
@@ -32,45 +32,76 @@
 
 </div>
 
-<div class="offset-3 col-md-8">
-    {% if qte_achat== qte_reception %}
+<div class="row">
+
+    <div class="offset-3 col-md-5">
+        {% if qte_achat== qte_reception %}
         <div class="card">
             <div class="card-header" style="color: green;">
                 Votre commande a été finalisée !
             </div>
         </div>
-    {% else %}
-        <h4>Formulaire de reception  <strong>|
-        {% if qte_reception %}
-        quantité reçue:</strong> {{qte_reception}}/{{qte_achat}}</h4>
+        {% else %}
+        <h4>Formulaire de reception <strong>|
+                {% if qte_reception %}
+                quantité reçue:</strong> {{qte_reception}}/{{qte_achat}}</h4>
         {% else %}
         quantité reçue:</strong> 0</h4>
         {% endif %}
 
         <form action="" method="post">
-            <!--numero de commande-->
-            <label for="numero_commande">Numéro</label>
-            <input disabled style="margin-left: 10%;" type="text" name="numero_commande" id="numero_commande" value="{{achat.id}}"><br>
-            <!--nom de commande-->
-            <label for="nom_commande">Libelé</label>
-            <input disabled style="margin-left: 12%;" type="text" name="nom_commande" id="nom_commande" value="{{achat.produit.nom}}"><br>
-            <!--qte totale de commande-->
-            <label for="qte_tot">Qté Totale</label>
-            <input style="margin-left: 8%;" type="number" name="qte" id="qte" min="1" max="{{achat.qte}}"><br>
-            <!--prix unitaire de commande-->
-            <label for="prix_tot">Prix Total</label>
-            <input style="margin-left: 9%;" type="text" name="prix_tot" id="prix_tot" placeholder="----" disabled><br>
-            <!--date de reception-->
-            <label for="date_reception">Date Réception</label>
-            <input style="margin-left: 4%; width: 190px;" type="text" placeholder="Jour/Mois/Année" name="date_reception" id="date_reception"><br>
-            <!--bouton valider-->
-            <input style="margin-left: 17%; width: 190px;" type="submit" value="Valider" class="btn btn-success"><br>
+            <table class="table table-head-fixed">
+                {% if achat.produit.prixAchat == achat.produit.prixVente %}
+                    
+                {% else %}
+                    <label for="stoc_tot">1 {{achat.produit.uniteAchat.nomuval}} est égale à combien de
+                        {{achat.produit.uniteVente.nomuval}} ?</label>
+                    <input type="number" name="stoc_tot" required>
+                    
+                {% endif %}
+
+                <tbody class="table table-bordered">
+                    <tr>
+                        <th>Produit</th>
+                        <th>Qte</th>
+                        <th>ID</th>
+                        <th>Magasin</th>
+                        <th>Capacite</th>
+                    </tr>
+
+                    {% for mag in magasins %}
+                    <tr>
+                        <td>
+                            <input disabled type="text" name="nom_commande" id="nom_commande"
+                                value="{{achat.produit.nom}}">
+                        </td>
+                        <td>
+                            <input style="margin-left: 8%;" type="number" name="quantite[]" id="qte" min="1"
+                                max="{{achat.qte}}">
+                        </td>
+                        <td>
+                            <input type="checkbox" name="mag_id[]" value="{{mag.id}}" class="" id="">
+                        </td>
+                        <td>
+                            {{ mag.nom }}
+                            <input type="hidden" name="mag_name[]" value="{{mag.id}}" class="form-control" id="">
+                        </td>
+                        <td>
+                            {{ mag.capacite }}
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+            <button type="submit" class="btn btn-success col-md-4 offset-4" name="enregistrer">Enregistrer</button>
         </form>
-        
-    {% endif %}
 
+        {% endif %}
 
-    
+    </div>
+
 
 </div>
 {% endblock %}

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\MagasinRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -28,10 +30,20 @@ class Magasin
     private $capacite;
 
     /**
-     * @ORM\ManyToOne(targetEntity=CapaciteMagasin::class, inversedBy="magasin")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\OneToMany(targetEntity=Reception::class, mappedBy="magasin")
      */
-    private $capaciteMagasin;
+    private $receptions;
+
+    /**
+     * @ORM\OneToMany(targetEntity=CapaciteMagasin::class, mappedBy="magasin")
+     */
+    private $capaciteMagasins;
+
+    public function __construct()
+    {
+        $this->receptions = new ArrayCollection();
+        $this->capaciteMagasins = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -62,14 +74,62 @@ class Magasin
         return $this;
     }
 
-    public function getCapaciteMagasin(): ?CapaciteMagasin
+    /**
+     * @return Collection|Reception[]
+     */
+    public function getReceptions(): Collection
     {
-        return $this->capaciteMagasin;
+        return $this->receptions;
     }
 
-    public function setCapaciteMagasin(?CapaciteMagasin $capaciteMagasin): self
+    public function addReception(Reception $reception): self
     {
-        $this->capaciteMagasin = $capaciteMagasin;
+        if (!$this->receptions->contains($reception)) {
+            $this->receptions[] = $reception;
+            $reception->setMagasin($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReception(Reception $reception): self
+    {
+        if ($this->receptions->removeElement($reception)) {
+            // set the owning side to null (unless already changed)
+            if ($reception->getMagasin() === $this) {
+                $reception->setMagasin(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CapaciteMagasin[]
+     */
+    public function getCapaciteMagasins(): Collection
+    {
+        return $this->capaciteMagasins;
+    }
+
+    public function addCapaciteMagasin(CapaciteMagasin $capaciteMagasin): self
+    {
+        if (!$this->capaciteMagasins->contains($capaciteMagasin)) {
+            $this->capaciteMagasins[] = $capaciteMagasin;
+            $capaciteMagasin->setMagasin($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCapaciteMagasin(CapaciteMagasin $capaciteMagasin): self
+    {
+        if ($this->capaciteMagasins->removeElement($capaciteMagasin)) {
+            // set the owning side to null (unless already changed)
+            if ($capaciteMagasin->getMagasin() === $this) {
+                $capaciteMagasin->setMagasin(null);
+            }
+        }
 
         return $this;
     }

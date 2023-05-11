@@ -110,7 +110,8 @@ class ProduitController extends AbstractController
             'nb_rows' => $nb_row,
             'familles'=>$service->repo_famille->findAll(),
             'produits'=>$service->repo_produit->findAll(),
-            'nom_famille'=>$nom_famille
+            'nom_famille'=>$nom_famille,
+            'unites'=>$service->repo_uval->findAll()
         ]);
     }
 

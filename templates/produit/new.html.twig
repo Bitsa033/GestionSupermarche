@@ -76,13 +76,29 @@
                                                     <input type="number" name="prix_achat{{nb_row}}" class="form-control" placeholder="Prix d'achat" id="">
 												</th>
 												<th>
-                                                    <input type="number" name="unite_achat{{nb_row}}" class="form-control" placeholder="Unité d'achat" id="">
+                                                    <select type="number" name="unite_achat{{nb_row}}" class="form-control" id="">
+                                                        {% for row in unites %}
+                                                            {% if row.id %}
+                                                            <option value="{{row.id}}">{{row.nomuval}}</option>
+                                                            {% else %}
+                                                            <option value="">Liste vide...</option>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </select>
 												</th>
 												<th>
                                                     <input type="number" name="prix_vente{{nb_row}}" class="form-control" placeholder="Prix de vente" id="">
 												</th>
 												<th>
-                                                    <input type="number" name="unite_vente{{nb_row}}" class="form-control" placeholder="Unité de vente" id="">
+                                                    <select type="number" name="unite_vente{{nb_row}}" class="form-control" id="">
+                                                        {% for row in unites %}
+                                                            {% if row.id %}
+                                                            <option value="{{row.id}}">{{row.nomuval}}</option>
+                                                            {% else %}
+                                                            <option value="">Liste vide...</option>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </select>
 												</th>
 							
                                             </tr>

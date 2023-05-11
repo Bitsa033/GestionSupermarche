@@ -28,22 +28,17 @@ class Stock
     /**
      * @ORM\Column(type="bigint")
      */
-    private $qte;//qte totale de stockage
+    private $qte_init;//qte initiale
+
+    /**
+     * @ORM\Column(type="bigint")
+     */
+    private $qte_tot;//qte totale
 
     /**
      * @ORM\Column(type="bigint")
      */
     private $prix_total; //prix total de stockage
-
-    /**
-     * @ORM\Column(type="bigint")
-     */
-    private $profit_unitaire; //profit unitaire du stock
-
-    /**
-     * @ORM\Column(type="bigint")
-     */
-    private $profit_total; //profit total du stock
 
     /**
      * @ORM\Column(type="datetime")
@@ -65,14 +60,26 @@ class Stock
         return $this->id;
     }
 
-    public function getQte(): ?string
+    public function getQteInit(): ?string
     {
-        return $this->qte;
+        return $this->qte_init;
     }
 
-    public function setQte(string $qte): self
+    public function setQteInit(string $qte_init): self
     {
-        $this->qte = $qte;
+        $this->qte_init = $qte_init;
+
+        return $this;
+    }
+
+    public function getQteTot(): ?string
+    {
+        return $this->qte_tot;
+    }
+
+    public function setQteTot(string $qte_tot): self
+    {
+        $this->qte_tot = $qte_tot;
 
         return $this;
     }
@@ -88,30 +95,7 @@ class Stock
 
         return $this;
     }
-
-    public function getProfitUnitaire(): ?string
-    {
-        return $this->profit_unitaire;
-    }
-
-    public function setProfitUnitaire(string $profit_unitaire): self
-    {
-        $this->profit_unitaire = $profit_unitaire;
-
-        return $this;
-    }
-
-    public function getProfitTotal(): ?string
-    {
-        return $this->profit_total;
-    }
-
-    public function setProfitTotal(string $profit_total): self
-    {
-        $this->profit_total = $profit_total;
-
-        return $this;
-    }
+    
 
     public function getReception(): ?Reception
     {

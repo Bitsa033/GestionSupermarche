@@ -3,7 +3,9 @@
 {% block title %}Uval{% endblock %}
 
 {% block body %}
-    <h1>Uval</h1>
+<div class="offset-4 col-4">
+
+    <h3>Unité de gestion</h3>
 
     <table class="table">
         <tbody>
@@ -12,15 +14,16 @@
                 <td>{{ uval.id }}</td>
             </tr>
             <tr>
-                <th>Nomuval</th>
+                <th>Nom</th>
                 <td>{{ uval.nomuval }}</td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('uval_index') }}">back to list</a>
+    <a href="{{ path('uval_index') }} " class="btn btn-primary offset-2 col-md-4" style="margin-top: 10px;">Retour</a>
 
-    <a href="{{ path('uval_edit', {'id': uval.id}) }}">edit</a>
+    <a href="{{ path('uval_edit', {'id': uval.id}) }}" class="btn btn-warning offset-2 col-md-4" style="margin-top: 10px;">Mise à jour</a>
 
     {{ include('uval/_delete_form.html.twig') }}
+</div>
 {% endblock %}

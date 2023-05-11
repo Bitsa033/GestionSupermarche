@@ -20,11 +20,6 @@ class CapaciteMagasin
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity=Magasin::class, mappedBy="capaciteMagasin")
-     */
-    private $magasin;
-
-    /**
      * @ORM\Column(type="integer")
      */
     private $nbInitial;
@@ -34,44 +29,20 @@ class CapaciteMagasin
      */
     private $nbActuel;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Magasin::class, inversedBy="capaciteMagasins")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $magasin;
+
     public function __construct()
     {
-        $this->magasin = new ArrayCollection();
+        
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * @return Collection|Magasin[]
-     */
-    public function getMagasin(): Collection
-    {
-        return $this->magasin;
-    }
-
-    public function addMagasin(Magasin $magasin): self
-    {
-        if (!$this->magasin->contains($magasin)) {
-            $this->magasin[] = $magasin;
-            $magasin->setCapaciteMagasin($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMagasin(Magasin $magasin): self
-    {
-        if ($this->magasin->removeElement($magasin)) {
-            // set the owning side to null (unless already changed)
-            if ($magasin->getCapaciteMagasin() === $this) {
-                $magasin->setCapaciteMagasin(null);
-            }
-        }
-
-        return $this;
     }
 
     public function getNbInitial(): ?int
@@ -94,6 +65,18 @@ class CapaciteMagasin
     public function setNbActuel(int $nbActuel): self
     {
         $this->nbActuel = $nbActuel;
+
+        return $this;
+    }
+
+    public function getMagasin(): ?Magasin
+    {
+        return $this->magasin;
+    }
+
+    public function setMagasin(?Magasin $magasin): self
+    {
+        $this->magasin = $magasin;
 
         return $this;
     }

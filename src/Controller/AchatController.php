@@ -93,18 +93,29 @@ class AchatController extends AbstractController
         $qte_achat = $achat->getQte();
         $qte_reception = $service->repo_reception->sommeQte($achat);
 
-        if (!empty($request->request->get('qte'))) {
-            $qte = $request->request->get('qte');
-            $prixUnitaire = $achat->getProduit()->getPrixAchat();
-            $prixTotal = $qte * floatval($prixUnitaire);
+        //si on clic sur le boutton enregistrer et que les champs du post ne sont pas vide
+        if (isset($_POST['enregistrer'])) {
+            //dd($session_nb_row);
+            $check_array = $_POST['mag_id'];
+            foreach ($_POST['mag_name'] as $key => $value) {
+                if (in_array($_POST['mag_name'][$key], $check_array)) {
+                    $magasin = $_POST['mag_name'][$key];
 
-            $data = array(
-                'achat' => $achat,
-                'quantite' => $qte,
-                'prixTotal' => $prixTotal
-            );
+                    $quantite = $_POST["quantite"][$key];
+                    $prixUnitaire = $service->repo_achat->find($achat)->getProduit()->getPrixAchat();
+                    $prixTotal = $prixUnitaire * floatval($quantite);
 
-            $service->new_reception($data);
+                    $data = array(
+                        'magasin'=>$magasin,
+                        'achat' => $achat,
+                        'quantite' => $quantite,
+                        'prixTotal' => $prixTotal,
+                    );
+
+                    //on enregistre les données dans la bd
+                    $service->new_reception($data);
+                }
+            }
             return $this->redirectToRoute('achat_reception', [
                 'id' => $achat->getId()
             ]);
@@ -113,7 +124,8 @@ class AchatController extends AbstractController
         return $this->render('achat/show.html.twig', [
             'achat' => $achat,
             'qte_achat' => $qte_achat,
-            'qte_reception' => $qte_reception
+            'qte_reception' => $qte_reception,
+            'magasins'=>$service->repo_magasin->findAll()
         ]);
     }
 

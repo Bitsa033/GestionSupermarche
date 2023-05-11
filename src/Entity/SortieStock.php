@@ -34,6 +34,16 @@ class SortieStock
     private $valeur;
 
     /**
+     * @ORM\Column(type="bigint")
+     */
+    private $profit_unitaire; //profit unitaire du stock
+
+    /**
+     * @ORM\Column(type="bigint")
+     */
+    private $profit_total; //profit total du stock
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $dateSortie;
@@ -75,6 +85,30 @@ class SortieStock
     public function setValeur(float $valeur): self
     {
         $this->valeur = $valeur;
+
+        return $this;
+    }
+
+    public function getProfitUnitaire(): ?string
+    {
+        return $this->profit_unitaire;
+    }
+
+    public function setProfitUnitaire(string $profit_unitaire): self
+    {
+        $this->profit_unitaire = $profit_unitaire;
+
+        return $this;
+    }
+
+    public function getProfitTotal(): ?string
+    {
+        return $this->profit_total;
+    }
+
+    public function setProfitTotal(string $profit_total): self
+    {
+        $this->profit_total = $profit_total;
 
         return $this;
     }

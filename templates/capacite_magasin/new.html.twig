@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New CapaciteMagasin{% endblock %}
+
+{% block body %}
+<div class="offset-4 col-4">
+    <h1>Create new CapaciteMagasin</h1>
+
+    {{ include('capacite_magasin/_form.html.twig') }}
+
+    <a href="{{ path('capacite_magasin_index') }}">back to list</a>
+
+</div>
+{% endblock %}
