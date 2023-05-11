@@ -111,7 +111,8 @@ class ProduitController extends AbstractController
             'familles'=>$service->repo_famille->findAll(),
             'produits'=>$service->repo_produit->findAll(),
             'nom_famille'=>$nom_famille,
-            'unites'=>$service->repo_uval->findAll()
+            'unites'=>$service->repo_uval->findAll(),
+            'prix'=>$service->repo_margeprix->findAll()
         ]);
     }
 

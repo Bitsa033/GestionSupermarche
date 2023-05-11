@@ -20,7 +20,7 @@
                 <div class="row">
 					<div class="col-md-12">
 						<div class="card">
-						 <div class="card-header"><p class="h5">Liste des Stock Enregistrés | <a href="{{path('stock_new')}}">Nouveau Stock</a> | <a href="{{path('stock_update')}}">Modifier Stock</a></p></div>
+						 
 							<div class="card-body table-responsive p-0" style="height: 390px;">
                                 
 								<table class="table table-head-fixed table-bordered">
@@ -32,20 +32,22 @@
                                             <th>Qté Tot.</th>
                                             <th>Prix Unit.</th>
                                             <th>Prix Total</th>
+                                            <th>Date réception</th>
 										</tr>
 										{% for stock in stocks %}
 											<tr>
                                                 <td>{{stock.id}}</td>
-												<td>{{stock.achat.produit.nom}}</td>
+												<td>{{stock.commande.produit.nom}}</td>
                                                 <td>
-                                                    {% if stock.qteStockage >=2 %}
-                                                    {{stock.qteStockage| number_format(0, ' ', ' ')}} {{stock.uniteStockage.nomuval}}{{'s'}}   
+                                                    {% if stock.qte >=2 %}
+                                                    {{stock.qte| number_format(0, ' ', ' ')}} {{stock.commande.produit.uniteAchat.nomuval}}{{'s'}}   
                                                     {% else %}
-                                                    {{stock.qteStockage| number_format(0, ' ', ' ')}} {{stock.uniteStockage.nomuval}}
+                                                    {{stock.qte| number_format(0, ' ', ' ')}} {{stock.commande.produit.uniteAchat.nomuval}}
                                                     {% endif %}
                                                 </td>
-                                                <td>{{stock.reception.achat.produit.prixVente| number_format(0, ' ', ' ')}} FCFA</td>
+                                                <td>{{stock.commande.produit.prixAchat| number_format(0, ' ', ' ')}} FCFA</td>
                                                 <td>{{stock.prixTotal| number_format(0, ' ', ' ')}} FCFA</td>
+                                                <td>{{stock.dateReception| date("m/d/Y h:m")}}</td>
                                             </tr>
 
 										{% else %}

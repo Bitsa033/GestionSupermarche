@@ -73,7 +73,15 @@
                                                     <input type="text" name="produit{{nb_row}}" class="form-control" placeholder="Nom du produit" id="">
 												</th>
                                                 <th>
-                                                    <input type="number" name="prix_achat{{nb_row}}" class="form-control" placeholder="Prix d'achat" id="">
+                                                    <select type="number" name="prix_achat{{nb_row}}" class="form-control" id="">
+                                                        {% for row in prix %}
+                                                            {% if row.id %}
+                                                            <option value="{{row.marge}}">{{row.marge}}</option>
+                                                            {% else %}
+                                                            <option value="">Liste vide...</option>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </select>
 												</th>
 												<th>
                                                     <select type="number" name="unite_achat{{nb_row}}" class="form-control" id="">
@@ -87,7 +95,15 @@
                                                     </select>
 												</th>
 												<th>
-                                                    <input type="number" name="prix_vente{{nb_row}}" class="form-control" placeholder="Prix de vente" id="">
+                                                    <select type="number" name="prix_vente{{nb_row}}" class="form-control" id="">
+                                                        {% for row in prix %}
+                                                            {% if row.id %}
+                                                            <option value="{{row.marge}}">{{row.marge}}</option>
+                                                            {% else %}
+                                                            <option value="">Liste vide...</option>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </select>
 												</th>
 												<th>
                                                     <select type="number" name="unite_vente{{nb_row}}" class="form-control" id="">

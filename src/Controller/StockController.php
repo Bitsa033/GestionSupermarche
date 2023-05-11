@@ -25,7 +25,7 @@ class StockController extends AbstractController
     public function listeSt(Service $service){
 
         return $this->render('stock/stocks.html.twig',[
-            'stocks'=>$service->repo_stockt->findAll()
+            'stocks'=>$service->repo_reception->findAll()
         ]);
     }
 
@@ -107,108 +107,108 @@ class StockController extends AbstractController
     /**
      * @Route("stock_update", name="stock_update")
      */
-    public function updateStock(Service $service,SessionInterface $session)
-    {
-        $user = $this->getUser(); //on cherche l'utilisateur connecté
-        $sessionProduit=$session->get('stock',[]);//on recupere l'id de l'achat dans la session [stock]
-        //optionModifStock
-        $sessionoptionModifStock=$session->get('optionModifStock',[]);//on recupere l'id  dans la session [optionModifStock]
-        $sessionMargePrix=$session->get('margePrix',[]);
-        if (!empty($sessionMargePrix)) {
-            $idMarge=$service->repo_margeprix->find($sessionMargePrix);//on recupere la marge des prix
-            $margeFamille=$idMarge->getMarge();
-        }
-        else{
-            $idMarge=null;
-        }
+    // public function updateStock(Service $service,SessionInterface $session)
+    // {
+    //     $user = $this->getUser(); //on cherche l'utilisateur connecté
+    //     $sessionProduit=$session->get('stock',[]);//on recupere l'id de l'achat dans la session [stock]
+    //     //optionModifStock
+    //     $sessionoptionModifStock=$session->get('optionModifStock',[]);//on recupere l'id  dans la session [optionModifStock]
+    //     $sessionMargePrix=$session->get('margePrix',[]);
+    //     if (!empty($sessionMargePrix)) {
+    //         $idMarge=$service->repo_margeprix->find($sessionMargePrix);//on recupere la marge des prix
+    //         $margeFamille=$idMarge->getMarge();
+    //     }
+    //     else{
+    //         $idMarge=null;
+    //     }
         
-        if (!empty($session->get('nb_row', []))) {
-            $sessionLigne = $session->get('nb_row', []);
-        }
-        else{
-            $sessionLigne = 1;
-        }
-        $sessionNb = $sessionLigne/$sessionLigne;
-        if (!empty($sessionProduit)) {
-            //on recupere tous les infos du stock de [sessionProduit]
-            $stock=$service->repo_stockt->find($sessionProduit);
+    //     if (!empty($session->get('nb_row', []))) {
+    //         $sessionLigne = $session->get('nb_row', []);
+    //     }
+    //     else{
+    //         $sessionLigne = 1;
+    //     }
+    //     $sessionNb = $sessionLigne/$sessionLigne;
+    //     if (!empty($sessionProduit)) {
+    //         //on recupere tous les infos du stock de [sessionProduit]
+    //         $stock=$service->repo_stockt->find($sessionProduit);
            
-        }
-        else{
-            $stock=null;
-        }
+    //     }
+    //     else{
+    //         $stock=null;
+    //     }
         
-        $nb_row = array(1);
-        //pour chaque valeur du compteur i, on ajoutera un champs de plus en consirerant que nb_row par defaut=1
-        if (!empty( $sessionNb)) {
-            for ($i = 0; $i < $sessionNb; $i++) {
-                $nb_row[$i] = $i;
-            }
-        }
+    //     $nb_row = array(1);
+    //     //pour chaque valeur du compteur i, on ajoutera un champs de plus en consirerant que nb_row par defaut=1
+    //     if (!empty( $sessionNb)) {
+    //         for ($i = 0; $i < $sessionNb; $i++) {
+    //             $nb_row[$i] = $i;
+    //         }
+    //     }
         
-        //si on clic sur le boutton enregistrer et que les champs du post ne sont pas vide
-        if (isset($_POST['enregistrer'])) {
-            //dd($session_nb_row);
-            for ($i = 0; $i < $sessionNb; $i++) {
-                //on recupere la quantite de stockage
-                $qteStock=$_POST['qteStock'.$i];
-                //on recupere le prix unitaire d'achat
-                $prixUnitAchat=$_POST['prixUnit'.$i];
-                //on calcule le prix unitaire de vente
-                $idStock=$service->repo_stockt->find($sessionProduit);
-                $ancienProfit=$idStock->getProfitUnitaire();
-                if ($sessionoptionModifStock=='addition') {
-                    $prixUnitVente=$prixUnitAchat +  $margeFamille;
-                    //on calcul le profit unitaire
-                    $profUnit=$ancienProfit+$margeFamille;
-                    $this->addFlash('success','Modification réussie avec succès !');
-                }
-                elseif ($sessionoptionModifStock=='soustraction') {
+    //     //si on clic sur le boutton enregistrer et que les champs du post ne sont pas vide
+    //     if (isset($_POST['enregistrer'])) {
+    //         //dd($session_nb_row);
+    //         for ($i = 0; $i < $sessionNb; $i++) {
+    //             //on recupere la quantite de stockage
+    //             $qteStock=$_POST['qteStock'.$i];
+    //             //on recupere le prix unitaire d'achat
+    //             $prixUnitAchat=$_POST['prixUnit'.$i];
+    //             //on calcule le prix unitaire de vente
+    //             $idStock=$service->repo_stockt->find($sessionProduit);
+    //             $ancienProfit=$idStock->getProfitUnitaire();
+    //             if ($sessionoptionModifStock=='addition') {
+    //                 $prixUnitVente=$prixUnitAchat +  $margeFamille;
+    //                 //on calcul le profit unitaire
+    //                 $profUnit=$ancienProfit+$margeFamille;
+    //                 $this->addFlash('success','Modification réussie avec succès !');
+    //             }
+    //             elseif ($sessionoptionModifStock=='soustraction') {
                    
-                    if ($margeFamille==$ancienProfit) {
-                        $this->addFlash('error','Echec de modification car la marge de prix est nulle !');
-                        return $this->redirectToRoute('stock_update');
-                    }
-                    elseif ($margeFamille>$ancienProfit) {
-                        $this->addFlash('error','Echec de modification car la nouvelle marge de prix est plus
-                        grande que la récente !');
-                        return $this->redirectToRoute('stock_update');
-                    }
+    //                 if ($margeFamille==$ancienProfit) {
+    //                     $this->addFlash('error','Echec de modification car la marge de prix est nulle !');
+    //                     return $this->redirectToRoute('stock_update');
+    //                 }
+    //                 elseif ($margeFamille>$ancienProfit) {
+    //                     $this->addFlash('error','Echec de modification car la nouvelle marge de prix est plus
+    //                     grande que la récente !');
+    //                     return $this->redirectToRoute('stock_update');
+    //                 }
 
-                    $prixUnitVente=$prixUnitAchat - $margeFamille;
-                    $profUnit=$ancienProfit-$margeFamille;
-                    $this->addFlash('success','Modification réussie avec succès !');
-                }
-                //on calcul le prix total de vente
-                $prixTotalVente=$prixUnitVente * $qteStock;
+    //                 $prixUnitVente=$prixUnitAchat - $margeFamille;
+    //                 $profUnit=$ancienProfit-$margeFamille;
+    //                 $this->addFlash('success','Modification réussie avec succès !');
+    //             }
+    //             //on calcul le prix total de vente
+    //             $prixTotalVente=$prixUnitVente * $qteStock;
                 
-                //on calcul le profit total
-                $profTot=$profUnit * $qteStock;
-                //on stocke toutes les donnees dans le tableau
-                $data = array(
-                    'quantiteStockage' =>$qteStock,
-                    'prixVenteUnitaireStock'=>$prixUnitVente,
-                    'prixVenteTotaleStock'=>$prixTotalVente,
-                    'profitUnitaireStock'=>$profUnit,
-                    'profitTotalStock'=>$profTot,
-                    // 'qteGenUnite'=>0,
-                    // 'qteTotaleUnite'=>0,
-                    // 'prixUniteVenteStock'=>0
-                );
-               //on cree le service qui permettra d'enregistrer les infos du post dans la bd
-                //$service->StockUpdate($data,$stock ,$end);
-            }
+    //             //on calcul le profit total
+    //             $profTot=$profUnit * $qteStock;
+    //             //on stocke toutes les donnees dans le tableau
+    //             $data = array(
+    //                 'quantiteStockage' =>$qteStock,
+    //                 'prixVenteUnitaireStock'=>$prixUnitVente,
+    //                 'prixVenteTotaleStock'=>$prixTotalVente,
+    //                 'profitUnitaireStock'=>$profUnit,
+    //                 'profitTotalStock'=>$profTot,
+    //                 // 'qteGenUnite'=>0,
+    //                 // 'qteTotaleUnite'=>0,
+    //                 // 'prixUniteVenteStock'=>0
+    //             );
+    //            //on cree le service qui permettra d'enregistrer les infos du post dans la bd
+    //             //$service->StockUpdate($data,$stock ,$end);
+    //         }
 
-        }
+    //     }
 
-        return $this->render('stock/edit.html.twig', [
-            'nb_rows' => $nb_row,
-            'stocks'=>$service->repo_stockt->findAll(),
-            'uvals' => $service->repo_uval->findAll(),
-            'stock'=>$stock,//on affiche toutes les infos de cette variable
-            'margePrix'=>$service->repo_margeprix->findAll(),//on affiche toutes les marges de prix
-        ]);
-    }
+    //     return $this->render('stock/edit.html.twig', [
+    //         'nb_rows' => $nb_row,
+    //         'stocks'=>$service->repo_stockt->findAll(),
+    //         'uvals' => $service->repo_uval->findAll(),
+    //         'stock'=>$stock,//on affiche toutes les infos de cette variable
+    //         'margePrix'=>$service->repo_margeprix->findAll(),//on affiche toutes les marges de prix
+    //     ]);
+    // }
 
     /**
      * @Route("stock_delete_{id}", name="stock_delete", methods={"POST"})

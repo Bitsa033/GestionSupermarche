@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <title>
-            {% block title %}Cloud App!
+            {% block title %}Supermarché!
             {% endblock %}
         </title>
         {# Run `composer require symfony/webpack-encore-bundle`
@@ -142,35 +142,7 @@
                             <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
                         </div>
                     </li>
-                    <!-- Notifications Dropdown Menu -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link" data-toggle="dropdown" href="#">
-                            <i class="far fa-bell"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                            <span class="dropdown-item dropdown-header">15 Notifications</span>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item">
-                                <i class="fas fa-envelope mr-2"></i>
-                                4 new messages
-                                <span class="float-right text-muted text-sm">3 mins</span>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item">
-                                <i class="fas fa-users mr-2"></i>
-                                8 friend requests
-                                <span class="float-right text-muted text-sm">12 hours</span>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item">
-                                <i class="fas fa-file mr-2"></i>
-                                3 new reports
-                                <span class="float-right text-muted text-sm">2 days</span>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-                        </div>
-                    </li>
+                    
                     
                 </ul>
             </nav>
@@ -194,7 +166,7 @@
                 <!-- Brand Logo -->
                 <a href="{{ path('famille_index') }}" class="brand-link">
                     <img src="template/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-                    <span class="brand-text font-weight-light">GPS App</span>
+                    <span class="brand-text font-weight-light">Acceuil</span>
                 </a>
 
                 <!-- Sidebar -->
@@ -215,6 +187,24 @@
                             class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                             <!-- Add icons to the links using the .nav-icon class
                             with font-awesome or any other icon font library -->
+                            <li class="nav-item">
+                                <a href="{{ path('uval_index') }}" class="nav-link">
+                                    <i class="fa fa-th"></i>
+                                    <p>
+                                        Unités de Gestion
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="{{ path('margeprix_index') }}" class="nav-link">
+                                    <i class="fa fa-th"></i>
+                                    <p>
+                                        Prix
+                                    </p>
+                                </a>
+                            </li>
+                            
                             <li class="nav-item">
                                 <a href="{{ path('famille_index') }}" class="nav-link">
                                     <i class="fa fa-th"></i>
@@ -237,25 +227,7 @@
                                 <a href="{{ path('achat_index') }}" class="nav-link">
                                     <i class="fa fa-th"></i>
                                     <p>
-                                        Commandes fournisseurs
-                                    </p>
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="{{ path('uval_index') }}" class="nav-link">
-                                    <i class="fa fa-th"></i>
-                                    <p>
-                                        Unités de Gestion
-                                    </p>
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="{{ path('margeprix_index') }}" class="nav-link">
-                                    <i class="fa fa-th"></i>
-                                    <p>
-                                        Marge des Prix
+                                        Commandes
                                     </p>
                                 </a>
                             </li>
@@ -264,7 +236,7 @@
                                 <a href="{{ path('stock_listeSt') }}" class="nav-link">
                                     <i class="fa fa-th"></i>
                                     <p>
-                                        Stocks
+                                        Réceptions
                                     </p>
                                 </a>
                             </li>
@@ -273,64 +245,10 @@
                                 <a href="{{ path('stock_listeProfits') }}" class="nav-link">
                                     <i class="fa fa-th"></i>
                                     <p>
-                                        Profits
+                                        Livre des comptes
                                     </p>
                                 </a>
                             </li>
-
-                        {# <li class="nav-item menu-open">
-                                <a href="#" class="nav-link">
-                                    <i class="nav-icon fas fa-th"></i>
-                                    <p>
-                                        Gestion etudiants
-                                        <i class="right fas fa-angle-left"></i>
-                                    </p>
-                                </a>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="./index.html" class="nav-link">
-                                            <i class="fa fa-pen"></i>
-                                            <p>Ajouter</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="./index2.html" class="nav-link">
-                                            <i class="fa fa-pen"></i>
-                                            <p>Inscrire</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="./index3.html" class="nav-link">
-                                            <i class="fa fa-pen"></i>
-                                            <p>Noter</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li> #}
-
-                            {# <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-search"></i>
-                                <p>
-                                    Search
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="pages/search/simple.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Simple Search</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/search/enhanced.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Enhanced</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li> #}
 
                         </ul>
                     </nav>
