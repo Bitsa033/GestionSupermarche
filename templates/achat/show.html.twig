@@ -51,7 +51,7 @@
 
         <form action="" method="post">
             <table class="table table-head-fixed">
-                {% if achat.produit.prixAchat == achat.produit.prixVente %}
+                {% if achat.produit.uniteAchat == achat.produit.uniteVente %}
                     
                 {% else %}
                     <label for="stoc_tot">1 {{achat.produit.uniteAchat.nomuval}} est égale à combien de

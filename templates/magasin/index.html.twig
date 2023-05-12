@@ -3,7 +3,7 @@
 {% block title %}Magasin index{% endblock %}
 
 {% block body %}
-<div class="offset-4 col-4">
+<div class="offset-4 col-5">
 
     <h1>Magasin index</h1>
 
@@ -13,18 +13,20 @@
                 <th>Id</th>
                 <th>Nom</th>
                 <th>Capacite</th>
+                <th>Libre</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
-        {% for magasin in magasins %}
+        {% for capacite in magasins %}
             <tr>
-                <td>{{ magasin.id }}</td>
-                <td>{{ magasin.nom }}</td>
-                <td>{{ magasin.capacite }}</td>
+                <td>{{ capacite.magasin.id }}</td>
+                <td>{{ capacite.magasin.nom }}</td>
+                <td>{{ capacite.magasin.capacite }} m<sup>3</sup>  </td>
+                <td>{{ capacite.capaciteActuel }} m<sup>3</sup></td>
                 <td>
-                    <a href="{{ path('magasin_show', {'id': magasin.id}) }}">show</a>
-                    <a href="{{ path('magasin_edit', {'id': magasin.id}) }}">edit</a>
+                    <a class="btn btn-success" href="{{ path('magasin_show', {'id': capacite.magasin.id}) }}">Consulter</a>
+                    <a class="btn btn-warning" href="{{ path('magasin_edit', {'id': capacite.magasin.id}) }}">Mettre à jour</a>
                 </td>
             </tr>
         {% else %}
@@ -35,6 +37,6 @@
         </tbody>
     </table>
 
-    <a href="{{ path('magasin_new') }}">Create new</a>
+    <a class="btn btn-primary" href="{{ path('magasin_new') }}">Enregistrer un nouveau magasin</a>
 </div>
 {% endblock %}

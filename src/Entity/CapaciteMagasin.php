@@ -22,15 +22,10 @@ class CapaciteMagasin
     /**
      * @ORM\Column(type="integer")
      */
-    private $nbInitial;
+    private $capaciteActuel;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $nbActuel;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Magasin::class, inversedBy="capaciteMagasins")
+     * @ORM\ManyToOne(targetEntity=Magasin::class, inversedBy="capaciteMagasins", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $magasin;
@@ -45,26 +40,14 @@ class CapaciteMagasin
         return $this->id;
     }
 
-    public function getNbInitial(): ?int
+    public function getCapaciteActuel(): ?int
     {
-        return $this->nbInitial;
+        return $this->capaciteActuel;
     }
 
-    public function setNbInitial(int $nbInitial): self
+    public function setCapaciteActuel(int $capaciteActuel): self
     {
-        $this->nbInitial = $nbInitial;
-
-        return $this;
-    }
-
-    public function getNbActuel(): ?int
-    {
-        return $this->nbActuel;
-    }
-
-    public function setNbActuel(int $nbActuel): self
-    {
-        $this->nbActuel = $nbActuel;
+        $this->capaciteActuel = $capaciteActuel;
 
         return $this;
     }

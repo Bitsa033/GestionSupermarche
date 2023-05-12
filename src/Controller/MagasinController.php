@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\CapaciteMagasin;
 use App\Entity\Magasin;
 use App\Form\MagasinType;
+use App\Repository\CapaciteMagasinRepository;
 use App\Repository\MagasinRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,10 +18,10 @@ class MagasinController extends AbstractController
     /**
      * @Route("magasin_index", name="magasin_index", methods={"GET"})
      */
-    public function index(MagasinRepository $magasinRepository): Response
+    public function index(CapaciteMagasinRepository $capaciteMagasin): Response
     {
         return $this->render('magasin/index.html.twig', [
-            'magasins' => $magasinRepository->findAll(),
+            'magasins' => $capaciteMagasin->findAll(),
         ]);
     }
 
@@ -33,7 +35,11 @@ class MagasinController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($magasin);
+            $cm=new CapaciteMagasin();
+            $cm->setMagasin($magasin);
+            $cm->setCapaciteActuel($magasin->getCapacite());
+
+            $entityManager->persist($cm);
             $entityManager->flush();
 
             return $this->redirectToRoute('magasin_index', [], Response::HTTP_SEE_OTHER);

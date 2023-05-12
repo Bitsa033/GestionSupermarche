@@ -36,7 +36,6 @@
 											<th>Date commande</th>
 											<th>Produit</th>
                                             <th>Qté Tot.</th>
-                                            <th>Prix Unit.</th>
                                             <th>Prix Total</th>
                                             <th>Reception</th>
 											
@@ -47,12 +46,11 @@
 												<td>{{achat.produit.nom}}</td>
                                                 <td>
                                                     {% if achat.qte >=2 %}
-                                                    {{achat.qte| number_format(0, ' ', ' ')}} {{achat.produit.uniteAchat.nomuval}}{{'s'}}
+                                                    {{achat.qte| number_format(0, ' ', ' ')}} {{achat.produit.uniteAchat.nomuval}}{{'s'|capitalize}}
                                                     {% else %}
                                                     {{achat.qte| number_format(0, ' ', ' ')}} {{achat.produit.uniteAchat.nomuval}} 
                                                     {% endif %}
                                                 </td>
-                                                <td>{{achat.produit.prixAchat| number_format(0, ' ', ' ')}} FCFA</td>
                                                 <td>{{achat.prixTotal| number_format(0, ' ', ' ')}} FCFA</td>
                                                 <td>
                                                     <a href="{{path('achat_reception',{'id': achat.id})}}" >Editer <i class="fa fa-edit"></i></a>
