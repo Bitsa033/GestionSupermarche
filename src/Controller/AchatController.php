@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Form\AchatType;
 use App\Service\Service;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,7 +49,7 @@ class AchatController extends AbstractController
     /**
      * @Route("achat_new", name="achat_new")
      */
-    public function new(Service $service, Request $request, SessionInterface $session)
+    public function new(Service $service)
     {
         //on cherche l'utilisateur connecté
         $user = $this->getUser();
@@ -106,19 +105,32 @@ class AchatController extends AbstractController
                 if (in_array($_POST['mag_name'][$key], $check_array)) {
                     $magasin = $_POST['mag_name'][$key];
 
-                    $quantite = $_POST["quantite"][$key];
-                    $prixUnitaire = $service->repo_achat->find($achat)->getProduit()->getPrixAchat();
-                    $prixTotal = $prixUnitaire * floatval($quantite);
+                    $prix_unit_achat = $service->repo_achat->find($achat)->getProduit()->getPrixAchat();
+                    $prix_unit_vente = $service->repo_achat->find($achat)->getProduit()->getPrixVente();
+                    $quantite_tot_achat = $_POST["quantite"][$key];
+                    if (!empty($_POST["quantiteInit"][$key])) {
+                        $quantite_unit_val = $_POST["quantiteInit"][$key];
+                    }
+                    else {
+                        $quantite_unit_val=1;
+                    }
+                    $quantite_tot_val= $quantite_unit_val * floatval($quantite_tot_achat);
+                    $prix_tot_achat = $prix_unit_achat * floatval($quantite_tot_achat);
+                    $prix_tot_val=$prix_unit_vente * $quantite_tot_val;
 
                     $data = array(
                         'magasin'=>$magasin,
                         'achat' => $achat,
-                        'quantite' => $quantite,
-                        'prixTotal' => $prixTotal,
+                        'quantite' => $quantite_tot_achat,
+                        'prixTotal' => $prix_tot_achat,
+                        'quantiteInitVal'=>$quantite_unit_val,
+                        'quantiteTotVal'=>$quantite_tot_val,
+                        'prixTotVal'=>$prix_tot_val
                     );
 
                     //on enregistre les données dans la bd
                     $service->new_reception($data);
+                    
                 }
             }
             return $this->redirectToRoute('achat_reception', [
@@ -130,7 +142,7 @@ class AchatController extends AbstractController
             'achat' => $achat,
             'qte_achat' => $qte_achat,
             'qte_reception' => $qte_reception,
-            'magasins'=>$service->repo_magasin->findAll()
+            'magasins'=>$service->repo_capacite_magasin->findAll()
         ]);
     }
 

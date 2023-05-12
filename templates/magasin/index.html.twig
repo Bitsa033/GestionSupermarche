@@ -12,7 +12,7 @@
             <tr>
                 <th>Id</th>
                 <th>Nom</th>
-                <th>Capacite</th>
+                <th>Espace</th>
                 <th>Libre</th>
                 <th>actions</th>
             </tr>
@@ -22,8 +22,8 @@
             <tr>
                 <td>{{ capacite.magasin.id }}</td>
                 <td>{{ capacite.magasin.nom }}</td>
-                <td>{{ capacite.magasin.capacite }} m<sup>3</sup>  </td>
-                <td>{{ capacite.capaciteActuel }} m<sup>3</sup></td>
+                <td>{{ capacite.magasin.capacite }} m<sup>2</sup>  </td>
+                <td>{{ capacite.capaciteActuel }} m<sup>2</sup></td>
                 <td>
                     <a class="btn btn-success" href="{{ path('magasin_show', {'id': capacite.magasin.id}) }}">Consulter</a>
                     <a class="btn btn-warning" href="{{ path('magasin_edit', {'id': capacite.magasin.id}) }}">Mettre à jour</a>

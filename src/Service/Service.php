@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Achat;
+use App\Entity\CapaciteMagasin;
 use App\Entity\Famille;
 use App\Entity\Magasin;
 use App\Entity\Margeprix;
@@ -12,12 +13,14 @@ use App\Repository\UvalRepository;
 use App\Repository\AchatRepository;
 use App\Entity\Stock;
 use App\Entity\Uval;
+use App\Repository\CapaciteMagasinRepository;
 use App\Repository\FamilleRepository;
 use App\Repository\MagasinRepository;
 use App\Repository\MargeprixRepository;
 use App\Repository\ProduitRepository;
 use App\Repository\ReceptionRepository;
 use App\Repository\StockRepository;
+use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
 
 class Service{
@@ -32,6 +35,7 @@ class Service{
     public $table_stock;
     public $table_profit;
     public $table_magasin;
+    public $table_capacite_magasin;
 
     public $repo_user;
     public $repo_famille;
@@ -43,6 +47,7 @@ class Service{
     public $repo_stockt;
     public $repo_profit;
     public $repo_magasin;
+    public $repo_capacite_magasin;
 
     public $db;
 
@@ -55,7 +60,8 @@ class Service{
         MargeprixRepository $margeprixRepository,
         StockRepository $stockRepository,
         ManagerRegistry $managerRegistry,
-        MagasinRepository $magasinRepository
+        MagasinRepository $magasinRepository,
+        CapaciteMagasinRepository $capaciteMagasinRepository
     )
     {
         $this->repo_famille=$familleRepository;
@@ -66,6 +72,7 @@ class Service{
         $this->repo_margeprix=$margeprixRepository;
         $this->repo_stockt=$stockRepository;
         $this->repo_magasin=$magasinRepository;
+        $this->repo_capacite_magasin=$capaciteMagasinRepository;
 
         $this->table_famille= Famille::class;
         $this->table_produit= Produit::class;
@@ -75,6 +82,7 @@ class Service{
         $this->table_margeprix= Margeprix::class;
         $this->table_stock= Stock::class;
         $this->table_magasin= Magasin::class;
+        $this->table_capacite_magasin= CapaciteMagasin::class;
 
         $this->db=$managerRegistry->getManager();
 
@@ -99,24 +107,6 @@ class Service{
         return $array;
     }
 
-    //on cree la methode qui permettra d'enregistrer les achats du post dans la bd
-         
-    function new_stock($data)
-    {
-
-        $reception=$this->repo_reception->find($data['achat']);
-    
-        $stock = new $this->table_stock;
-        $stock->setReception($reception);
-        $stock->setQte($data['quantite']);
-        $stock->setPrixTotal($data['prixTotal']);
-        $stock->setProfitUnitaire($data['profitUnitaire']);
-        $stock->setProfitTotal($data['profitTotal']);
-        $stock->setDateStockage(new \datetime());
-        // $stock->setRef(strtoupper($data['ref']));
-        $this->insert_to_db($stock);
-    }
-
     //on cree la methode qui permettra d'enregistrer les receptions du post dans la bd
          
     function new_reception($data)
@@ -124,15 +114,30 @@ class Service{
 
         $achat=$this->repo_achat->find($data['achat']);
         $magasin=$this->repo_magasin->find($data['magasin']);
-    
+        //on enregistre la reception d'achat(commande fournisseur) dans le stock entrant
         $reception = new $this->table_reception;
         $reception->setCommande($achat);
         $reception->setQte($data['quantite']);
         $reception->setPrixTotal($data['prixTotal']);
         $reception->setMagasin($magasin);
         $reception->setDateReception(new \DateTime());
-        // $stock->setRef(strtoupper($data['ref']));
-        $this->insert_to_db($reception);
+        //on met à jour l'epace de stockge
+        $cap_mag=$this->repo_capacite_magasin->find($magasin);
+        $cap_init=$cap_mag->getCapaciteActuel();
+        $cap_act= $cap_init - floatval($data['quantite']);
+        $cap_mag->setCapaciteActuel($cap_act);
+        $this->db->persist($cap_mag);
+        $this->db->flush();
+        
+        //on enregistre sa valeur dans le stock sortant
+        $stock= new Stock();
+        $stock->setReception($reception);
+        $stock->setQteInit($data['quantiteInitVal']);
+        $stock->setQteTot($data['quantiteTotVal']);
+        $stock->setPrixTotal($data['prixTotVal']);
+        $stock->setDateStockage(new \DateTime());
+        $this->insert_to_db($stock);
+
     }
 
     //on cree la methode qui permettra d'enregistrer les achats du post dans la bd

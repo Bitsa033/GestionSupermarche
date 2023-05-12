@@ -20,7 +20,7 @@ class Stock
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Reception::class, inversedBy="stocks")
+     * @ORM\ManyToOne(targetEntity=Reception::class, inversedBy="stocks", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $reception; // produit

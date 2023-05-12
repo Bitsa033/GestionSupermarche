@@ -56,7 +56,7 @@
                 {% else %}
                     <label for="stoc_tot">1 {{achat.produit.uniteAchat.nomuval}} est égale à combien de
                         {{achat.produit.uniteVente.nomuval}} ?</label>
-                    <input type="number" name="stoc_tot" required>
+                    <input type="number" name="quantiteInit[]" required>
                     
                 {% endif %}
 
@@ -66,7 +66,7 @@
                         <th>Qte</th>
                         <th>ID</th>
                         <th>Magasin</th>
-                        <th>Capacite</th>
+                        <th>Espace</th>
                     </tr>
 
                     {% for mag in magasins %}
@@ -77,17 +77,17 @@
                         </td>
                         <td>
                             <input style="margin-left: 8%;" type="number" name="quantite[]" id="qte" min="1"
-                                max="{{achat.qte}}">
+                                max="{{achat.qte - qte_reception}}">
                         </td>
                         <td>
-                            <input type="checkbox" name="mag_id[]" value="{{mag.id}}" class="" id="">
+                            <input type="checkbox" name="mag_id[]" value="{{mag.magasin.id}}" class="" id="">
                         </td>
                         <td>
-                            {{ mag.nom }}
-                            <input type="hidden" name="mag_name[]" value="{{mag.id}}" class="form-control" id="">
+                            {{ mag.magasin.nom }}
+                            <input type="hidden" name="mag_name[]" value="{{mag.magasin.id}}" class="form-control" id="">
                         </td>
                         <td>
-                            {{ mag.capacite }}
+                            {{ mag.capaciteActuel }} m<sup>2</sup>
                         </td>
 
                     </tr>

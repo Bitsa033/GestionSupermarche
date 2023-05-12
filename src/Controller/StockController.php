@@ -60,49 +60,7 @@ class StockController extends AbstractController
         return $this->redirectToRoute('stock_new');
     }
 
-    /**
-     * @Route("stock_new", name="stock_new")
-     */
-    public function newStock(Service $service,UvalRepository $uvalRepository,MargeprixRepository $margeprixRepository,SessionInterface $session,AchatRepository $achatRepository, ManagerRegistry $end)
-    {
-
-        //si on clic sur le boutton enregistrer et que les champs du post ne sont pas vide
-        if (isset($_POST['enregistrer'])) {
-            //dd($session_nb_row);
-            $check_array = $_POST['reception_id'];
-            foreach ($_POST['reception_name'] as $key => $value) {
-                if (in_array($_POST['reception_name'][$key], $check_array)) {
-                    $produit = $_POST['reception_name'][$key];
-
-                    $quantite = $_POST["quantite"][$key];
-                    $prixUnitaire = $service->repo_reception->find($produit)->getCommande()->getProduit()->getPrixAchat();
-                    $prixTotal = $prixUnitaire * floatval($quantite);
-                    $dateStock = $_POST['date_stock'][$key];
-                    $profUnit=100;
-                    $profitTot= $profUnit * floatval($quantite);
-
-                    $data = array(
-                        'achat' => $produit,
-                        'quantite' => $quantite,
-                        'prixTotal' => $prixTotal,
-                        'dateStock' => $dateStock,
-                        'profitUnitaire'=>$profUnit,
-                        'profitTotal'=>$profitTot
-
-                    );
-
-                    //on enregistre les données dans la bd
-                    $service->new_stock($data);
-                }
-            }
-        }
-
-        return $this->render('stock/new.html.twig', [
-            'produits' => $service->repo_reception->findAll(),
-            'uvals' => $service->repo_uval->findAll(),
-            
-        ]);
-    }
+    
 
     /**
      * @Route("stock_update", name="stock_update")
