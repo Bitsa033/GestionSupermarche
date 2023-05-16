@@ -18,12 +18,6 @@ class SortieStock
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Stock::class, inversedBy="sortieStocks")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $stock;
-
-    /**
      * @ORM\Column(type="bigint")
      */
     private $qteSortie;
@@ -48,21 +42,15 @@ class SortieStock
      */
     private $dateSortie;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Produit::class, inversedBy="sortieStocks")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $produit;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getStock(): ?Stock
-    {
-        return $this->stock;
-    }
-
-    public function setStock(?Stock $stock): self
-    {
-        $this->stock = $stock;
-
-        return $this;
     }
 
     public function getQteSortie(): ?string
@@ -121,6 +109,18 @@ class SortieStock
     public function setDateSortie(\DateTimeInterface $dateSortie): self
     {
         $this->dateSortie = $dateSortie;
+
+        return $this;
+    }
+
+    public function getProduit(): ?Produit
+    {
+        return $this->produit;
+    }
+
+    public function setProduit(?Produit $produit): self
+    {
+        $this->produit = $produit;
 
         return $this;
     }

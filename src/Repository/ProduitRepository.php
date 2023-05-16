@@ -36,15 +36,20 @@ class ProduitRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?Produit
+    
+    public function stockTotal()
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = '
+        SELECT produit.nom as produit, prix_vente, SUM(qte_tot) as qte_en_stock, nomuval  FROM stock inner join reception on reception.id =
+        stock.reception_id inner join achat on achat.id = reception.commande_id inner join produit on
+        produit.id = achat.produit_id inner join uval on uval.id = produit.unite_vente_id group by produit.id
         ;
+        ';
+        $stmt = $conn->prepare($sql);
+        $stmt->executeQuery();
+        $arr=$stmt->fetchAll();
+        return $arr;
     }
-    */
+    
 }

@@ -3,13 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Produit;
-use App\Entity\Stock;
-use App\Repository\AchatRepository;
-use App\Repository\MargeprixRepository;
-use App\Repository\ReceptionRepository;
-use App\Repository\UvalRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -58,6 +52,17 @@ class StockController extends AbstractController
             //dd($session);
         }
         return $this->redirectToRoute('stock_new');
+    }
+
+    /**
+     * @Route("stock_sortie", name="stock_sortie")
+     */
+    public function stock_sortie(Service $service)
+    {
+       return $this->render('stock/sortie.html.twig',[
+        'produits'  =>$service->repo_produit->findAll(),
+        'uvals' => $service->repo_uval->findAll(),
+       ]);
     }
 
     

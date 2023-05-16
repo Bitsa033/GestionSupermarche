@@ -53,7 +53,7 @@ class ProduitController extends AbstractController
      * Insertion et affichage des produits
      * @Route("produit_new", name="produit_new")
      */
-    public function produit(SessionInterface $session,Service $service)
+    public function produit_new(SessionInterface $session,Service $service)
     {
         $sessionFamille=$session->get('famille',[]);
         //on cherche l'utilisateur connecté
@@ -83,11 +83,11 @@ class ProduitController extends AbstractController
             
             //dd($session_nb_row);
             for ($i = 0; $i < $sessionNb; $i++) {
-                $ref=rand(01,299);
+                $ref=rand(0,(1000));
                 $data = array(
                     'id_famille'=>$sessionFamille,
                     'produit' => $_POST['produit' . $i],
-                    'code'    => 'PROD_'.$ref.'_'.$_POST['produit' . $i],
+                    'code'    => 'PROD_'.$ref,
                     'uniteAchat' =>$_POST['unite_achat'. $i],
                     'uniteVente'=>$_POST['unite_vente'. $i],
                     'prixAchat'=>$_POST['prix_achat'. $i],
@@ -122,8 +122,16 @@ class ProduitController extends AbstractController
     public function produitsListe(Service $service){
 
         return $this->render('produit/produits.html.twig',[
-            'produits'=>$service->repo_produit->findAll()
+            'produits'=>$service->repo_produit->stockTotal()
         ]);
+    }
+
+    /**
+     * @Route("produit_all", name="produit_all", methods={"GET"})
+     */
+    public function all(Service $produit): Response
+    {
+        dd($produit->repo_produit->stockTotal());
     }
 
     /**

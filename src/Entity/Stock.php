@@ -45,14 +45,10 @@ class Stock
      */
     private $date_stockage;
 
-    /**
-     * @ORM\OneToMany(targetEntity=SortieStock::class, mappedBy="stock")
-     */
-    private $sortieStocks;
 
     public function __construct()
     {
-        $this->sortieStocks = new ArrayCollection();
+        
     } 
 
     public function getId(): ?int
@@ -121,34 +117,5 @@ class Stock
         return $this;
     }
 
-    /**
-     * @return Collection|SortieStock[]
-     */
-    public function getSortieStocks(): Collection
-    {
-        return $this->sortieStocks;
-    }
-
-    public function addSortieStock(SortieStock $sortieStock): self
-    {
-        if (!$this->sortieStocks->contains($sortieStock)) {
-            $this->sortieStocks[] = $sortieStock;
-            $sortieStock->setStock($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSortieStock(SortieStock $sortieStock): self
-    {
-        if ($this->sortieStocks->removeElement($sortieStock)) {
-            // set the owning side to null (unless already changed)
-            if ($sortieStock->getStock() === $this) {
-                $sortieStock->setStock(null);
-            }
-        }
-
-        return $this;
-    }
 
 }

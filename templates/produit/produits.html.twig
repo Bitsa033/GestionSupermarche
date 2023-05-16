@@ -27,21 +27,21 @@
 									<tbody>
 										<tr>
 											<th>Produit</th>
-                                            <th>Code</th>
-                                            <th>Prix d'achat</th>
                                             <th>Prix de vente</th>
-                                            <th>Unité d'achat</th>
-                                            <th>Unité de vente</th>
+                                            <th>Stock</th>
 											
 										</tr>
 										{% for produit in produits %}
 											<tr>
-                                                <td>{{produit.famille.nom}} <strong>|</strong> {{produit.nom}}</td>
-                                                <td>{{produit.code}}</td>
-                                                <td>{{produit.prixAchat| number_format(0, ' ', ' ')}} FCFA</td>
-                                                <td>{{produit.prixVente| number_format(0, ' ', ' ')}} FCFA</td>
-                                                <td>{{produit.uniteAchat.nomuval}}</td>
-                                                <td>{{produit.uniteVente.nomuval}}</td>
+                                                <td>{{produit.produit}}</td>
+                                                <td>{{produit.prix_vente| number_format(0, ' ', ' ')}} FCFA</td>
+                                                {% if produit.qte_en_stock ==0 %}
+                                                    <td>0</td>
+                                                {% else %}
+                                                <td>{{produit.qte_en_stock|number_format(0, ' ', ' ')}} {{produit.nomuval}} </td>
+                                                    
+                                                {% endif %}
+                                                
                                             </tr>
 
 										{% else %}

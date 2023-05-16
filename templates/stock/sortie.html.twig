@@ -16,7 +16,7 @@
                     <table class=" table-head-fixed">
                         <thead class="table table-primary table-head-fixed">
                             <tr>
-                                <td colspan='2'>Nouveau(x) stock(s)</td>
+                                <td colspan='2'>Nouvelle sorie</td>
                             </tr>
 
                         </thead>
@@ -27,46 +27,33 @@
                         <div class="card-body table-responsive p-0" style="height:500px;">
                             <table class="table table-head-fixed">
 
-                                <form action="{{ path('stock_new') }}" method="post">
+                                <form action="" method="post">
 
                                     <tbody class="table table-bordered">
                                         <tr>
                                             <th>ID</th>
-                                            <th>Achat</th>
+                                            <th>Produit</th>
                                             <th>Qte</th>
-                                            <th>Magasin</th>
-                                            <th>Date de livraison</th>
                                         </tr>
 
                                         {% for produit in produits %}
                                         <tr>
-                                            <td style="width: 10px;">
+                                            <td style="width: 1%;">
                                                 <input type="checkbox" name="reception_id[]" value="{{produit.id}}" class="" id="">
                                             </td>
 
-                                            <td style="width: 200px;">
-                                                {{ produit.commande.produit.famille.nom }} {{ produit.commande.produit.nom }}
+                                            <td style="width: 30%;">
+                                                {{ produit.nom }} 
                                                 <input type="hidden" name="reception_name[]" value="{{produit.id}}" class="form-control" id="">
-                                                {% if produit.qte >=2%}
-                                                {{ produit.qte }} {{ produit.commande.produit.uniteAchat.nomuval }}s
-                                                {% else %}
-                                                {{ produit.qte }} {{ produit.commande.produit.uniteAchat.nomuval }}
-                                                {% endif %}
+                                                {{ produit.qteEnStock }}
                                                 
                                             </td>
                                             
-                                            <td style="width: 50px;">
-                                                {% if produit.qte == 1 %}
-                                                <input style="width: 100px;" type="number" name="quantite[]" class="form-control" id="" value="1" min="1" max="1">   
-                                                {% else %}
-                                                <input style="width: 100px;" type="number" name="quantite[]" class="form-control" id="" min="1" max="{{produit.qte}}">   
-                                                {% endif %}
+                                            <td style="width: 5;">
+                                                <input style="width: 100%;" type="number" name="quantite[]" class="form-control" id="" min="1" max="200"> 
                                                 
                                             </td>
-                                            <td style="width: 150px;">
-                                                <select style="width: 200px;" name="" id="" class="form-control"></select>
-                                            </td>
-                                            <td style="width: 200px;"><input style="width: 200px;" type="date" name="date_stock[]" class="form-control" id="">
+                                
                                             </td>
 
                                         </tr>

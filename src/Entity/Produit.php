@@ -61,9 +61,25 @@ class Produit
      */
     private $unite_vente;
 
+    /**
+     * @ORM\Column(type="bigint", nullable=true)
+     */
+    private $qte_en_stock;
+
+    /**
+     * @ORM\Column(type="string", length=5)
+     */
+    private $statut;
+
+    /**
+     * @ORM\OneToMany(targetEntity=SortieStock::class, mappedBy="produit")
+     */
+    private $sortieStocks;
+
     public function __construct()
     {
         $this->achats = new ArrayCollection();
+        $this->sortieStocks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -181,6 +197,60 @@ class Produit
     public function setUniteVente(?Uval $unite_vente): self
     {
         $this->unite_vente = $unite_vente;
+
+        return $this;
+    }
+
+    public function getQteEnStock(): ?string
+    {
+        return $this->qte_en_stock;
+    }
+
+    public function setQteEnStock(?string $qte_en_stock): self
+    {
+        $this->qte_en_stock = $qte_en_stock;
+
+        return $this;
+    }
+
+    public function getStatut(): ?string
+    {
+        return $this->statut;
+    }
+
+    public function setStatut(string $statut): self
+    {
+        $this->statut = $statut;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|SortieStock[]
+     */
+    public function getSortieStocks(): Collection
+    {
+        return $this->sortieStocks;
+    }
+
+    public function addSortieStock(SortieStock $sortieStock): self
+    {
+        if (!$this->sortieStocks->contains($sortieStock)) {
+            $this->sortieStocks[] = $sortieStock;
+            $sortieStock->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSortieStock(SortieStock $sortieStock): self
+    {
+        if ($this->sortieStocks->removeElement($sortieStock)) {
+            // set the owning side to null (unless already changed)
+            if ($sortieStock->getProduit() === $this) {
+                $sortieStock->setProduit(null);
+            }
+        }
 
         return $this;
     }

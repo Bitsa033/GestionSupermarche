@@ -19,11 +19,7 @@
                 <td>{{ achat.dateachat ? achat.dateachat|date('m/d/Y H:i:s') : '' }}</td>
                 <td>{{achat.produit.prixAchat}} FCFA</td>
                 <td>
-                    {% if achat.qte >=2 %}
-                    {{achat.qte| number_format(0, ' ', ' ')}} {{achat.produit.uniteAchat.nomuval}}{{'s'}}
-                    {% else %}
                     {{achat.qte| number_format(0, ' ', ' ')}} {{achat.produit.uniteAchat.nomuval}}
-                    {% endif %}
                 </td>
                 <td>{{ achat.prixTotal| number_format(0, ' ', ' ') }} FCFA</td>
             </tr>

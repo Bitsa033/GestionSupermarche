@@ -168,6 +168,7 @@ class Service{
         $produit = new $this->table_produit;
         $produit->setFamille($famille);
         $produit->setNom(ucfirst($data['produit']));
+        $produit->setStatut('actif');
         $produit->setCode(strtoupper($data['code']));
         $produit->setPrixAchat($data['prixAchat']);
         $produit->setPrixVente($data['prixVente']);
