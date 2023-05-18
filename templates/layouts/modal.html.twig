@@ -1,0 +1,164 @@
+<!-- Modal pour les clients -->
+<div class="bootstrap-modal">
+
+    <div class="modal fade" id="client">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="difference">Différence: </h5>
+                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form autocomplete="off" id="quickForm">
+                        <div class="form-group">
+                            <input type="number" name="somme" class="form-control" id="somme"
+                                placeholder="Entrez la somme d'argent ex: 5000">
+                            <div class="validate"></div>
+                        </div>
+                        <div class="form-group">
+                            <input type="number" name="depenses" class="form-control" id="depenses"
+                                placeholder="Entrez la somme dépensée ex: 2350">
+                            <div class="validate"></div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary col-md-8 offset-2"
+                                id="calculer">Calculer</button>
+                        </div>
+
+                        <div class="loading"></div>
+                        <div class="error-message"></div>
+                        <div id="message"></div>
+
+                        {#
+                    </form> #}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Femer</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal pour les comptes -->
+    <div class="bootstrap-modal">
+
+        <div class="modal fade" id="compte">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Enregistrer une oppération sur le Compte</h5>
+                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form autocomplete="off" id="quickForm">
+                            <div class="form-group">
+                                <label for="id_depot">Numero de Compte</label>
+                                <input type="text" name="id_compte" class="form-control" id="id_compte" disabled>
+                                <div class="validate"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="somme">Somme</label>
+                                <input type="text" name="somme" class="form-control" id="somme"
+                                    placeholder="Entrer la Somme">
+                                <div class="validate"></div>
+                            </div>
+
+                            <div class="loading"></div>
+                            <div class="error-message"></div>
+                            <div class="message"></div>
+
+                            {#
+                        </form> #}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Femer</button>
+                        <button type="submit" class="btn btn-primary" id="depot">Deposer</button>
+                        <button type="submit" class="btn btn-warning" id="retrait">Retirer</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Button trigger modal -->
+        {# <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">Long
+            content Modal</button> #}
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalLong">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Mettre à jour le client</h5>
+                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form autocomplete="off" id="quickForm">
+                            <div class="form-group">
+                                <label for="idc">Client n°:</label>
+                                <input type="text" name="idc" class="form-control" id="idc" disabled>
+                                <div class="validate"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="nom">Nom:</label>
+                                <input type="text" name="nom" class="form-control" id="nom">
+                                <div class="validate"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="contact">Contact:</label>
+                                <input type="text" name="contact" class="form-control" id="contact">
+                                <div class="validate"></div>
+                            </div>
+                            <div class="message"></div>
+                            {#
+                        </form> #}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-primary" id="update">Enregistrer les modifications</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Button trigger modal -->
+        {# <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Modal
+            centered</button> #}
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalCenter">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Consulter les infos sur le client</h5>
+                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            <label for="nom">Nom:</label>
+                            <input type="text" name="" class="form-control" id="get_nom" disabled>
+                            <div class="validate"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contact">Contact:</label>
+                            <input type="text" name="" class="form-control" id="get_contact" disabled>
+                            <div class="validate"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="contact">Solde du Compte:</label>
+                            <input type="text" name="" class="form-control" id="solde_du_compte" disabled>
+                            <div class="validate"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Fermer</button>
+                    </div>
+                </div>
+            </div>
+        </div>

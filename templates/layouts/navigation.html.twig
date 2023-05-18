@@ -1,0 +1,40 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="{{path('comptes')}}"><i class="fa fa-home"></i>Acceuil</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample05" aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExample05">
+      <ul class="navbar-nav">
+
+        <li class="nav-item active">
+          <a id="menu"  class="nav-link"  href="{{path('clients')}}"> <i class="fa fa-users"> Clients</i> </i></a>
+        </li>
+        
+        <li class="nav-item active">
+          <a class="nav-link" href="" id="remove"><i class="fa fa-times"></i> Supprimer tous les clients <span class="sr-only">(current)</span></a>
+        </li>
+
+        {# <li class="nav-item active">
+          <a class="nav-link" href="" id="removec"><i class="ti-delete"></i> Supprimer tous les comptes <span class="sr-only">(current)</span></a>
+        </li> #}
+
+        {# <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Opérations</a>
+          <div class="dropdown-menu" aria-labelledby="dropdown05">
+            <a class="dropdown-item" data-toggle="modal" data-target="#myModal" href="">Dépot <span class="sr-only">(current)</span></a>
+            <a class="dropdown-item" data-toggle="modal" data-target="#myModal" href="">Retrait <span class="sr-only">(current)</span></a>
+          </div> #}
+        </li>
+
+        {# <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Options</a>
+          <div class="dropdown-menu" aria-labelledby="dropdown05">
+            <a class="dropdown-item" href="">Supprimer tous les clients <span class="sr-only">(current)</span></a>
+            <a class="dropdown-item" href="">Supprimer tous les comptes <span class="sr-only">(current)</span></a>
+          </div>
+        </li>
+      </ul> #}
+      
+    </div>
+  </nav>

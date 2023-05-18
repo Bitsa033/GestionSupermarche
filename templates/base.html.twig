@@ -31,18 +31,15 @@
         <!-- summernote -->
         <link rel="stylesheet" href="template/plugins/summernote/summernote-bs4.min.css">
         <style>
-            
-            .position {
-                position: relative;
-                top: 150px;
+            #resultat{
+                min-width: 350px;
+                height: 50px;
+                padding: 10px;
+                border: 1px green solid;
             }
-
-            td,
-            th {
-                color: black;
+            #card-sortie{
+                min-height: 350px;
             }
-
-            .marge2{margin-left:2%}
         </style>
         {% block stylesheets %}
 
@@ -270,6 +267,7 @@
         <!-- ./wrapper -->
 
         {% block body %}{% endblock %}
+        {% include "layouts/modal.html.twig" %}
         <!-- Control Sidebar -->
         <aside
             class="control-sidebar control-sidebar-dark"><!-- Control sidebar content goes here -->

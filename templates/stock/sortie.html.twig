@@ -7,45 +7,59 @@
     <!-- Main content -->
     <section class="content">
         <br>
-        <div class="container-fluid">
+        <div class="container row">
 
-            <div class="col-md-12">
+            <div class="col-md-8">
 
                 <div class="card">
 
+                    
                     <table class=" table-head-fixed">
                         <thead class="table table-primary table-head-fixed">
                             <tr>
                                 <td colspan='2'>Nouvelle sorie</td>
                             </tr>
-
+                            
                         </thead>
                     </table>
                     <!-- /.card-header -->
                     <div class="card-header form-inline">
+                        
+                        <div class="card-body table-responsive p-0" id="card-sortie">
+                            <div class="form-inline">
+                                <form action="" method="post">
+                                    <input type="text"  name="mot_cle" id="mot_cle" class="form-control col-md-4" style="margin-left: 2%; width:45rem;">
+                                    <button type="button" id="btn_searck" class="form-control btn btn-dark">Rechercher</button>
 
-                        <div class="card-body table-responsive p-0" style="height:500px;">
-                            <table class="table table-head-fixed">
+                                </form>
+
+                            </div>
+                            <table class="table table-head-fixed" style="margin-top: 2%;">
 
                                 <form action="" method="post">
-
                                     <tbody class="table table-bordered">
                                         <tr>
                                             <th>ID</th>
                                             <th>Produit</th>
+                                            <th>Stock</th>
                                             <th>Qte</th>
                                         </tr>
 
                                         {% for produit in produits %}
                                         <tr>
                                             <td style="width: 1%;">
-                                                <input type="checkbox" name="reception_id[]" value="{{produit.id}}" class="" id="">
+                                                <input type="checkbox" name="produit_id[]" value="{{produit.id}}" class="" id="">
                                             </td>
 
                                             <td style="width: 30%;">
-                                                {{ produit.nom }} 
-                                                <input type="hidden" name="reception_name[]" value="{{produit.id}}" class="form-control" id="">
-                                                {{ produit.qteEnStock }}
+                                                {{ produit.produit }} 
+                                                <input type="hidden" name="produit_name[]" value="{{produit.id}}" class="form-control" id="">
+                                            
+                                                
+                                            </td>
+
+                                            <td style="width: 20%;">
+                                                {{ produit.qte_en_stock }}
                                                 
                                             </td>
                                             
@@ -65,13 +79,43 @@
                         </div>
                         <!-- /.card -->
                         <br>
-                        <button type="submit" name="enregistrer" class="btn btn-success offset-4">Enregistrer
+                        <button type="submit" name="enregistrer" id="btn_sortie" class="btn btn-success offset-4">Enregistrer
                             la commande</button>
                         </form>
                     </div>
 
                 </div>
             </div>
+            {# ./col #}
+            <div class="col-md-4">
+                <form autocomplete="off" method="post" id="quickForm" action="{{ path('stock_calculatrice') }}">
+                    <div class="form-group">
+                        <input type="number" name="somme" class="form-control" id="somme"
+                            placeholder="Entrez la somme d'argent ex: 5000">
+                        <div class="validate"></div>
+                    </div>
+                    <div class="form-group">
+                        <input type="number" name="depenses" class="form-control" id="depenses"
+                            placeholder="Entrez la somme dépensée ex: 2350">
+                        <div class="validate"></div>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary col-md-8 offset-2"
+                            id="btn_calculer">Calculer</button>
+                    </div>
+    
+                    <div class="form-group" id="resultat">
+                        {# ici on affiche le resultat du calcul #}
+                        0000 FCFA
+                    </div>
+                    <div class="error-message"></div>
+                    <div id="message"></div>
+    
+                    
+                </form>
+
+            </div>
+            {# ./col #}
         </div>
 
     </section>

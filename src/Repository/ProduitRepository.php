@@ -41,7 +41,7 @@ class ProduitRepository extends ServiceEntityRepository
     {
         $conn = $this->getEntityManager()->getConnection();
         $sql = '
-        SELECT produit.nom as produit, prix_vente, SUM(qte_tot) as qte_en_stock, nomuval  FROM stock inner join reception on reception.id =
+        SELECT produit.id as id, produit.nom as produit, prix_vente, SUM(qte_tot) as qte_en_stock, nomuval  FROM stock inner join reception on reception.id =
         stock.reception_id inner join achat on achat.id = reception.commande_id inner join produit on
         produit.id = achat.produit_id inner join uval on uval.id = produit.unite_vente_id group by produit.id
         ;

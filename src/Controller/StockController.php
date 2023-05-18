@@ -60,9 +60,26 @@ class StockController extends AbstractController
     public function stock_sortie(Service $service)
     {
        return $this->render('stock/sortie.html.twig',[
-        'produits'  =>$service->repo_produit->findAll(),
+        'produits'  =>$service->repo_produit->stockTotal(),
         'uvals' => $service->repo_uval->findAll(),
        ]);
+    }
+
+    /**
+     * @Route("stock_calculatrice", name="stock_calculatrice")
+     */
+    public function stock_calculatrice(Request $request)
+    {
+        if (!empty($request->request->get('somme')) && !empty($request->request->get('depenses'))) {
+           $somme=$request->request->get('somme');
+           $depenses=$request->request->get('depenses');
+            $resultat= floatval($somme- $depenses);
+            dd($resultat);
+       }
+
+    // dd($request);
+
+       return $this->redirectToRoute('stock_sortie');;
     }
 
     
