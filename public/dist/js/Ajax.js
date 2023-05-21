@@ -4,6 +4,15 @@ function calculer_difference(url1) {
             e.preventDefault()
             var somme = $('#somme').val()
             var depenses = $('#depenses').val()
+            // const euro = new Intl.NumberFormat('fr-FR', {
+            //     style: 'currency',
+            //     currency: 'EUR',
+            //     minimumFractionDigits: 2
+            //   });
+              
+            //   console.log(euro.format(8000)); 
+            //   console.log(euro.format(25));
+            //   console.log(euro.format(99600023147));
             
             $.ajax({
                 url: url1,
