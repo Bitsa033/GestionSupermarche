@@ -92,13 +92,15 @@
             </div>
             {# ./col #}
             <div class="col-md-4">
-                <form autocomplete="off" method="post" id="quickForm" action="{{ path('stock_calculatrice') }}">
+                <form autocomplete="off" method="post" id="quickForm">
                     <div class="form-group">
+                        Somme remise
                         <input type="number" name="somme" class="form-control" id="somme"
                             placeholder="Entrez la somme d'argent ex: 5000">
                         <div class="validate"></div>
                     </div>
                     <div class="form-group">
+                        Somme dépensée
                         <input type="number" name="depenses" class="form-control" id="depenses"
                             placeholder="Entrez la somme dépensée ex: 2350">
                         <div class="validate"></div>

@@ -101,12 +101,16 @@ class StockController extends AbstractController
            $somme=$request->request->get('somme');
            $depenses=$request->request->get('depenses');
             $resultat= floatval($somme- $depenses);
-            dd($resultat);
+            return $this->json([
+                'resultat'=>$resultat,
+                'icon'=>'success',
+            ]);
+        
        }
 
     // dd($request);
 
-       return $this->redirectToRoute('stock_sortie');;
+       //return $this->redirectToRoute('stock_sortie');;
     }
 
     
