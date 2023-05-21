@@ -1,280 +1,81 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>
-            {% block title %}Supermarché!
-            {% endblock %}
-        </title>
-        {# Run `composer require symfony/webpack-encore-bundle`
-        and uncomment the following Encore helpers to start using Symfony UX #}
-        <link
-        rel="stylesheet" href="template/plugins/fontawesome-free/css/all.min.css">
-        <!-- Ionicons -->
-        <link
-        rel="stylesheet" href="template/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-        <!-- iCheck -->
-        <link
-        rel="stylesheet" href="template/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-        <!-- JQVMap -->
-        <link
-        rel="stylesheet" href="template/plugins/jqvmap/jqvmap.min.css">
-        <!-- Theme style -->
-        <link
-        rel="stylesheet" href="template/dist/css/adminlte.min.css">
-        <!-- overlayScrollbars -->
-        <link
-        rel="stylesheet" href="template/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-        <!-- Daterange picker -->
-        <link
-        rel="stylesheet" href="template/plugins/daterangepicker/daterangepicker.css">
-        <!-- summernote -->
-        <link rel="stylesheet" href="template/plugins/summernote/summernote-bs4.min.css">
-        <style>
-            #resultat{
-                min-width: 350px;
-                height: 50px;
-                padding: 10px;
-                border: 1px green solid;
-            }
-            #card-sortie{
-                min-height: 350px;
-            }
-        </style>
-        {% block stylesheets %}
 
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}Supermarché!
         {% endblock %}
+    </title>
+    {# Run `composer require symfony/webpack-encore-bundle`
+    and uncomment the following Encore helpers to start using Symfony UX #}
+    <link rel="stylesheet" href="template/plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="template/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="template/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- JQVMap -->
+    <link rel="stylesheet" href="template/plugins/jqvmap/jqvmap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="template/dist/css/adminlte.min.css">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="template/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="template/plugins/daterangepicker/daterangepicker.css">
+    <!-- summernote -->
+    <link rel="stylesheet" href="template/plugins/summernote/summernote-bs4.min.css">
+    <style>
+        #resultat {
+            min-width: 350px;
+            height: 50px;
+            padding: 10px;
+            border: 1px green solid;
+        }
+
+        #card-sortie {
+            min-height: 350px;
+        }
+    </style>
+    {% block stylesheets %}
+
+    {% endblock %}
 
 
-    </head>
-    <body>
-        <div
-            class="wrapper">
+</head>
 
-            <!-- Navbar -->
-            <nav
-                class="main-header navbar navbar-expand navbar-light navbar-light">
-                <!-- Left navbar links -->
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" data-widget="pushmenu" href="#" role="button">
-                            <i class="fas fa-bars"></i>
-                        </a>
-                    </li>
-                </ul>
+<body>
+    <div class="wrapper">
 
-                <!-- Right navbar links -->
-                <ul
-                    class="navbar-nav ml-auto">
-                    <!-- Navbar Search -->
-                    
-                    <li class="nav-item dropdown">
-                        <a class="nav-link" data-toggle="dropdown" href="#">
-                            <i class="far fa-user"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                            <a
-                                href="#" class="dropdown-item">
-                                <!-- Message Start -->
-                                <div class="media">
-                                    <img src="template/dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-                                    <div class="media-body">
-                                        <h3 class="dropdown-item-title">
-                                            Brad Diesel
-                                            <span class="float-right text-sm text-danger">
-                                                <i class="fas fa-star"></i>
-                                            </span>
-                                        </h3>
-                                        <p class="text-sm">Call me whenever you can...</p>
-                                        <p class="text-sm text-muted">
-                                            <i class="far fa-clock mr-1"></i>
-                                            4 Hours Ago</p>
-                                    </div>
-                                </div>
-                                <!-- Message End -->
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a
-                                href="#" class="dropdown-item">
-                                <!-- Message Start -->
-                                <div class="media">
-                                    <img src="template/dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                                    <div class="media-body">
-                                        <h3 class="dropdown-item-title">
-                                            John Pierce
-                                            <span class="float-right text-sm text-muted">
-                                                <i class="fas fa-star"></i>
-                                            </span>
-                                        </h3>
-                                        <p class="text-sm">I got your message bro</p>
-                                        <p class="text-sm text-muted">
-                                            <i class="far fa-clock mr-1"></i>
-                                            4 Hours Ago</p>
-                                    </div>
-                                </div>
-                                <!-- Message End -->
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a
-                                href="#" class="dropdown-item">
-                                <!-- Message Start -->
-                                <div class="media">
-                                    <img src="template/dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                                    <div class="media-body">
-                                        <h3 class="dropdown-item-title">
-                                            Nora Silvester
-                                            <span class="float-right text-sm text-warning">
-                                                <i class="fas fa-star"></i>
-                                            </span>
-                                        </h3>
-                                        <p class="text-sm">The subject goes here</p>
-                                        <p class="text-sm text-muted">
-                                            <i class="far fa-clock mr-1"></i>
-                                            4 Hours Ago</p>
-                                    </div>
-                                </div>
-                                <!-- Message End -->
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-                        </div>
-                    </li>
-                    
-                    
-                </ul>
-            </nav>
-            <!-- /.navbar -->
+        <!-- Navbar head -->
+        {% include "layouts/nav_head.html.twig" %}
+        <!-- /.navbar -->
 
-            {% for message in app.flashes('error') %}
-            <div class="alert alert-danger col-5 offset-4">
-                {{ message }}
-            </div>
-            {% endfor %}
-
-            {% for message in app.flashes('success') %}
-            <div class="alert alert-success col-5 offset-4">
-                {{ message }}
-            </div>
-            {% endfor %}
-
-            <!-- Main Sidebar Container -->
-            <aside
-                class="main-sidebar sidebar-dark-primary elevation-4">
-                <!-- Brand Logo -->
-                <a href="{{ path('famille_index') }}" class="brand-link">
-                    <img src="template/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-                    <span class="brand-text font-weight-light">Acceuil</span>
-                </a>
-
-                <!-- Sidebar -->
-                <div
-                    class="sidebar">
-                    <!-- Sidebar user panel (optional) -->
-                    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                        <div class="image">
-                            <img src="template/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image"></div>
-                        <div class="info">
-                            {# <a href="{{ path('famille_index') }}" class="d-block">{{ app.user.email }}</a> #}
-                        </div>
-                    </div>
-
-                    <!-- Sidebar Menu -->
-                    <nav class="mt-2">
-                        <ul
-                            class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                            <!-- Add icons to the links using the .nav-icon class
-                            with font-awesome or any other icon font library -->
-                            <li class="nav-item">
-                                <a href="{{ path('magasin_index') }}" class="nav-link">
-                                    <i class="fa fa-th"></i>
-                                    <p>
-                                        Magasins
-                                    </p>
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="{{ path('uval_index') }}" class="nav-link">
-                                    <i class="fa fa-th"></i>
-                                    <p>
-                                        Unités de Gestion
-                                    </p>
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="{{ path('margeprix_index') }}" class="nav-link">
-                                    <i class="fa fa-th"></i>
-                                    <p>
-                                        Prix
-                                    </p>
-                                </a>
-                            </li>
-                            
-                            <li class="nav-item">
-                                <a href="{{ path('famille_index') }}" class="nav-link">
-                                    <i class="fa fa-th"></i>
-                                    <p>
-                                        Familles
-                                    </p>
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="{{ path('produit_listeP') }}" class="nav-link">
-                                    <i class="fa fa-th"></i>
-                                    <p>
-                                        Produits
-                                    </p>
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="{{ path('achat_index') }}" class="nav-link">
-                                    <i class="fa fa-th"></i>
-                                    <p>
-                                        Commandes
-                                    </p>
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="{{ path('stock_listeSt') }}" class="nav-link">
-                                    <i class="fa fa-th"></i>
-                                    <p>
-                                        Réceptions
-                                    </p>
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="{{ path('stock_sortie') }}" class="nav-link">
-                                    <i class="fa fa-th"></i>
-                                    <p>
-                                        Sortie
-                                    </p>
-                                </a>
-                            </li>
-
-                        </ul>
-                    </nav>
-                    <!-- /.sidebar-menu -->
-                </div>
-                <!-- /.sidebar -->
-            </aside>
-
+        {% for message in app.flashes('error') %}
+        <div class="alert alert-danger col-5 offset-4">
+            {{ message }}
         </div>
-        <!-- ./wrapper -->
+        {% endfor %}
 
-        {% block body %}{% endblock %}
-        {% include "layouts/modal.html.twig" %}
-        <!-- Control Sidebar -->
-        <aside
-            class="control-sidebar control-sidebar-dark"><!-- Control sidebar content goes here -->
-        </aside>
-        <!-- /.control-sidebar -->
+        {% for message in app.flashes('success') %}
+        <div class="alert alert-success col-5 offset-4">
+            {{ message }}
+        </div>
+        {% endfor %}
 
-    </body>
+        <!-- Main Sliderbar admin Container -->
+        {% include "layouts/sliderbar_admin.html.twig" %}
+
+    </div>
+    <!-- ./wrapper -->
+
+    {% block body %}{% endblock %}
+    {% include "layouts/modal.html.twig" %}
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark"><!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+
+</body>
 
 </html>
 <script src="template/plugins/jquery/jquery.min.js"></script>
@@ -310,4 +111,7 @@
 <script src="template/dist/js/demo.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="template/dist/js/pages/dashboard.js"></script>
-{% block javascripts %}{% endblock %}</html></li>
+{% block javascripts %}{% endblock %}
+
+</html>
+</li>

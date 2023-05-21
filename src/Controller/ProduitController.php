@@ -117,7 +117,7 @@ class ProduitController extends AbstractController
     }
 
     /**
-     * @Route("listeP", name="produit_listeP")
+     * @Route("produit_liste", name="produit_liste")
      */
     public function produitsListe(Service $service){
 

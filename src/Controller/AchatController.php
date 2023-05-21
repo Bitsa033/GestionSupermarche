@@ -12,16 +12,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class AchatController extends AbstractController
 {
     /**
-     * @Route("/", name="achat_index", methods={"GET"})
+     * @Route("/", name="achat_liste", methods={"GET"})
      */
-    public function index(Service $service): Response
+    public function achat_liste(Service $service): Response
     {
         try {
             $rep= $service->repo_achat->findAll();
         } catch (\Throwable $th) {
             die('Erreur, base de données introuvable, si vous utilisez un logiciel de base de donées, veuillez l\'activé !');
         }
-        return $this->render('achat/achat.html.twig', [
+        return $this->render('achat/achat_liste.html.twig', [
             'achats' => $rep
         ]);
     }

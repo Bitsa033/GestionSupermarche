@@ -41,8 +41,9 @@
                                         <tr>
                                             <th>ID</th>
                                             <th>Produit</th>
+                                            <th>Prix</th>
                                             <th>Stock</th>
-                                            <th>Qte</th>
+                                            <th>Qte sortie</th>
                                         </tr>
 
                                         {% for produit in produits %}
@@ -52,10 +53,14 @@
                                             </td>
 
                                             <td style="width: 30%;">
-                                                {{ produit.produit }} 
+                                               {{produit.emballage}} {{ produit.produit }} 
                                                 <input type="hidden" name="produit_name[]" value="{{produit.id}}" class="form-control" id="">
                                             
                                                 
+                                            </td>
+
+                                            <td>
+                                                {{ produit.prix_vente|number_format(0,' ',' ') }} FCFA
                                             </td>
 
                                             <td style="width: 20%;">
@@ -64,11 +69,10 @@
                                             </td>
                                             
                                             <td style="width: 5;">
-                                                <input style="width: 100%;" type="number" name="quantite[]" class="form-control" id="" min="1" max="200"> 
+                                                <input style="width: 100%;" type="number" name="quantite[]" class="form-control" id="" min="1" max="{{ produit.qte_en_stock }}"> 
                                                 
                                             </td>
-                                
-                                            </td>
+                            
 
                                         </tr>
                                         {% endfor %}

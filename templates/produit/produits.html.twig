@@ -1,71 +1,77 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <!-- Content Wrapper. Contains page content -->
-    <div
-        class="content-wrapper">
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
 
-        <!-- Main content -->
-        <section class="content">
-			<br>
-            <div
-                class="container-fluid">
-                <!-- Info boxes -->
-                <div class="row">
-                    <div class="col-12 col-sm-6 col-md-3"></div>
-                    <!-- /.col -->
+    <!-- Main content -->
+    <section class="content">
+        <br>
+        <div class="container-fluid">
+            <!-- Info boxes -->
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-3"></div>
+                <!-- /.col -->
 
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header  form-inline">
+                            <form action="" method="post">
+                                <select name="" id="" class="form-control" style="min-width: 150px;">
+                                    <option value="">Riz</option>
+                                </select>
+                            </form>
+                            <p class="h6" style="margin-left: 2%;"><a href="{{path('produit_new')}}">Nouveau Produit</a></p>
+                        </div>
+                        <div class="card-body table-responsive p-0" style="height: 310px;">
+                            <table class="table table-head-fixed table-bordered">
+
+                                <tbody>
+                                    <tr>
+                                        <th>Produit</th>
+                                        <th>Prix de vente</th>
+                                        <th>Stock</th>
+
+                                    </tr>
+                                    {% for produit in produits %}
+                                    <tr>
+                                        <td>{{produit.emballage}} {{produit.produit}}</td>
+                                        <td>{{produit.prix_vente| number_format(0, ' ', ' ')}} FCFA</td>
+                                        {% if produit.qte_en_stock ==0 %}
+                                        <td>0</td>
+                                        {% else %}
+                                        <td>{{produit.qte_en_stock|number_format(0, ' ', ' ')}}
+                                        </td>
+
+                                        {% endif %}
+
+                                    </tr>
+
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="5">Liste vide !</td>
+                                    </tr>
+                                    {% endfor %}
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <!-- /.card-body -->
+                        <div class="card-footer">
+                            @Developpeur: BITSA NZDZIE PASCAL
+                        </div>
+                    </div>
                 </div>
-                <!-- /.row -->
-                <div class="row">
-					<div class="col-md-12">
-						<div class="card">
-						 <div class="card-header"><p class="h6"><a href="{{path('produit_new')}}">Nouveau Produit</a></p></div>
-							<div class="card-body table-responsive p-0" style="height: 310px;">
-								<table class="table table-head-fixed table-bordered">
 
-									<tbody>
-										<tr>
-											<th>Produit</th>
-                                            <th>Prix de vente</th>
-                                            <th>Stock</th>
-											
-										</tr>
-										{% for produit in produits %}
-											<tr>
-                                                <td>{{produit.produit}}</td>
-                                                <td>{{produit.prix_vente| number_format(0, ' ', ' ')}} FCFA</td>
-                                                {% if produit.qte_en_stock ==0 %}
-                                                    <td>0</td>
-                                                {% else %}
-                                                <td>{{produit.qte_en_stock|number_format(0, ' ', ' ')}} {{produit.nomuval}} </td>
-                                                    
-                                                {% endif %}
-                                                
-                                            </tr>
-
-										{% else %}
-											<tr>
-												<td colspan="5">Liste vide !</td>
-											</tr>
-										{% endfor %}
-
-									</tbody>
-								</table>
-
-							</div>
-							<!-- /.card-body -->
-                            <div class="card-footer">
-                                @Developpeur: BITSA NZDZIE PASCAL
-                            </div>
-						</div>
-					</div>
-
-                </div>
-					
-                <!-- /.row -->
             </div>
 
-        </section>
-    </div>
+            <!-- /.row -->
+        </div>
+
+    </section>
+</div>
 {% endblock %}

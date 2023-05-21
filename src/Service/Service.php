@@ -9,6 +9,7 @@ use App\Entity\Magasin;
 use App\Entity\Margeprix;
 use App\Entity\Produit;
 use App\Entity\Reception;
+use App\Entity\SortieStock;
 use App\Repository\UvalRepository;
 use App\Repository\AchatRepository;
 use App\Entity\Stock;
@@ -19,6 +20,7 @@ use App\Repository\MagasinRepository;
 use App\Repository\MargeprixRepository;
 use App\Repository\ProduitRepository;
 use App\Repository\ReceptionRepository;
+use App\Repository\SortieStockRepository;
 use App\Repository\StockRepository;
 use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
@@ -33,7 +35,7 @@ class Service{
     public $table_uval;
     public $table_margeprix;
     public $table_stock;
-    public $table_profit;
+    public $table_sortiestock;
     public $table_magasin;
     public $table_capacite_magasin;
 
@@ -44,8 +46,8 @@ class Service{
     public $repo_reception;
     public $repo_uval;
     public $repo_margeprix;
-    public $repo_stockt;
-    public $repo_profit;
+    public $repo_stock;
+    public $repo_sortiestock;
     public $repo_magasin;
     public $repo_capacite_magasin;
 
@@ -61,6 +63,7 @@ class Service{
         StockRepository $stockRepository,
         ManagerRegistry $managerRegistry,
         MagasinRepository $magasinRepository,
+        SortieStockRepository $sortieStockRepository,
         CapaciteMagasinRepository $capaciteMagasinRepository
     )
     {
@@ -70,8 +73,9 @@ class Service{
         $this->repo_reception=$receptionRepository;
         $this->repo_uval=$uvalRepository;
         $this->repo_margeprix=$margeprixRepository;
-        $this->repo_stockt=$stockRepository;
+        $this->repo_stock=$stockRepository;
         $this->repo_magasin=$magasinRepository;
+        $this->repo_sortiestock=$sortieStockRepository;
         $this->repo_capacite_magasin=$capaciteMagasinRepository;
 
         $this->table_famille= Famille::class;
@@ -81,6 +85,7 @@ class Service{
         $this->table_uval= Uval::class;
         $this->table_margeprix= Margeprix::class;
         $this->table_stock= Stock::class;
+        $this->table_sortiestock= SortieStock::class;
         $this->table_magasin= Magasin::class;
         $this->table_capacite_magasin= CapaciteMagasin::class;
 
@@ -105,6 +110,21 @@ class Service{
         $v = implode(",", $v);
 
         return $array;
+    }
+
+    public function new_sortie($data)
+    {
+        # code...
+        $produit=$this->repo_produit->find($data['produit']);
+        $sortie= new $this->table_sortiestock;
+        $sortie->setProduit($produit);
+        $sortie->setQteSortie($data['quantite']);
+        $sortie->setValeur($data['prixTotal']);
+        $sortie->setDateSortie(new \DateTime());
+        $sortie->setProfitUnitaire(0);
+        $sortie->setProfitTotal(0);
+
+        $this->insert_to_db($sortie);
     }
 
     //on cree la methode qui permettra d'enregistrer les receptions du post dans la bd

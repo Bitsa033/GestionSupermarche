@@ -14,9 +14,9 @@ use App\Service\Service;
 class StockController extends AbstractController
 {
     /**
-     * @Route("stock_listeSt", name="stock_listeSt")
+     * @Route("stock_liste", name="stock_liste")
      */
-    public function listeSt(Service $service){
+    public function stock_liste(Service $service){
 
         return $this->render('stock/stocks.html.twig',[
             'stocks'=>$service->repo_reception->findAll()
@@ -24,14 +24,14 @@ class StockController extends AbstractController
     }
 
     /**
-     * @Route("stock_listeProfits", name="stock_listeProfits")
+     * @Route("stock_profits", name="stock_profits")
      */
-    public function listeProfits(Service $service){
+    // public function profits(Service $service){
         
-        return $this->render('stock/profit.html.twig',[
-            'stocks'=>$service->repo_stockt->findAll(),
-        ]);
-    }
+    //     return $this->render('stock/profit.html.twig',[
+    //         'stocks'=>$service->repo_stockt->findAll(),
+    //     ]);
+    // }
     
     /**
      * @Route("stock_nb", name="stock_nb")
@@ -59,6 +59,33 @@ class StockController extends AbstractController
      */
     public function stock_sortie(Service $service)
     {
+        if (!empty($_POST)) {
+            $check_id=$_POST['produit_id'];
+            $check_name=$_POST['produit_name'];
+            foreach ($check_name as $key => $value) {
+                # code...
+                if (in_array($check_name[$key],$check_id)) {
+                    # code...
+                    $produit = $check_name[$key];
+
+                    $quantite = $_POST["quantite"][$key];
+                    $prixUnitaire = $service->repo_produit->find($produit)->getPrixVente();
+                    $prixTotal = $prixUnitaire * floatval($quantite);
+                    //$dateCommande = $_POST['date_commande'][$key];
+
+                    $data = array(
+                        'produit' => $produit,
+                        'quantite' => $quantite,
+                        'prixTotal' => $prixTotal,
+                        //'dateAchat' => $dateCommande
+                    );
+
+                    // on enregistre dans la bd
+                    $service->new_sortie($data);
+                }
+            }
+        }
+
        return $this->render('stock/sortie.html.twig',[
         'produits'  =>$service->repo_produit->stockTotal(),
         'uvals' => $service->repo_uval->findAll(),
