@@ -55,6 +55,15 @@ class StockController extends AbstractController
     }
 
     /**
+     * @Route("paiement", name="paiement")
+     */
+    public function paiement()
+    {
+        //return $this->redirect('http://google.fr');
+        return $this->redirect('https://s.htr.cm/4iCr');
+    }
+
+    /**
      * @Route("stock_sortie", name="stock_sortie")
      */
     public function stock_sortie(Service $service)
@@ -80,8 +89,11 @@ class StockController extends AbstractController
                         //'dateAchat' => $dateCommande
                     );
 
-                    // on enregistre dans la bd
+                    // on appel l'api de paiement
+                    //return $this->redirectToRoute('paiement');
+                    //on enregistre dans la bd
                     $service->new_sortie($data);
+                    //https://s.htr.cm/4iCr
                 }
             }
         }
