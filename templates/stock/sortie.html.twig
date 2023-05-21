@@ -92,7 +92,7 @@
             </div>
             {# ./col #}
             <div class="col-md-4">
-                <form autocomplete="off" method="post" id="quickForm">
+                {# <form autocomplete="off" method="post" id="quickForm">
                     <div class="form-group">
                         Somme remise
                         <input type="number" name="somme" class="form-control" id="somme"
@@ -111,17 +111,20 @@
                     </div>
     
                     <div class="form-group" id="resultat">
-                        {# ici on affiche le resultat du calcul #}
+                        
                         0000 FCFA
                     </div>
                     <div class="error-message"></div>
                     <div id="message"></div>
     
                     
-                </form>
+                </form> #}
+
+                {% include "layouts/calculatrice.html.twig" %}
 
             </div>
-            {# ./col #}
+            {# .col #}
+            
         </div>
 
     </section>
