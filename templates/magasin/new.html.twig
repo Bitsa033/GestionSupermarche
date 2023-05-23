@@ -3,8 +3,9 @@
 {% block title %}New Magasin{% endblock %}
 
 {% block body %}
+{% include "layouts/nav_head_produit.html.twig" %}
 <div class="offset-4 col-4">
-    <h1>Create new Magasin</h1>
+    <h1>Nouveau magasin</h1>
 
     {{ include('magasin/_form.html.twig') }}
 

@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+{% include "layouts/nav_head_produit.html.twig" %}
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
 
@@ -24,7 +25,7 @@
                                     <option value="">Riz</option>
                                 </select>
                             </form>
-                            <p class="h6" style="margin-left: 2%;"><a href="{{path('produit_new')}}">Nouveau Produit</a></p>
+                            
                         </div>
                         <div class="card-body table-responsive p-0" style="height: 310px;">
                             <table class="table table-head-fixed table-bordered">

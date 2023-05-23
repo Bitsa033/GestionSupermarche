@@ -1,87 +1,89 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <!-- Content Wrapper. Contains page content -->
-    <div
-        class="content-wrapper">
+<!-- Content Wrapper. Contains page content -->
+{% include "layouts/nav_head_produit.html.twig" %}
+<div class="content-wrapper">
+    <!-- Main content -->
+    <section class="content">
+        <br>
+        <div class="container-fluid">
+            <!-- Info boxes -->
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-3"></div>
+                <!-- /.col -->
 
-        <!-- Main content -->
-        <section class="content">
-			<br>
-            <div
-                class="container-fluid">
-                <!-- Info boxes -->
-                <div class="row">
-                    <div class="col-12 col-sm-6 col-md-3"></div>
-                    <!-- /.col -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            
+                        </div>
+                        <div class="card-body table-responsive p-0" style="height: 310px;">
+                            {# <br>
+                            <form action="" method="post">
+                                <div class="form-inline">
+                                    <input type="text" name="" class="form-control">
+                                    <button type="submit" class='btn btn-dark'><i class="fa fa-search"></i></button>
+                                </div>
+                            </form> #}
+                            <table class="table table-head-fixed table-bordered">
 
+                                <tbody>
+                                    <tr>
+                                        <th>Date commande</th>
+                                        <th>Produit</th>
+                                        <th>Qté Tot.</th>
+                                        <th>Prix Total</th>
+                                        <th>Reception</th>
+
+                                    </tr>
+                                    {% for achat in achats %}
+                                    <tr>
+                                        <td>{{achat.dateachat|date("m/d/Y")}}</td>
+                                        <td>{{achat.produit.uniteAchat.nomuval}} {{achat.produit.nom}}</td>
+                                        <td>
+                                            {{achat.qte| number_format(0, ' ', ' ')}}
+                                        </td>
+                                        <td>{{achat.prixTotal| number_format(0, ' ', ' ')}} FCFA</td>
+                                        <td>
+
+                                            <a href="{{path('achat_reception',{'id': achat.id})}}">Ajuster le stock <i
+                                                    class="fa fa-edit"></i></a>
+                                            {# <form action="" method="post">
+                                                <label for="rada">Oui</label>
+                                                <input type="radio" name="rada" id="rada" value="Oui">
+                                                <label for="radb">Non</label>
+                                                <input type="radio" name="radb" id="radb" checked value="Non">
+                                            </form> #}
+                                        </td>
+
+                                    </tr>
+
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="8" class='text-center'>Liste vide !</td>
+                                    </tr>
+                                    {% endfor %}
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <!-- /.card-body -->
+                        <div class="card-footer">
+                            @Developpeur: BITSA NZDZIE PASCAL
+                        </div>
+                    </div>
                 </div>
-                <!-- /.row -->
-                <div class="row">
-					<div class="col-md-12">
-						<div class="card">
-						  <div class="card-header"><p class="h6"> <a href="{{path('achat_new')}}">Nouvelle commande</a></p></div>
-							<div class="card-body table-responsive p-0" style="height: 310px;">
-                                {# <br>
-                                <form action="" method="post">
-                                    <div class="form-inline">
-                                        <input type="text" name="" class="form-control">
-                                        <button type="submit" class='btn btn-dark'><i class="fa fa-search"></i></button>
-                                    </div>
-                                </form> #}
-								<table class="table table-head-fixed table-bordered">
 
-									<tbody>
-										<tr>
-											<th>Date commande</th>
-											<th>Produit</th>
-                                            <th>Qté Tot.</th>
-                                            <th>Prix Total</th>
-                                            <th>Reception</th>
-											
-										</tr>
-										{% for achat in achats %}
-											<tr>
-                                                <td>{{achat.dateachat|date("m/d/Y")}}</td>
-												<td>{{achat.produit.uniteAchat.nomuval}} {{achat.produit.nom}}</td>
-                                                <td>
-                                                    {{achat.qte| number_format(0, ' ', ' ')}} 
-                                                </td>
-                                                <td>{{achat.prixTotal| number_format(0, ' ', ' ')}} FCFA</td>
-                                                <td>
-                                                    <a href="{{path('achat_reception',{'id': achat.id})}}" >Editer <i class="fa fa-edit"></i></a>
-                                                    {# <form action="" method="post">
-                                                        <label for="rada">Oui</label>
-                                                        <input type="radio" name="rada" id="rada" value="Oui">
-                                                        <label for="radb">Non</label>
-                                                        <input type="radio" name="radb" id="radb" checked value="Non">
-                                                    </form> #}
-                                                </td>
-                                                
-                                            </tr>
-
-										{% else %}
-											<tr>
-												<td colspan="8" class='text-center'>Liste vide !</td>
-											</tr>
-										{% endfor %}
-
-									</tbody>
-								</table>
-
-							</div>
-							<!-- /.card-body -->
-                            <div class="card-footer">
-                                @Developpeur: BITSA NZDZIE PASCAL
-                            </div>
-						</div>
-					</div>
-
-                </div>
-					
-                <!-- /.row -->
             </div>
 
-        </section>
-    </div>
+            <!-- /.row -->
+        </div>
+
+    </section>
+</div>
 {% endblock %}

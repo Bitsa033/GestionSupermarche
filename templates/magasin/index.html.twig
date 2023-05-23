@@ -1,20 +1,22 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Magasin index{% endblock %}
+{% block title %}Magasins{% endblock %}
 
 {% block body %}
+{% include "layouts/nav_head_produit.html.twig" %}
 <div class="offset-4 col-5">
 
-    <h1>Magasin index</h1>
+    <h1>Magasins</h1>
 
-    <table class="table">
+    <table class="table table-bordered">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Nom</th>
                 <th>Espace</th>
                 <th>Libre</th>
-                <th>actions</th>
+                <th>actions
+                    
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -37,6 +39,5 @@
         </tbody>
     </table>
 
-    <a class="btn btn-primary" href="{{ path('magasin_new') }}">Enregistrer un nouveau magasin</a>
 </div>
 {% endblock %}

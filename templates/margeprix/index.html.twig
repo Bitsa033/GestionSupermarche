@@ -1,12 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Margeprix index{% endblock %}
+{% block title %}Prix{% endblock %}
 
 {% block body %}
+{% include "layouts/nav_head_produit.html.twig" %}
     <div class="content-wrapper">
         <section class="content">
             <div class="card col-6 offset-2">
-                <div class="card-header"><p class="h6"><a href="{{ path('margeprix_new') }}">Nouvelle Marge</a></p></div>
+                <div class="card-header">
+                    
+                </div>
                 <div class="card-body table-responsive p-0" style="height: 390px;">
                 
                     <table class="table table-head-fixed table-bordered">

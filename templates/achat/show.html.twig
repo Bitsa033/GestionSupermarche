@@ -3,6 +3,7 @@
 {% block title %}Achat{% endblock %}
 
 {% block body %}
+{% include "layouts/nav_head_produit.html.twig" %}
 <div class="container col-md-8 offset-3">
     <h4>Réception de la commande n°{{achat.id}}: {{ achat.produit.nom }} </h4>
 
