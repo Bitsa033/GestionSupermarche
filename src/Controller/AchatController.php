@@ -98,12 +98,21 @@ class AchatController extends AbstractController
         $qte_reception = $service->repo_reception->sommeQte($achat);
 
         //si on clic sur le boutton enregistrer et que les champs du post ne sont pas vide
-        if (isset($_POST['enregistrer'])) {
+        if (isset($_POST['btn_valider_achat'])) {
             //dd($session_nb_row);
+            // function secure_iterable($var)
+            // {
+            //     return is_iterable($var) ? $var : array();
+            // }
+
+            // foreach (secure_iterable($values) as $value)
+            // {
+            //     //do stuff...
+            // }
             $check_array = $_POST['mag_id'];
             foreach ($_POST['mag_name'] as $key => $value) {
                 if (in_array($_POST['mag_name'][$key], $check_array)) {
-                    $magasin = $_POST['mag_name'][$key];
+                    $magasin = $_POST['mag_id'][$key];
 
                     $prix_unit_achat = $service->repo_achat->find($achat)->getProduit()->getPrixAchat();
                     $prix_unit_vente = $service->repo_achat->find($achat)->getProduit()->getPrixVente();
@@ -133,9 +142,13 @@ class AchatController extends AbstractController
                     
                 }
             }
-            return $this->redirectToRoute('achat_reception', [
-                'id' => $achat->getId()
+            return $this->json([
+                'resultat'=>'magasin back: ',$magasin,
+                'icon'=>'success',
             ]);
+            // return $this->redirectToRoute('achat_reception', [
+            //     'id' => $achat->getId()
+            // ]);
         }
 
         return $this->render('achat/show.html.twig', [

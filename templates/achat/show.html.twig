@@ -59,7 +59,7 @@
 
                 <tbody class="table table-bordered">
                     <tr>
-                        <th>Produit</th>
+                        <th>{{achat.produit.nom}}</th>
                         <th>Qte</th>
                         <th>ID</th>
                         <th>Magasin</th>
@@ -69,19 +69,19 @@
                     {% for mag in magasins %}
                     <tr>
                         <td>
-                            <input disabled type="text" name="nom_commande" id="nom_commande"
-                                value="{{achat.produit.nom}}">
+                            <input disabled type="text" name="id_commande" id="id_commande"
+                                value="{{achat.id}}">
                         </td>
                         <td>
-                            <input style="margin-left: 8%;" type="number" name="quantite[]" id="qte" min="1"
+                            <input style="margin-left: 8%;" type="number" name="quantite[]" class="quantite" min="1"
                                 max="{{achat.qte - qte_reception}}">
                         </td>
                         <td>
-                            <input type="checkbox" name="mag_id[]" value="{{mag.magasin.id}}" class="" id="">
+                            <input type="checkbox" name="mag_id[]" value="{{mag.magasin.id}}"class="mag_id">
                         </td>
                         <td>
                             {{ mag.magasin.nom }}
-                            <input type="hidden" name="mag_name[]" value="{{mag.magasin.id}}" class="form-control" id="">
+                            <input type="hidden" name="mag_name[]" value="{{mag.magasin.id}}" class="form-control mag_name">
                         </td>
                         <td>
                             {{ mag.capaciteActuel }} m<sup>2</sup>
@@ -92,7 +92,7 @@
 
                 </tbody>
             </table>
-            <button type="submit" class="btn btn-success col-md-4 offset-4" name="enregistrer">Enregistrer</button>
+            <button type="submit" value="1" id="btn_valider_achat" class="btn btn-success col-md-4 offset-4" name="btn_valider_achat">Enregistrer</button>
         </form>
 
         {% endif %}
