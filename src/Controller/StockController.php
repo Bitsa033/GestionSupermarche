@@ -89,7 +89,7 @@ class StockController extends AbstractController
                         //'dateAchat' => $dateCommande
                     );
 
-                    dd($service->repo_produit->stockProduit($produit));
+                    dd($service->repo_produit->stockProduit());
 
                     // on appel l'api de paiement
                     //return $this->redirectToRoute('paiement');
