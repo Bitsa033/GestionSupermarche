@@ -142,13 +142,10 @@ class AchatController extends AbstractController
                     
                 }
             }
-            return $this->json([
-                'resultat'=>'magasin back: ',$magasin,
-                'icon'=>'success',
+            
+            return $this->redirectToRoute('achat_reception', [
+                'id' => $achat->getId()
             ]);
-            // return $this->redirectToRoute('achat_reception', [
-            //     'id' => $achat->getId()
-            // ]);
         }
 
         return $this->render('achat/show.html.twig', [

@@ -24,7 +24,7 @@ class Db
         }
     }
 
-    function new_fetch_command($command)
+    function fetch_all_command($command)
     {
         try {
             $con=$this->new_connection();
@@ -32,7 +32,19 @@ class Db
             $array=$exec->fetchAll();
             return $array;
         } catch (\Exception) {
-            die("Une erreur est survenue, verifiez vos parametres de connection, ou contactez votre webmestre !");
+            die("Une erreur est survenue lors de l'execution de la requette !");
+        }
+    }
+
+    function fetch_one_command($command)
+    {
+        try {
+            $con=$this->new_connection();
+            $exec=$con->query($command);
+            $array=$exec->fetch();
+            return $array;
+        } catch (\Exception) {
+            die("Une erreur est survenue lors de l'execution de la requette !");
         }
     }
 }

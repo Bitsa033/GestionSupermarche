@@ -50,8 +50,38 @@ class ProduitRepository extends ServiceEntityRepository
         achat.produit_id inner join uval on uval.id = produit.unite_vente_id  group by produit.id
         ;
         ';
-        $rray=$this->db->new_fetch_command($sql);
+        $rray=$this->db->fetch_all_command($sql);
         return $rray;
+    }
+
+    public function NbStockProduit()
+    {
+        $sql = '
+        SELECT count(stock.id) as nbStock FROM stock INNER JOIN reception ON
+        reception.id = stock.reception_id INNER JOIN achat ON
+        achat.id = reception.commande_id INNER JOIN produit ON
+        produit.id = achat.produit_id WHERE produit.id=1
+        ';
+        $array=$this->db->fetch_one_command($sql);
+        $nb=$array['nbStock'];
+        return $nb;
+    }
+
+    public function stockProduit()
+    {
+        $nb_stock=$this->NbStockProduit();
+        for ($i=1; $i <=$nb_stock ; $i++) { 
+            echo 'merci <br>';
+        }
+        // $sql = '
+        // SELECT produit.nom,stock.qte_tot FROM stock INNER JOIN reception ON
+        // reception.id = stock.reception_id INNER JOIN achat ON
+        // achat.id = reception.commande_id INNER JOIN produit ON
+        // produit.id = achat.produit_id
+        // ;
+        // ';
+        // $rray=$this->db->new_fetch_command($sql);
+        // return $rray;
     }
     
 }

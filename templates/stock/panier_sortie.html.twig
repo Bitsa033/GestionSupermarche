@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
-
 {% block body %}
+{% include "layouts/nav_head_sortie.html.twig" %}
     <!-- Content Wrapper. Contains page content -->
     <div
         class="content-wrapper">
@@ -20,29 +20,31 @@
                 <div class="row">
 					<div class="col-md-12">
 						<div class="card">
-						 <div class="card-header"><p class="h5">Liste des Profits Enregistrés</p></div>
+                            <div class="card-header">
+                            </div>
 							<div class="card-body table-responsive p-0" style="height: 390px;">
                                 
 								<table class="table table-head-fixed table-bordered">
 
 									<tbody>
 										<tr>
-											{# <th>ID</th> #}
+                                            <th>ID</th>
 											<th>Produit</th>
-                                            <th>Unité Vente</th>
-                                            <th>Qte Tot.</th>
-                                            <th>Profit Unit. Vente</th>
-                                            <th>Profit Total</th>
-											
+                                            <th>Qté Tot.</th>
+                                            <th>Prix Unit.</th>
+                                            <th>Prix Total</th>
+                                            <th>Date Sortie</th>
 										</tr>
-										{% for stock in stocks %}
+										{% for stock in sorties %}
 											<tr>
-												{# <td>{{stock.reference}}</td> #}
-                                                <td><a href=""> {{stock.achat.produit.nom}}</a></td>
-                                                <td>{{stock.getUniteStockage.nomuval}}</td>
-                                                <td>{{stock.getQteStockage | number_format(0, ' ', ' ')}}</td>
-                                                <td>{{stock.getProfitUnitaireStock | number_format(0, ' ', ' ') }} FCFA</td>
-                                                <td>{{stock.getProfitTotalStock| number_format(0, ' ', ' ')  }} FCFA</td>
+                                                <td>{{stock.id}}</td>
+												<td>{{stock.produit.uniteVente.nomuval}} {{stock.produit.nom}}</td>
+                                                <td>
+                                                    {{stock.qteSortie| number_format(0, ' ', ' ')}}
+                                                </td>
+                                                <td>{{stock.produit.prixVente| number_format(0, ' ', ' ')}} FCFA</td>
+                                                <td>{{stock.valeur| number_format(0, ' ', ' ')}} FCFA</td>
+                                                <td>{{stock.dateSortie| date("m/d/Y h:m")}}</td>
                                             </tr>
 
 										{% else %}

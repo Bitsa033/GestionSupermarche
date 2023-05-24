@@ -89,10 +89,12 @@ class StockController extends AbstractController
                         //'dateAchat' => $dateCommande
                     );
 
+                    dd($service->repo_produit->stockProduit($produit));
+
                     // on appel l'api de paiement
                     //return $this->redirectToRoute('paiement');
                     //on enregistre dans la bd
-                    $service->new_sortie($data);
+                    //$service->new_sortie($data);
                     //https://s.htr.cm/4iCr
                 }
             }
@@ -105,24 +107,13 @@ class StockController extends AbstractController
     }
 
     /**
-     * @Route("stock_calculatrice", name="stock_calculatrice")
+     * @Route("stock_sortie_liste", name="stock_sortie_liste")
      */
-    public function stock_calculatrice(Request $request)
+    public function stock_sortie_liste(Service $service)
     {
-        if (!empty($request->request->get('somme')) && !empty($request->request->get('depenses'))) {
-           $somme=$request->request->get('somme');
-           $depenses=$request->request->get('depenses');
-            $resultat= floatval($somme- $depenses);
-            return $this->json([
-                'resultat'=>$resultat,
-                'icon'=>'success',
-            ]);
-        
-       }
-
-    // dd($request);
-
-       //return $this->redirectToRoute('stock_sortie');;
+        return $this->render('stock/panier_sortie.html.twig',[
+            'sorties'=>$service->repo_sortiestock->findAll()
+        ]);
     }
 
     
