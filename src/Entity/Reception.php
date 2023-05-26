@@ -36,11 +36,6 @@ class Reception
     private $date_reception;
 
     /**
-     * @ORM\OneToMany(targetEntity=Stock::class, mappedBy="reception")
-     */
-    private $stocks;
-
-    /**
      * @ORM\Column(type="float")
      */
     private $prix_total;
@@ -51,9 +46,24 @@ class Reception
      */
     private $magasin;
 
+    /**
+     * @ORM\Column(type="bigint")
+     */
+    private $qte_unit_val;
+
+    /**
+     * @ORM\Column(type="bigint")
+     */
+    private $qte_tot_val;
+
+    /**
+     * @ORM\Column(type="bigint")
+     */
+    private $prix_tot_val;
+
     public function __construct()
     {
-        $this->stocks = new ArrayCollection();
+    
     }
 
     public function getId(): ?int
@@ -97,36 +107,6 @@ class Reception
         return $this;
     }
 
-    /**
-     * @return Collection|Stock[]
-     */
-    public function getStocks(): Collection
-    {
-        return $this->stocks;
-    }
-
-    public function addStock(Stock $stock): self
-    {
-        if (!$this->stocks->contains($stock)) {
-            $this->stocks[] = $stock;
-            $stock->setReception($this);
-        }
-
-        return $this;
-    }
-
-    public function removeStock(Stock $stock): self
-    {
-        if ($this->stocks->removeElement($stock)) {
-            // set the owning side to null (unless already changed)
-            if ($stock->getReception() === $this) {
-                $stock->setReception(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getPrixTotal(): ?float
     {
         return $this->prix_total;
@@ -147,6 +127,42 @@ class Reception
     public function setMagasin(?Magasin $magasin): self
     {
         $this->magasin = $magasin;
+
+        return $this;
+    }
+
+    public function getQteUnitVal(): ?string
+    {
+        return $this->qte_unit_val;
+    }
+
+    public function setQteUnitVal(string $qte_unit_val): self
+    {
+        $this->qte_unit_val = $qte_unit_val;
+
+        return $this;
+    }
+
+    public function getQteTotVal(): ?string
+    {
+        return $this->qte_tot_val;
+    }
+
+    public function setQteTotVal(string $qte_tot_val): self
+    {
+        $this->qte_tot_val = $qte_tot_val;
+
+        return $this;
+    }
+
+    public function getPrixTotVal(): ?string
+    {
+        return $this->prix_tot_val;
+    }
+
+    public function setPrixTotVal(string $prix_tot_val): self
+    {
+        $this->prix_tot_val = $prix_tot_val;
 
         return $this;
     }

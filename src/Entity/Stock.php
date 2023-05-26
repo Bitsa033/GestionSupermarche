@@ -20,17 +20,6 @@ class Stock
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Reception::class, inversedBy="stocks", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $reception; // produit
-
-    /**
-     * @ORM\Column(type="bigint")
-     */
-    private $qte_init;//qte initiale
-
-    /**
      * @ORM\Column(type="bigint")
      */
     private $qte_tot;//qte totale
@@ -45,6 +34,12 @@ class Stock
      */
     private $date_stockage;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Produit::class, inversedBy="stocks")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $produit;
+
 
     public function __construct()
     {
@@ -54,18 +49,6 @@ class Stock
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getQteInit(): ?string
-    {
-        return $this->qte_init;
-    }
-
-    public function setQteInit(string $qte_init): self
-    {
-        $this->qte_init = $qte_init;
-
-        return $this;
     }
 
     public function getQteTot(): ?string
@@ -91,31 +74,17 @@ class Stock
 
         return $this;
     }
-    
 
-    public function getReception(): ?Reception
+    public function getProduit(): ?Produit
     {
-        return $this->reception;
+        return $this->produit;
     }
 
-    public function setReception(?Reception $reception): self
+    public function setProduit(?Produit $produit): self
     {
-        $this->reception = $reception;
+        $this->produit = $produit;
 
         return $this;
     }
-
-    public function getDateStockage(): ?\DateTimeInterface
-    {
-        return $this->date_stockage;
-    }
-
-    public function setDateStockage(\DateTimeInterface $date_stockage): self
-    {
-        $this->date_stockage = $date_stockage;
-
-        return $this;
-    }
-
 
 }
