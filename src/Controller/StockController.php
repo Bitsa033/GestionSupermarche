@@ -101,7 +101,7 @@ class StockController extends AbstractController
         }
 
        return $this->render('stock/sortie.html.twig',[
-        'produits'  =>$service->repo_produit->stockTotal(),
+        'produits'  =>$service->repo_produit->qte_en_stock(),
         'uvals' => $service->repo_uval->findAll(),
        ]);
     }
