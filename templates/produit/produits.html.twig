@@ -39,12 +39,12 @@
                                     </tr>
                                     {% for produit in produits %}
                                     <tr>
-                                        <td>{{produit.emballage}} {{produit.produit}}</td>
-                                        <td>{{produit.prix_vente| number_format(0, ' ', ' ')}} FCFA</td>
-                                        {% if produit.qte_en_stock ==0 %}
+                                        <td>{{produit.produit.uniteVente.nomuval}} {{produit.produit.nom}}</td>
+                                        <td>{{produit.produit.prixVente| number_format(0, ' ', ' ')}} FCFA</td>
+                                        {% if produit.qteTot ==0 %}
                                         <td>0</td>
                                         {% else %}
-                                        <td>{{produit.qte_en_stock|number_format(0, ' ', ' ')}}
+                                        <td>{{produit.qteTot|number_format(0, ' ', ' ')}}
                                         </td>
 
                                         {% endif %}

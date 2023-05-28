@@ -54,11 +54,11 @@ class ProduitRepository extends ServiceEntityRepository
         return $rray;
     }
 
-    public function bilan_reception()
+    public function bilan_reception($id)
     {
         $sql1='SELECT produit_id, SUM(reception.qte_tot_val) as qte_tot_val, SUM(reception.prix_tot_val)
         AS prix_total_val FROM `reception` INNER JOIN achat ON achat.id = reception.commande_id 
-        INNER JOIN produit ON produit.id = achat.produit_id WHERE reception.commande_id = 1';
+        INNER JOIN produit ON produit.id = achat.produit_id WHERE reception.commande_id ='.$id;
         $array=$this->db->fetch_one_command($sql1);
         $produit_id = $array['produit_id'];
         $qte_tot_val = $array['qte_tot_val'];
@@ -74,12 +74,16 @@ class ProduitRepository extends ServiceEntityRepository
         return $data;
     }
 
-    public function afficher_id_produit()
+    public function afficher_id_produit($id)
     {
-        $sql1='SELECT distinct produit.id as id FROM `reception` INNER JOIN achat ON achat.id = reception.commande_id 
-        INNER JOIN produit ON produit.id = achat.produit_id WHERE reception.commande_id = 1';
+        $sql1='SELECT produit.id as id from produit
+        INNER JOIN stock on stock.produit_id=produit.id
+        WHERE stock.produit_id = (SELECT distinct produit.id FROM 
+        reception inner join achat on achat.id =
+        reception.commande_id INNER JOIN produit
+        ON produit.id = achat.produit_id WHERE achat.id='.$id.')';
         $array=$this->db->fetch_one_command($sql1);
-        $produit_id = $array['id'];
+        $produit_id =(is_bool($array) == true) ? $array :$array['id'];
 
         $data = array(
             'produit_id'  => $produit_id,
@@ -88,26 +92,32 @@ class ProduitRepository extends ServiceEntityRepository
         return $data;
     }
 
-    public function nouveau_stock()
+    public function nouveau_stock($id)
     {
-        $bilanp=$this->bilan_reception();
-        $afficherp=$this->afficher_id_produit();
+        $bilanp=$this->bilan_reception($id);
+        $afficherp=$this->afficher_id_produit($id);
         $produit=$afficherp['produit_id'];
         $produit_id=$bilanp['produit_id'];
         $qte_tot_val=$bilanp['qte_tot_val'];
         $prix_total_val= $bilanp['prix_total_val'];
 
-        // $sql = " UPDATE `stock` SET `qte_tot`= qte_tot + $qte_tot_val,
-        // stock.prix_total = stock.prix_total + $prix_total_val WHERE produit_id =
-        // (SELECT DISTINCT produit.id from reception INNER join 
-        // achat ON achat.id = reception.commande_id 
-        // INNER JOIN produit on produit.id = achat.produit_id )
-        // ";
-        // $this->db->insert_command($sql);
-
-        $sql = " INSERT INTO `stock`(`produit_id`, `qte_tot`, `prix_total`) VALUES 
-        ('$produit_id','$qte_tot_val','$prix_total_val') ";
+        if ($produit) {
+            # code...
+            //dd('meme id: ',$produit);
+            $sql = " UPDATE `stock` SET `qte_tot`= $qte_tot_val,
+            stock.prix_total = $prix_total_val WHERE produit_id =
+            (SELECT DISTINCT produit.id from reception INNER join 
+            achat ON achat.id = reception.commande_id 
+            INNER JOIN produit on produit.id = achat.produit_id WHERE achat.id=".$id." )
+            ";
             $this->db->insert_command($sql);
+        } else {
+            # code...
+            //dd('dif id: ',$produit_id,$produit);
+            $sql = " INSERT INTO `stock`(`produit_id`, `qte_tot`, `prix_total`) VALUES 
+            ('$produit_id','$qte_tot_val','$prix_total_val') ";
+                $this->db->insert_command($sql);
+        }
         
 
     }

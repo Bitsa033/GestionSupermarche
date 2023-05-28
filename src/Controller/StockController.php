@@ -89,19 +89,17 @@ class StockController extends AbstractController
                         //'dateAchat' => $dateCommande
                     );
 
-                    dd($service->repo_produit->stockProduit());
-
                     // on appel l'api de paiement
                     //return $this->redirectToRoute('paiement');
                     //on enregistre dans la bd
-                    //$service->new_sortie($data);
+                    $service->new_sortie($data);
                     //https://s.htr.cm/4iCr
                 }
             }
         }
 
        return $this->render('stock/sortie.html.twig',[
-        'produits'  =>$service->repo_produit->qte_en_stock(),
+        'produits'  =>$service->repo_stock->findAll(),
         'uvals' => $service->repo_uval->findAll(),
        ]);
     }

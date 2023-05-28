@@ -72,7 +72,7 @@ class ReceptionController extends AbstractController
                     );
 
                     $service->new_reception($data);
-                    $service->repo_produit->nouveau_stock();
+                    $service->repo_produit->nouveau_stock($id);
                     //dd($quantite_tot_achat);
 
                     //on enregistre les données dans la bd

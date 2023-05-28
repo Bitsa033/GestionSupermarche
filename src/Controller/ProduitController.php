@@ -122,7 +122,7 @@ class ProduitController extends AbstractController
     public function produitsListe(Service $service){
 
         return $this->render('produit/produits.html.twig',[
-            'produits'=>$service->repo_produit->qte_en_stock()
+            'produits'=>$service->repo_stock->findAll()
         ]);
     }
 

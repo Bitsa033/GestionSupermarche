@@ -31,8 +31,8 @@ class Db
             $exec=$con->query($command);
             $array=$exec->fetchAll();
             return $array;
-        } catch (\Exception) {
-            die("Une erreur est survenue lors de l'execution de la requette !");
+        } catch (\Exception $e) {
+            die("Une erreur est survenue lors de l'execution de la requette !".$e->getMessage());
         }
     }
 
@@ -43,8 +43,8 @@ class Db
             $exec=$con->query($command);
             $array=$exec->fetch();
             return $array;
-        } catch (\Exception) {
-            die("Une erreur est survenue lors de l'execution de la requette !");
+        } catch (\Exception $e) {
+            die("Une erreur est survenue lors de l'execution de la requette !".$e->getMessage());
         }
     }
 
@@ -54,8 +54,8 @@ class Db
             $con=$this->new_connection();
             $con->query($command);
     
-        } catch (\Exception) {
-            die("Une erreur est survenue lors de l'execution de la requette !");
+        } catch (\Exception $e) {
+            die("Une erreur est survenue lors de l'execution de la requette !".$e->getMessage());
         }
     }
 }
