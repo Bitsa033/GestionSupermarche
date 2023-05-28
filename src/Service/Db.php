@@ -47,4 +47,15 @@ class Db
             die("Une erreur est survenue lors de l'execution de la requette !");
         }
     }
+
+    function insert_command($command)
+    {
+        try {
+            $con=$this->new_connection();
+            $con->query($command);
+    
+        } catch (\Exception) {
+            die("Une erreur est survenue lors de l'execution de la requette !");
+        }
+    }
 }

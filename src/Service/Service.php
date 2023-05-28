@@ -133,30 +133,32 @@ class Service{
     {
 
         $achat=$this->repo_achat->find($data['achat']);
+        $produit=$this->repo_produit->find($achat->getProduit()->getId());
         $magasin=$this->repo_magasin->find($data['magasin']);
         //on enregistre la reception d'achat(commande fournisseur) dans le stock entrant
         $reception = new $this->table_reception;
         $reception->setCommande($achat);
-        $reception->setQte($data['quantite']);
+        $reception->setQteRec($data['quantite']);
         $reception->setPrixTotal($data['prixTotal']);
         $reception->setMagasin($magasin);
         $reception->setDateReception(new \DateTime());
+        $reception->setQteUnitVal($data['qteUnitVal']);
+        $reception->setQteTotVal($data['qteTotVal']);
+        $reception->setPrixTotVal($data['prixTotVal']);
         //on met à jour l'epace de stockge
         $cap_mag=$this->repo_capacite_magasin->find($magasin);
         $cap_init=$cap_mag->getCapaciteActuel();
         $cap_act= $cap_init - floatval($data['quantite']);
         $cap_mag->setCapaciteActuel($cap_act);
-        $this->db->persist($cap_mag);
-        $this->db->flush();
+        $this->insert_to_db($cap_mag);
+        $this->insert_to_db($reception);
         
-        //on enregistre sa valeur dans le stock sortant
-        $stock= new Stock();
-        $stock->setReception($reception);
-        $stock->setQteInit($data['quantiteInitVal']);
-        $stock->setQteTot($data['quantiteTotVal']);
-        $stock->setPrixTotal($data['prixTotVal']);
-        $stock->setDateStockage(new \DateTime());
-        $this->insert_to_db($stock);
+        //on enregistre la qte totale du stock
+        // $stock= new Stock();
+        // $stock->setProduit($produit);
+        // $stock->setQteTot($data['qteTotVal']);
+        // $stock->setPrixTotal($data['prixTotVal']);
+        // $this->insert_to_db($stock);
 
     }
 
@@ -164,7 +166,6 @@ class Service{
          
     function new_achat($data)
     {
-
         $produit=$this->repo_produit->find($data['produit']);
     
         $achat = new $this->table_achat;

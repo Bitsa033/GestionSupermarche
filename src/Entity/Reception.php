@@ -26,11 +26,6 @@ class Reception
     private $commande;
 
     /**
-     * @ORM\Column(type="bigint")
-     */
-    private $qte;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     private $date_reception;
@@ -61,6 +56,11 @@ class Reception
      */
     private $prix_tot_val;
 
+    /**
+     * @ORM\Column(type="bigint")
+     */
+    private $qte_rec;
+
     public function __construct()
     {
     
@@ -79,18 +79,6 @@ class Reception
     public function setCommande(?Achat $commande): self
     {
         $this->commande = $commande;
-
-        return $this;
-    }
-
-    public function getQte(): ?string
-    {
-        return $this->qte;
-    }
-
-    public function setQte(string $qte): self
-    {
-        $this->qte = $qte;
 
         return $this;
     }
@@ -163,6 +151,18 @@ class Reception
     public function setPrixTotVal(string $prix_tot_val): self
     {
         $this->prix_tot_val = $prix_tot_val;
+
+        return $this;
+    }
+
+    public function getQteRec(): ?string
+    {
+        return $this->qte_rec;
+    }
+
+    public function setQteRec(string $qte_rec): self
+    {
+        $this->qte_rec = $qte_rec;
 
         return $this;
     }

@@ -19,32 +19,6 @@ class StockRepository extends ServiceEntityRepository
         parent::__construct($registry, Stock::class);
     }
 
-    public function ListeStocksSelonFifo()
-    {
-        $conn = $this->getEntityManager()->getConnection();
-        $sql = '
-            select * from stock
-        ';
-        $stmt = $conn->prepare($sql);
-        $stmt->executeQuery();
-
-        // returns an array of arrays (i.e. a raw data set)
-        return $stmt;
-    }
-
-    public function ValorisationStocks()
-    {
-        //SELECT * FROM `stock` WHERE id=(SELECT max(id) FROM stock) AND qt>0
-        $conn = $this->getEntityManager()->getConnection();
-        $sql = '
-            select * from stock
-        ';
-        $stmt = $conn->prepare($sql);
-        $stmt->executeQuery();
-
-        // returns an array of arrays (i.e. a raw data set)
-        return $stmt;
-    }
 
     // /**
     //  * @return Stock[] Returns an array of Stock objects

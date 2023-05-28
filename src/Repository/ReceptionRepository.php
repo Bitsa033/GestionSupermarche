@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Achat;
 use App\Entity\Reception;
+use App\Service\Db\Db;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
@@ -16,37 +17,34 @@ use Exception;
  */
 class ReceptionRepository extends ServiceEntityRepository
 {
+    public $db;
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Reception::class);
+        $this->db = new Db();
     }
 
-    public function connection_to_databse(){
-
-        try {
-            $pdo=new \PDO('mysql:host=localhost;dbname=gps','root','');
-        } catch (Exception $th) {
-            die( $th->getMessage());
-        }
-
-        return $pdo;
-    }
-
-    public function sommeQte(Achat $commande)
+    public function sommeQte($commande)
     {
-        $conn = $this->connection_to_databse();
         $sql = '
-        SELECT SUM(qte) as qte FROM reception WHERE commande_id=:commande
-        ';
-        $stmt = $conn->prepare($sql);
-        $stmt->execute([
-            'commande'=>$commande->getId(),
-        ]);
-
-        $resultat=$stmt->fetchAll();
-
+        SELECT SUM(qte_rec) as qte FROM reception WHERE commande_id='.$commande;
+        $stmt = $this->db->fetch_one_command($sql);
+        //$qte=$stmt[0]['qte'];
         // returns an array of arrays (i.e. a raw data set)
-        return $resultat[0]['qte'];
+        return $stmt['qte'] ;
+        
+    }
+
+    public function sommeQteUnitVal($commande)
+    {
+        $sql = '
+        SELECT qte_unit_val as qte FROM reception WHERE commande_id='.$commande.' LIMIT 0,1';
+        $stmt = $this->db->fetch_one_command($sql);
+        //dd($stmt);
+        //$qte=$stmt[0]['qte'];
+        // returns an array of arrays (i.e. a raw data set)
+        return $stmt= (is_bool($stmt) == true) ? $stmt :$stmt['qte'] ;
+        //return $stmt['qte'] ;
         
     }
 

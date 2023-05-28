@@ -40,13 +40,13 @@ class ProduitRepository extends ServiceEntityRepository
     }
     */
     
-    public function stockTotal()
+    public function qte_en_stock()
     {
         $sql = '
         SELECT produit.id as id, produit.nom as produit,
-        prix_vente, SUM(qte_tot) as qte_en_stock, nomuval as emballage 
-        FROM stock inner join reception on reception.id = stock.reception_id inner
-        join achat on achat.id = reception.commande_id inner join produit on produit.id =
+        prix_vente, SUM(qte_tot_val) as qte_en_stock, nomuval as emballage 
+        FROM reception inner join achat on achat.id = reception.commande_id 
+        inner join produit on produit.id =
         achat.produit_id inner join uval on uval.id = produit.unite_vente_id  group by produit.id
         ;
         ';
@@ -54,34 +54,63 @@ class ProduitRepository extends ServiceEntityRepository
         return $rray;
     }
 
-    public function NbStockProduit()
+    public function bilan_reception()
     {
-        $sql = '
-        SELECT count(stock.id) as nbStock FROM stock INNER JOIN reception ON
-        reception.id = stock.reception_id INNER JOIN achat ON
-        achat.id = reception.commande_id INNER JOIN produit ON
-        produit.id = achat.produit_id WHERE produit.id=1
-        ';
-        $array=$this->db->fetch_one_command($sql);
-        $nb=$array['nbStock'];
-        return $nb;
+        $sql1='SELECT produit_id, SUM(reception.qte_tot_val) as qte_tot_val, SUM(reception.prix_tot_val)
+        AS prix_total_val FROM `reception` INNER JOIN achat ON achat.id = reception.commande_id 
+        INNER JOIN produit ON produit.id = achat.produit_id WHERE reception.commande_id = 1';
+        $array=$this->db->fetch_one_command($sql1);
+        $produit_id = $array['produit_id'];
+        $qte_tot_val = $array['qte_tot_val'];
+        $prix_total_val = $array['prix_total_val'];
+
+        $data = array(
+            'produit_id'  => $produit_id,
+            'qte_tot_val' => $qte_tot_val,
+            'prix_total_val' =>$prix_total_val
+
+        );
+
+        return $data;
     }
 
-    public function stockProduit()
+    public function afficher_id_produit()
     {
-        $nb_stock=$this->NbStockProduit();
-        for ($i=1; $i <=$nb_stock ; $i++) { 
-            echo 'merci <br>';
-        }
-        // $sql = '
-        // SELECT produit.nom,stock.qte_tot FROM stock INNER JOIN reception ON
-        // reception.id = stock.reception_id INNER JOIN achat ON
-        // achat.id = reception.commande_id INNER JOIN produit ON
-        // produit.id = achat.produit_id
-        // ;
-        // ';
-        // $rray=$this->db->new_fetch_command($sql);
-        // return $rray;
+        $sql1='SELECT distinct produit.id as id FROM `reception` INNER JOIN achat ON achat.id = reception.commande_id 
+        INNER JOIN produit ON produit.id = achat.produit_id WHERE reception.commande_id = 1';
+        $array=$this->db->fetch_one_command($sql1);
+        $produit_id = $array['id'];
+
+        $data = array(
+            'produit_id'  => $produit_id,
+        );
+
+        return $data;
     }
+
+    public function nouveau_stock()
+    {
+        $bilanp=$this->bilan_reception();
+        $afficherp=$this->afficher_id_produit();
+        $produit=$afficherp['produit_id'];
+        $produit_id=$bilanp['produit_id'];
+        $qte_tot_val=$bilanp['qte_tot_val'];
+        $prix_total_val= $bilanp['prix_total_val'];
+
+        // $sql = " UPDATE `stock` SET `qte_tot`= qte_tot + $qte_tot_val,
+        // stock.prix_total = stock.prix_total + $prix_total_val WHERE produit_id =
+        // (SELECT DISTINCT produit.id from reception INNER join 
+        // achat ON achat.id = reception.commande_id 
+        // INNER JOIN produit on produit.id = achat.produit_id )
+        // ";
+        // $this->db->insert_command($sql);
+
+        $sql = " INSERT INTO `stock`(`produit_id`, `qte_tot`, `prix_total`) VALUES 
+        ('$produit_id','$qte_tot_val','$prix_total_val') ";
+            $this->db->insert_command($sql);
+        
+
+    }
+
     
 }

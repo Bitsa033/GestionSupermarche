@@ -30,11 +30,6 @@ class Stock
     private $prix_total; //prix total de stockage
 
     /**
-     * @ORM\Column(type="datetime")
-     */
-    private $date_stockage;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Produit::class, inversedBy="stocks")
      * @ORM\JoinColumn(nullable=false)
      */
