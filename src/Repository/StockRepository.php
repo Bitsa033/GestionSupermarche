@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Stock;
+use App\Service\Db\Db;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,9 +15,24 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class StockRepository extends ServiceEntityRepository
 {
+    public $db;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Stock::class);
+        $this->db= new Db();
+    }
+
+    public function updateStock($id,$qte,$prix)
+    {
+        # code...
+        $sql = " UPDATE `stock` SET `qte_tot`= qte_tot - $qte,
+        stock.prix_total = stock.prix_total - $prix WHERE produit_id =
+        (SELECT DISTINCT produit.id from reception INNER join 
+        achat ON achat.id = reception.commande_id 
+        INNER JOIN produit on produit.id = achat.produit_id WHERE achat.produit_id=".$id." )
+            ";
+        $this->db->insert_command($sql);
     }
 
 

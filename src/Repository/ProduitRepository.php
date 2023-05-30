@@ -17,9 +17,11 @@ use PDO;
 class ProduitRepository extends ServiceEntityRepository
 {
     public $db;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Produit::class);
+        
         $this->db=new Db();
     }
 

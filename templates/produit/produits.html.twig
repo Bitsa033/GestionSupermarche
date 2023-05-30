@@ -35,19 +35,16 @@
                                         <th>Produit</th>
                                         <th>Prix de vente</th>
                                         <th>Stock</th>
+                                        <th>Prix total</th>
 
                                     </tr>
                                     {% for produit in produits %}
                                     <tr>
                                         <td>{{produit.produit.uniteVente.nomuval}} {{produit.produit.nom}}</td>
                                         <td>{{produit.produit.prixVente| number_format(0, ' ', ' ')}} FCFA</td>
-                                        {% if produit.qteTot ==0 %}
-                                        <td>0</td>
-                                        {% else %}
-                                        <td>{{produit.qteTot|number_format(0, ' ', ' ')}}
-                                        </td>
-
-                                        {% endif %}
+                                        
+                                        <td>{{produit.qteTot|number_format(0, ' ', ' ')}}</td>
+                                        <td>{{produit.prixTotal|number_format(0, ' ', ' ')}}</td>
 
                                     </tr>
 

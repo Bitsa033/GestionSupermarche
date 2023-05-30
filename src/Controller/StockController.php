@@ -93,6 +93,7 @@ class StockController extends AbstractController
                     //return $this->redirectToRoute('paiement');
                     //on enregistre dans la bd
                     $service->new_sortie($data);
+                    $service->repo_stock->updateStock($produit,$quantite,$prixTotal);
                     //https://s.htr.cm/4iCr
                 }
             }

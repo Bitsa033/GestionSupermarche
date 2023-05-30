@@ -127,14 +127,6 @@ class ProduitController extends AbstractController
     }
 
     /**
-     * @Route("produit_all", name="produit_all", methods={"GET"})
-     */
-    public function all(Service $produit): Response
-    {
-        dd($produit->repo_produit->stockTotal());
-    }
-
-    /**
      * @Route("produit_show_{id}", name="produit_show", methods={"GET"})
      */
     public function show(Produit $produit): Response
