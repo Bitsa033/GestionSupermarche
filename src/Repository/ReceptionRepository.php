@@ -24,7 +24,7 @@ class ReceptionRepository extends ServiceEntityRepository
         $this->db = new Db();
     }
 
-    public function sommeQte($commande)
+    public function sommeQteRecue($commande)
     {
         $sql = '
         SELECT SUM(qte_rec) as qte FROM reception WHERE commande_id='.$commande;
@@ -35,10 +35,11 @@ class ReceptionRepository extends ServiceEntityRepository
         
     }
 
-    public function sommeQteUnitVal($commande)
+    public function qteUnitVal($commande)
     {
         $sql = '
-        SELECT qte_unit_val as qte FROM reception WHERE commande_id='.$commande.' LIMIT 0,1';
+        SELECT max(reception.id) as receptiion, qte_unit_val as qte FROM reception  
+        WHERE commande_id='.$commande.'';
         $stmt = $this->db->fetch_one_command($sql);
         //dd($stmt);
         //$qte=$stmt[0]['qte'];

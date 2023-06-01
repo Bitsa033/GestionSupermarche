@@ -19,7 +19,8 @@ class AchatController extends AbstractController
         try {
             $rep= $service->repo_achat->findAll();
         } catch (\Throwable $th) {
-            die('Erreur, base de données introuvable, si vous utilisez un logiciel de base de donées, veuillez l\'activé !');
+            die('Erreur, base de données introuvable, si vous utilisez un logiciel de base de donées,
+            veuillez l\'activé !');
         }
         return $this->render('achat/achat_liste.html.twig', [
             'achats' => $rep

@@ -35,7 +35,6 @@
                                     <tr>
                                         <th>Date commande</th>
                                         <th>Produit</th>
-                                        <th>Qté Tot.</th>
                                         <th>Prix Total</th>
                                         <th>Reception</th>
 
@@ -44,9 +43,7 @@
                                     <tr>
                                         <td>{{achat.dateachat|date("m/d/Y")}}</td>
                                         <td>{{achat.produit.uniteAchat.nomuval}} {{achat.produit.nom}}</td>
-                                        <td>
-                                            {{achat.qte| number_format(0, ' ', ' ')}}
-                                        </td>
+                                        
                                         <td>{{achat.prixTotal| number_format(0, ' ', ' ')}} FCFA</td>
                                         <td>
 

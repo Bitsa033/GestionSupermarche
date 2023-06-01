@@ -28,7 +28,7 @@ class ReceptionController extends AbstractController
     {
         $achat = $service->repo_achat->find($id);
         $qte_achat = $achat->getQte();
-        $qte_reception = $service->repo_reception->sommeQte($id);
+        $qte_reception = $service->repo_reception->sommeQteRecue($id);
     
         //si on clic sur le boutton enregistrer et que les champs du post ne sont pas vide
         if (isset($_POST['btn_valider_achat'])) {
@@ -42,8 +42,7 @@ class ReceptionController extends AbstractController
                     $quantite_tot_achat = $_POST["quantite"][$key];
                     $emballage = ($achat->getProduit()->getUniteAchat() == 
                     $achat->getProduit()->getUniteVente()) ? 1 : 0;
-                    $quantite_unit_val_on_bd = ($service->repo_reception->sommeQteUnitVal($id) >0) ? 1 :
-                     0;
+                    
                     if (!empty($_POST["quantiteInit"][$key])) {
                         $quantite_unit_val = $_POST["quantiteInit"][$key];
                     }
@@ -53,7 +52,7 @@ class ReceptionController extends AbstractController
                             $quantite_unit_val=1;
                         } elseif($emballage == 0) {
                             # code...
-                            $quantite_unit_val =$service->repo_reception->sommeQteUnitVal($id);
+                            $quantite_unit_val =$service->repo_reception->qteUnitVal($id);
                         }
                         
                     }
@@ -97,7 +96,7 @@ class ReceptionController extends AbstractController
             'emballage'=>$emballage = ($achat->getProduit()->getUniteAchat() ==
             $achat->getProduit()->getUniteVente()) ? 1 : 0 ,
             'quantite_unit_val_on_bd'=>$quantite_unit_val_on_bd = 
-            ($service->repo_reception->sommeQteUnitVal($id) >0) ? 1 : 0 ,
+            ($service->repo_reception->qteUnitVal($id) >0) ? 1 : 0 ,
             'qte_achat' => $qte_achat,
             'qte_reception' => $qte_reception,
             'magasins'=>$service->repo_capacite_magasin->findAll()
