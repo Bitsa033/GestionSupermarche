@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <!-- Content Wrapper. Contains page content -->
+    <div
+        class="content-wrapper">
+
+        <!-- Main content -->
+        <section class="content">
+            <h1> React UX</h1>
+            <div {{ react_component('MyComponent', { 'fullName': number }) }}>
+                Loading... <i class="fas fa-cog fa-spin fa-3x"></i>
+            </div>
+        </section>
+    </div>
+</div></div>{% endblock %}
