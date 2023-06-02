@@ -11,15 +11,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AchatController extends AbstractController
 {
-    /**
-     * @Route("react_ux", name="react_ux", methods={"GET"})
-     */
-    public function react_ux()
-    {
-        return $this->render('react_ux.html.twig',[
-            'number'=>2
-        ]);
-    }
 
     /**
      * @Route("/", name="achat_liste", methods={"GET"})

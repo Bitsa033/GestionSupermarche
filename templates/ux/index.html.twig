@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello UxController!{% endblock %}
+{% block title %}Symfony UX!{% endblock %}
 
 {% block body %}
 <style>
@@ -9,15 +9,8 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'E:/projets/PHP/Symfony/Supermarche/src/Controller/UxController.php'|file_link(0) }}">src/Controller/UxController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'E:/projets/PHP/Symfony/Supermarche/templates/ux/index.html.twig'|file_link(0) }}">templates/ux/index.html.twig</a></code></li>
-    </ul>
-    <div {{ react_component('MyComponent', { 'fullName': 'Bitsa' }) }}>
-        
+    <div {{ react_component('MyComponent', { 'fullName': 'Pascal Bitsa' }) }}>
+        Loading... <i class="fas fa-cog fa-spin fa-3x"></i>
     </div>
 </div>
 {% endblock %}
