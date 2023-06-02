@@ -27,7 +27,7 @@ class ReceptionController extends AbstractController
     public function reception_achat(Service $service, $id, Request $request): Response
     {
         $achat = $service->repo_achat->find($id);
-        $qte_achat = $achat->getQte();
+        $qte_achat = (!empty($achat))? $achat->getQte() :dd($achat,'Ce produit n/esxiste pas dans notre base de données !');
         $qte_reception = $service->repo_reception->sommeQteRecue($id);
     
         //si on clic sur le boutton enregistrer et que les champs du post ne sont pas vide

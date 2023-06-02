@@ -40,6 +40,7 @@
 
                                     </tr>
                                     {% for achat in achats %}
+                                    
                                     <tr>
                                         <td>{{achat.dateachat|date("m/d/Y")}}</td>
                                         <td>{{achat.produit.uniteAchat.nomuval}} {{achat.produit.nom}}</td>

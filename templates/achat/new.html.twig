@@ -36,7 +36,16 @@
                                         <th>Unité d'achat</th>
                                         <th>Date de livraison</th>
                                     </tr>
+                                    <br>
 
+                                    <select name="" id="famille" class="form-control col-md-4">
+                                        {% for famille in familles %}
+                                        <option value="{{famille.id }}">
+                                            {{famille.nom }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                    <br>
                                     {% for produit in produits %}
                                     <tr>
                                         <td>
@@ -44,7 +53,7 @@
                                                 id="">
                                         </td>
                                         <td>
-                                            {{ produit.famille.nom }} {{ produit.nom }}
+                                             {{ produit.nom }}
                                             <input type="hidden" name="produit_name[]" value="{{produit.id}}"
                                                 class="form-control" id="">
                                         </td>

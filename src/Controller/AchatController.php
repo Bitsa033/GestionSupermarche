@@ -84,6 +84,7 @@ class AchatController extends AbstractController
 
         return $this->render('achat/new.html.twig', [
             'produits' => $service->repo_produit->findAll(),
+            'familles'=>$service->repo_famille->findAll(),
             'uvals' => $service->repo_uval->findAll(),
         ]);
     }
