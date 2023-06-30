@@ -6,7 +6,6 @@ use App\Entity\CapaciteMagasin;
 use App\Entity\Magasin;
 use App\Form\MagasinType;
 use App\Repository\CapaciteMagasinRepository;
-use App\Repository\MagasinRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,15 +17,16 @@ class MagasinController extends AbstractController
     /**
      * @Route("magasin_index", name="magasin_index", methods={"GET"})
      */
-    public function index(CapaciteMagasinRepository $capaciteMagasin): Response
+    public function index(CapaciteMagasinRepository $capaciteMagasin)
     {
-        return $this->render('magasin/index.html.twig', [
-            'magasins' => $capaciteMagasin->findAll(),
-        ]);
+        return "index";
+        // return $this->render('magasin/index.html.twig', [
+        //     'magasins' => $capaciteMagasin->findAll(),
+        // ]);
     }
 
     /**
-     * @Route("magasin_new", name="magasin_new", methods={"GET", "POST"})
+     * @Route("magasin_new", name="magasin_new", methods={"POST"})
      */
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
