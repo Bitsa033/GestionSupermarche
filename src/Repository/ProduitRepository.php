@@ -25,22 +25,50 @@ class ProduitRepository extends ServiceEntityRepository
         $this->db=new Db();
     }
 
-    // /**
-    //  * @return Produit[] Returns an array of Produit objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
+    /**
+      * 
     */
+    public function products():array
+    {
+        $sql="select * from produit";
+        $array=$this->db->fetch_all_command($sql);
+
+        return $array;
+    }
+
+    /**
+      * 
+    */
+    public function achats():array
+    {
+    $sql="select * from achat";
+    $array=$this->db->fetch_all_command($sql);
+  
+    return $array;
+    }
+
+    /**
+      * 
+    */
+    public function receptions():array
+    {
+    $sql="select * from reception";
+    $array=$this->db->fetch_all_command($sql);
+  
+    return $array;
+    }
+
+    /**
+      * 
+    */
+    public function stocks():array
+    {
+    $sql="select * from stock";
+    $array=$this->db->fetch_all_command($sql);
+  
+    return $array;
+    }
+    
     
     public function prod_qty_price($id)
     {
