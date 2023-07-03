@@ -26,7 +26,7 @@ class ProduitRepository extends ServiceEntityRepository
     }
 
     /**
-      * 
+    * 
     */
     public function products():array
     {
@@ -37,7 +37,7 @@ class ProduitRepository extends ServiceEntityRepository
     }
 
     /**
-      * 
+    * 
     */
     public function achats():array
     {
@@ -48,7 +48,7 @@ class ProduitRepository extends ServiceEntityRepository
     }
 
     /**
-      * 
+    * 
     */
     public function receptions():array
     {
@@ -59,7 +59,7 @@ class ProduitRepository extends ServiceEntityRepository
     }
 
     /**
-      * 
+    * 
     */
     public function stocks():array
     {

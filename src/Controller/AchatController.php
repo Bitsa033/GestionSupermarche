@@ -24,10 +24,10 @@ class AchatController extends AbstractController
             die('Erreur, base de données introuvable, si vous utilisez un logiciel de base de donées,
             veuillez l\'activé !');
         }
-        dd($rep);
-        // return $this->render('achat/achat_liste.html.twig', [
-        //     'achats' => $rep
-        // ]);
+        
+        return $this->render('achat/achat_liste.html.twig', [
+            'achats' => $rep
+        ]);
     }
 
     /**

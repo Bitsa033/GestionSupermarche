@@ -4,10 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Famille;
 use App\Form\FamilleType;
-use App\Repository\FamilleRepository;
 use App\Service\Service;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
