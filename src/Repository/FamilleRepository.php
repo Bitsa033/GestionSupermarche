@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Famille;
+use App\Service\Db\Db;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,27 +15,26 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class FamilleRepository extends ServiceEntityRepository
 {
+    public $db;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Famille::class);
+        $this->db=new Db();
     }
 
     // /**
     //  * @return Famille[] Returns an array of Famille objects
     //  */
-    /*
-    public function findByExampleField($value)
+    
+    public function familles():array
     {
-        return $this->createQueryBuilder('f')
-            ->andWhere('f.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('f.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $sql="select * from famille";
+        $array=$this->db->fetch_all_command($sql);
+
+        return $array;
     }
-    */
+    
 
     /*
     public function findOneBySomeField($value): ?Famille
