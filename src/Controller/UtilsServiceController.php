@@ -10,19 +10,18 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
-* @Route("api_", name="api_")
-*/
+    * @Route("/api/", name="api", methods={"GET"})
+    */
 class UtilsServiceController extends AbstractController
 {
     /**
-     * Familles .....................................................
+     * Famille .....................................................
      */
 
-
     /**
-    * @Route("findfamilles", name="findfamilles", methods={"GET"})
+    * @Route("famille/findall", name="famillefindall", methods={"GET"})
     */
-    public function findfamilles(Service $service): Response
+    public function famillefindall(Service $service): Response
     {
         $data=[];
         $f=$service->repo_famille->findAll();
@@ -37,9 +36,9 @@ class UtilsServiceController extends AbstractController
 
     /**
      * @param int $id
-    * @Route("findfamille/{id}", name="findfamille", methods={"GET"})
+    * @Route("famille/find/{id}", name="famillefind", methods={"GET"})
     */
-    public function findfamille(Service $service, $id): Response
+    public function famillefind(Service $service, $id): Response
     {
         $f=$service->repo_famille->find($id);
         $data=[
@@ -50,49 +49,70 @@ class UtilsServiceController extends AbstractController
     }
 
     /**
-    * @Route("storefamille", name="storefamille", methods={"POST"})
+    * @Route("famille/store", name="famillestore", methods={"POST"})
     */
-    public function storefamille(Service $service, Request $request): Response
+    public function famillestore(Service $service, Request $request): Response
     {
         $nom=$request->request->get('nom');
-        if (!empty($nom)) {
-            $f=new Famille();
-            $f->setNom($nom);
-            $service->insert_to_db($f);
+        
+        $f=new Famille();
+        $f->setNom($nom);
+        $service->insert_to_db($f);
 
-            $data=[
-                'id'=>$f->getId(),
-                'nom'=>$f->getNom()
-            ];
-            
-            return $this->json([
-                'statut'=>'success',
-                'message'=>'request was done successfuly',
-                'data'=>$data
-            ]);
-        } else {
-            return $this->json([
-                'statut'=>'error',
-                'message'=>'name is required'
-            ]);
-        }
+        $data=[
+            'id'=>$f->getId(),
+            'nom'=>$f->getNom()
+        ];
+        
+        return $this->json([
+            'statut'=>'success',
+            'message'=>'donnée enregistrée avec succès',
+            'data'=>$data
+        ]);
         
     }
 
     /**
-    * @Route("updatefamille", name="updatefamille", methods={"PUT"})
+    * @Route("famille/update/{id}", name="familleupdate", methods={"PUT"})
     */
-    public function updatefamille(): Response
+    public function familleupdate(Service $service,$id, Request $request): Response
     {
-        return $this->json("Update family of product");
+        $nom=$request->query->get('nom');
+        
+        $f=$service->repo_famille->find($id);
+        $f->setNom($nom);
+        $service->db->flush($f);
+
+        $data=[
+            'id'=>$f->getId(),
+            'nom'=>$f->getNom()
+        ];
+        
+        return $this->json([
+            'statut'=>'success',
+            'message'=>'donnée mise à jour avec succès',
+            'data'=>$data
+        ]);
     }
 
     /**
-    * @Route("deletefamille", name="deletefamile", methods={"DELETE"})
+    * @Route("famille/delete/{id}", name="familledelete", methods={"DELETE"})
     */
-    public function deletefamille(): Response
+    public function familledelete(Service $service,$id): Response
     {
-        return $this->json("Delete family of product");
+        $f=$service->repo_famille->find($id);
+        $service->delete_data($f);
+
+        $data=[
+            'id'=>$f->getId(),
+            'nom'=>$f->getNom()
+        ];
+
+        return $this->json([
+            'statut'=>'succès',
+            'message'=>"Donnée supprimée avec succès",
+            'data'=>$data
+        ]);
     }
 
     /**

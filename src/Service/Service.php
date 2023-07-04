@@ -99,6 +99,12 @@ class Service{
         $this->db->flush();
     }
 
+    public function delete_data($entity){
+       
+        $this->db->remove($entity);
+        $this->db->flush();
+    }
+
 
     public function multiple_row($array)
     {
