@@ -59,9 +59,16 @@ class UtilsServiceController extends AbstractController
             $f=new Famille();
             $f->setNom($nom);
             $service->db->persist($f);
+
+            $data=[
+                'id'=>$f->getId(),
+                'nom'=>$f->getNom()
+            ];
+            
             return $this->json([
                 'statut'=>'success',
-                'message'=>'request was done successfuly'
+                'message'=>'request was done successfuly',
+                'data'=>$data
             ]);
         } else {
             return $this->json([
