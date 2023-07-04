@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Famille;
+use App\Entity\Uval;
 use App\Service\Service;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -121,9 +122,9 @@ class UtilsServiceController extends AbstractController
 
 
     /**
-    * @Route("findemballages", name="findemballages", methods={"GET"})
+    * @Route("emballage/findall", name="emballagefindall", methods={"GET"})
     */
-    public function findemballages(Service $service): Response
+    public function emballagefindall(Service $service): Response
     {
         $data=[];
         $f=$service->repo_uval->findAll();
@@ -138,42 +139,82 @@ class UtilsServiceController extends AbstractController
 
     /**
      * @param int $id
-    * @Route("findemballage/{id}", name="findemballage", methods={"GET"})
+    * @Route("emballage/find/{id}", name="emballagefind", methods={"GET"})
     */
-    public function findemballage(Service $service, $id): Response
+    public function emballagefind(Service $service, $id): Response
     {
         $f=$service->repo_uval->find($id);
-        foreach ($f as $value) {
-            $data[]=[
-                'id'=>$value->getId(),
-                'nom'=>$value->getNom()
-            ]; 
-        }
+
+        $data[]=[
+            'id'=>$f->getId(),
+            'nom'=>$f->getNomuval()
+        ]; 
+        
         return $this->json($data);
     }
 
     /**
-    * @Route("storeemballage", name="storeemballage", methods={"POST"})
+    * @Route("emballage/store", name="emballagestore", methods={"POST"})
     */
-    public function storeemballage(): Response
+    public function emballagestore(Service $service,Request $request): Response
     {
-        return $this->json("Store family of product");
+        $nom=$request->get('nom');
+        $e=new Uval();
+        $e->setNomuval($nom);
+        $service->insert_to_db($e);
+
+        $data=[
+            'id'=>$e->getId(),
+            'nom'=>$e->getNomuval()
+        ];
+
+        return $this->json([
+            'statut'=>'succès',
+            'message'=>"Donnée supprimée avec succès",
+            'data'=>$data
+        ]);
     }
 
     /**
-    * @Route("updateemballage", name="updateemballage", methods={"PUT"})
+    * @Route("emballage/update/{id}", name="emballageupdate", methods={"PUT"})
     */
-    public function updateemballage(): Response
+    public function emballageupdate(Service $service,$id, Request $request): Response
     {
-        return $this->json("Update family of product");
+        $nom=$request->get('nom');
+        $e=$service->repo_uval->find($id);
+        $e->setNomuval($nom);
+        $service->db->flush($e);
+
+        $data=[
+            'id'=>$e->getId(),
+            'nom'=>$e->getNomuval()
+        ];
+
+        return $this->json([
+            'statut'=>'succès',
+            'message'=>"Donnée mise à jour avec succès",
+            'data'=>$data
+        ]);
     }
 
     /**
-    * @Route("deleteemballage", name="deleteemballage", methods={"DELETE"})
+    * @Route("emballage/delete/{id}", name="emballagedelete", methods={"DELETE"})
     */
-    public function deleteemballage(): Response
+    public function emballagedelete(Service $service,$id): Response
     {
-        return $this->json("Delete emballage of product");
+        $e=$service->repo_uval->find($id);
+        $service->delete_data($e);
+
+        $data=[
+            'id'=>$e->getId(),
+            'nom'=>$e->getNomuval()
+        ];
+
+        return $this->json([
+            'statut'=>'succès',
+            'message'=>"Donnée supprimée avec succès",
+            'data'=>$data
+        ]);
     }
 }
 
