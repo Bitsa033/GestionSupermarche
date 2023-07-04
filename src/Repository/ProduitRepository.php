@@ -24,51 +24,6 @@ class ProduitRepository extends ServiceEntityRepository
         
         $this->db=new Db();
     }
-
-    /**
-    * 
-    */
-    public function products():array
-    {
-        $sql="select * from produit";
-        $array=$this->db->fetch_all_command($sql);
-
-        return $array;
-    }
-
-    /**
-    * 
-    */
-    public function achats():array
-    {
-    $sql="select * from achat";
-    $array=$this->db->fetch_all_command($sql);
-  
-    return $array;
-    }
-
-    /**
-    * 
-    */
-    public function receptions():array
-    {
-    $sql="select * from reception";
-    $array=$this->db->fetch_all_command($sql);
-  
-    return $array;
-    }
-
-    /**
-    * 
-    */
-    public function stocks():array
-    {
-    $sql="select * from stock";
-    $array=$this->db->fetch_all_command($sql);
-  
-    return $array;
-    }
-    
     
     public function prod_qty_price($id)
     {
@@ -121,15 +76,11 @@ class ProduitRepository extends ServiceEntityRepository
         $produit=$afficherp['produit_id'];
 
         if ($produit) {
-            # code...
-            //dd('meme id: ',$produit);
             $sql = " UPDATE `stock` SET `qte_tot`= qte_tot + $qte_tot_val,
             stock.prix_total = stock.prix_total + $prix_total_val WHERE produit_id =
             ".$produit_id;
             $this->db->insert_command($sql);
         } else {
-            # code...
-            //dd('dif id: ',$produit_id,$produit);
             $sql = " INSERT INTO `stock`(`produit_id`, `qte_tot`, `prix_total`) VALUES 
             ('$produit_id','$qte_tot_val','$prix_total_val') ";
                 $this->db->insert_command($sql);

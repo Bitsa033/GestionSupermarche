@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Famille;
 use App\Service\Service;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -18,29 +20,56 @@ class UtilsServiceController extends AbstractController
 
 
     /**
-    * @Route("findallfamille", name="findallfamille", methods={"GET"})
+    * @Route("findfamilles", name="findfamilles", methods={"GET"})
     */
-    public function findallfamille(Service $service): Response
+    public function findfamilles(Service $service): Response
     {
-        $e=$service->repo_famille->familles();
-        return $this->json($e);
+        $data=[];
+        $f=$service->repo_famille->findAll();
+        foreach ($f as $value) {
+            $data[]=[
+                'id'=>$value->getId(),
+                'nom'=>$value->getNom()
+            ]; 
+        }
+        return $this->json($data);
     }
 
     /**
-    * @Route("findfamille_{id}", name="findfamille", methods={"GET"})
+     * @param int $id
+    * @Route("findfamille/{id}", name="findfamille", methods={"GET"})
     */
     public function findfamille(Service $service, $id): Response
     {
         $f=$service->repo_famille->find($id);
-        return $this->json($f);
+        $data=[
+            'id'=>$f->getId(),
+            'nom'=>$f->getNom()
+        ];
+        return $this->json($data);
     }
 
     /**
     * @Route("storefamille", name="storefamille", methods={"POST"})
     */
-    public function storefamille(): Response
+    public function storefamille(Service $service, Request $request): Response
     {
-        return $this->json("Store family of product");
+        $nom=$request->request->get('nom');
+        if (!empty($nom)) {
+            $f=new Famille();
+            $f->setNom($nom);
+            $service->db->persist($f);
+            return $this->json([
+                'statut'=>'success',
+                'message'=>'request was done successfuly'
+            ]);
+        } else {
+            return $this->json([
+                'statut'=>'error',
+                'message'=>'name is required'
+            ]);
+        }
+        
     }
 
     /**
@@ -65,20 +94,35 @@ class UtilsServiceController extends AbstractController
 
 
     /**
-    * @Route("findallemballage", name="findallemballage", methods={"GET"})
+    * @Route("findemballages", name="findemballages", methods={"GET"})
     */
-    public function findallemballage(Service $service): Response
+    public function findemballages(Service $service): Response
     {
-        $e=$service->repo_produit->products();
-        return $this->json($e);
+        $data=[];
+        $f=$service->repo_uval->findAll();
+        foreach ($f as $value) {
+            $data[]=[
+                'id'=>$value->getId(),
+                'nom'=>$value->getNomuval()
+            ]; 
+        }
+        return $this->json($data);
     }
 
     /**
-    * @Route("findemballage", name="findemballage", methods={"GET"})
+     * @param int $id
+    * @Route("findemballage/{id}", name="findemballage", methods={"GET"})
     */
-    public function findemballage(): Response
+    public function findemballage(Service $service, $id): Response
     {
-        return $this->json("Display one family for product");
+        $f=$service->repo_uval->find($id);
+        foreach ($f as $value) {
+            $data[]=[
+                'id'=>$value->getId(),
+                'nom'=>$value->getNom()
+            ]; 
+        }
+        return $this->json($data);
     }
 
     /**

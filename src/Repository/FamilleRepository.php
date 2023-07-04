@@ -15,27 +15,11 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class FamilleRepository extends ServiceEntityRepository
 {
-    public $db;
-
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Famille::class);
-        $this->db=new Db();
-    }
-
-    // /**
-    //  * @return Famille[] Returns an array of Famille objects
-    //  */
-    
-    public function familles():array
-    {
-        $sql="select * from famille";
-        $array=$this->db->fetch_all_command($sql);
-
-        return $array;
     }
     
-
     /*
     public function findOneBySomeField($value): ?Famille
     {
