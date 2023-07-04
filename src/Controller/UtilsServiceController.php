@@ -58,7 +58,7 @@ class UtilsServiceController extends AbstractController
         if (!empty($nom)) {
             $f=new Famille();
             $f->setNom($nom);
-            $service->db->persist($f);
+            $service->insert_to_db($f);
 
             $data=[
                 'id'=>$f->getId(),
