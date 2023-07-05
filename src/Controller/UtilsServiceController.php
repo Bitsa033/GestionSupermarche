@@ -275,27 +275,41 @@ class UtilsServiceController extends AbstractController
         $unite_vente=$request->get('unite_vente');
         $prix_achat=$request->get('prix_achat');
         $prix_vente=$request->get('prix_vente');
+
+        $data2=[
+            'produit'=>$nom,
+            'code'=>$code,
+            'prix_achat'=>$prix_achat,
+            'prix_vente'=>$prix_vente,
+            'unite_achat'=>$unite_achat,
+            'unite_vente'=>$unite_vente,
+            
+        ];
+
         $e=new Produit();
-        // $emb_achat=$e->getUniteAchat()->setNomuval($unite_achat);
-        // $emb_vente=$e->getUniteVente()->setNomuval($unite_vente);
-        // $e->setNom($nom);
-        // $e->setCode($code);
-        // $e->setStatut('Actif');
-        // $e->setUniteAchat($emb_achat);
-        // $e->setUniteVente($emb_vente);
-        // $e->setPrixAchat($prix_achat);
-        // $e->setPrixVente($prix_vente);
-        // $service->insert_to_db($e);
+        $emb_achat=$e->getUniteAchat()->setNomuval($data2['unite_achat']);
+        $emb_vente=$e->getUniteVente()->setNomuval($unite_vente);
+        $e->setNom($nom);
+        $e->setCode($code);
+        $e->setStatut('Actif');
+        $e->setUniteAchat($emb_achat);
+        $e->setUniteVente($emb_vente);
+        $e->setPrixAchat($prix_achat);
+        $e->setPrixVente($prix_vente);
+        $service->insert_to_db($e);
 
         $data=[
             'id'=>$e->getId(),
             'nom'=>$e->getNom(),
+            'statut'=>$e->getStatut(),
+            'code'=>$e->getCode(),
             'prix_achat'=>$e->getPrixAchat(),
             'prix_vente'=>$e->getPrixVente(),
-            'emballage_achat'=>$e->getUniteAchat()->getNomuval(),
-            'emballage_vente'=>$e->getUniteVente()->getNomuval()
+            'emballage_achat'=>$e->getUniteAchat(),
+            'emballage_vente'=>$e->getUniteVente()
             
         ];
+
 
         return $this->json([
             'statut'=>'succès',
