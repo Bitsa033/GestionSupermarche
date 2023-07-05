@@ -286,7 +286,8 @@ class UtilsServiceController extends AbstractController
             
         ];
         $em=new Uval();
-        $em->setNomuval($unite_achat);
+        $ua=$em->setNomuval($unite_achat);
+        $uv=$em->setNomuval($unite_vente);
 
         $e=new Produit();
         $e->setNom($nom);
@@ -294,8 +295,8 @@ class UtilsServiceController extends AbstractController
         $e->setStatut('Actif');
         $e->setPrixAchat($prix_achat);
         $e->setPrixVente($prix_vente);
-        $e->setUniteAchat($em);
-        $e->setUniteVente($em);
+        $e->setUniteAchat($ua);
+        $e->setUniteVente($uv);
         $service->insert_to_db($e);
 
         $data=[
