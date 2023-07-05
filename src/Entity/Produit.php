@@ -50,13 +50,13 @@ class Produit
     private $prix_vente;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Uval::class, inversedBy="achats")
+     * @ORM\ManyToOne(targetEntity=Uval::class, inversedBy="achats", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $unite_achat; //unite d'achat
 
     /**
-     * @ORM\ManyToOne(targetEntity=Uval::class, inversedBy="produits")
+     * @ORM\ManyToOne(targetEntity=Uval::class, inversedBy="produits", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $unite_vente;
