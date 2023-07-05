@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Famille;
+use App\Entity\Produit;
 use App\Entity\Uval;
 use App\Service\Service;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -117,7 +118,7 @@ class UtilsServiceController extends AbstractController
     }
 
     /**
-     * Emballages .....................................................
+     * Emballage .....................................................
      */
 
 
@@ -209,6 +210,167 @@ class UtilsServiceController extends AbstractController
             'id'=>$e->getId(),
             'nom'=>$e->getNomuval()
         ];
+
+        return $this->json([
+            'statut'=>'succès',
+            'message'=>"Donnée supprimée avec succès",
+            'data'=>$data
+        ]);
+    }
+
+    /**
+     * Produit .....................................................
+     */
+
+
+    /**
+    * @Route("produit/findall", name="produitfindall", methods={"GET"})
+    */
+    public function produitfindall(Service $service): Response
+    {
+        $data=[];
+        $f=$service->repo_produit->findAll();
+        foreach ($f as $value) {
+            $data[]=[
+                'id'=>$value->getId(),
+                'nom'=>$value->getNom(),
+                'prix_achat'=>$value->getPrixAchat(),
+                'prix_vente'=>$value->getPrixVente(),
+                'emballage_achat'=>$value->getUniteAchat()->getNomuval(),
+                'emballage_vente'=>$value->getUniteVente()->getNomuval()
+            ]; 
+        }
+        return $this->json($data);
+    }
+
+    /**
+     * @param int $id
+    * @Route("produit/find/{id}", name="produitfind", methods={"GET"})
+    */
+    public function produitfind(Service $service, $id): Response
+    {
+        $f=$service->repo_produit->find($id);
+
+        $data[]=[
+            'id'=>$f->getId(),
+            'nom'=>$f->getNom(),
+            'famille'=>$f->getFamille()->getNom(),
+            'prix_achat'=>$f->getPrixAchat(),
+            'prix_vente'=>$f->getPrixVente(),
+            'emballage_achat'=>$f->getUniteAchat()->getNomuval(),
+            'emballage_vente'=>$f->getUniteVente()->getNomuval()
+        ]; 
+        
+        return $this->json($data);
+    }
+
+    /**
+    * @Route("produit/store", name="produittore", methods={"POST"})
+    */
+    public function produittore(Service $service,Request $request): Response
+    {
+        $nom=$request->get('nom');
+        $code=$request->get('code');
+        $unite_achat=$request->get('unite_achat');
+        $unite_vente=$request->get('unite_vente');
+        $prix_achat=$request->get('prix_achat');
+        $prix_vente=$request->get('prix_vente');
+        $e=new Produit();
+        // $emb_achat=$e->getUniteAchat()->setNomuval($unite_achat);
+        // $emb_vente=$e->getUniteVente()->setNomuval($unite_vente);
+        // $e->setNom($nom);
+        // $e->setCode($code);
+        // $e->setStatut('Actif');
+        // $e->setUniteAchat($emb_achat);
+        // $e->setUniteVente($emb_vente);
+        // $e->setPrixAchat($prix_achat);
+        // $e->setPrixVente($prix_vente);
+        // $service->insert_to_db($e);
+
+        $data=[
+            'id'=>$e->getId(),
+            'nom'=>$e->getNom(),
+            'prix_achat'=>$e->getPrixAchat(),
+            'prix_vente'=>$e->getPrixVente(),
+            'emballage_achat'=>$e->getUniteAchat()->getNomuval(),
+            'emballage_vente'=>$e->getUniteVente()->getNomuval()
+            
+        ];
+
+        return $this->json([
+            'statut'=>'succès',
+            'message'=>"Donnée enregistrée avec succès",
+            'data'=>$data
+        ]);
+    }
+
+    /**
+    * @Route("produit/update/{id}", name="produitupdate", methods={"PUT"})
+    */
+    public function produitupdate(Service $service,$id, Request $request): Response
+    {
+        $nom=$request->get('nom');
+        $famiile_nom=$request->get('famille');
+        $prix_achat=$request->get('prix_achat');
+        $prix_vente=$request->get('prix_vente');
+        $e=$service->repo_produit->find($id);
+        if (!empty($nom)) {
+            $e->setNom($nom);
+        }
+        elseif (!empty($famiile_nom)) {
+            $famiile=$e->getFamille()->setNom($famiile_nom);
+            $e->setFamille($famiile);
+        }
+        elseif (!empty($prix_achat)) {
+            $e->setPrixAchat($prix_achat);
+        }
+        elseif (!empty($prix_vente)) {
+            $e->setPrixVente($prix_vente);
+        }
+        $service->insert_to_db($e);
+
+        $data=[
+            'id'=>$e->getId(),
+            'nom'=>$e->getNom(),
+            'famille'=>$e->getFamille()->getNom(),
+            'prix_achat'=>$e->getPrixAchat(),
+            'prix_vente'=>$e->getPrixVente(),
+            'emballage_achat'=>$e->getUniteAchat()->getNomuval(),
+            'emballage_vente'=>$e->getUniteVente()->getNomuval()
+            
+        ];
+
+        return $this->json([
+            'statut'=>'succès',
+            'message'=>"Donnée mise à jour avec succès",
+            'data'=>$data
+        ]);
+    }
+
+    /**
+    * @Route("produit/delete/{id}", name="produitdelete", methods={"DELETE"})
+    */
+    public function produitdelete(Service $service,$id): Response
+    {
+        $a=$service->repo_achat->findOneBy(['produit'=>$id]);
+        
+        $e=$service->repo_produit->find($id);
+        
+        $data=[
+            'id_achat'=>$a->getId(),
+            'id_produit'=>$e->getId(),
+            'nom_produit'=>$e->getNom()
+        ];
+        
+        if ($data['id_achat'] !=null) {
+            return $this->json([
+                'statut'=>'error',
+                'message'=>"Cette donnée ne peut etre supprimée car elle est utilisée par un autre proccessus ",
+                'data'=>$data
+            ]);
+        }
+        
+        $service->delete_data($e);
 
         return $this->json([
             'statut'=>'succès',
