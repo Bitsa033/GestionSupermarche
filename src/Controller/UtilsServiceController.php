@@ -254,7 +254,7 @@ class UtilsServiceController extends AbstractController
         $data[]=[
             'id'=>$f->getId(),
             'nom'=>$f->getNom(),
-            'famille'=>$f->getFamille()->getNom(),
+            'famille'=>$f->getFamille(),
             'prix_achat'=>$f->getPrixAchat(),
             'prix_vente'=>$f->getPrixVente(),
             'emballage_achat'=>$f->getUniteAchat()->getNomuval(),
@@ -265,49 +265,54 @@ class UtilsServiceController extends AbstractController
     }
 
     /**
-    * @Route("produit/store", name="produittore", methods={"POST"})
+    * @Route("produit/store", name="produitstore", methods={"POST"})
     */
-    public function produittore(Service $service,Request $request): Response
+    public function produitstore(Service $service,Request $request): Response
     {
         $nom=$request->get('nom');
         $code=$request->get('code');
+        $famiile=$request->get('famille');
         $unite_achat=$request->get('unite_achat');
         $unite_vente=$request->get('unite_vente');
         $prix_achat=$request->get('prix_achat');
         $prix_vente=$request->get('prix_vente');
 
-        $data2=[
-            'produit'=>$nom,
-            'code'=>$code,
-            'prix_achat'=>$prix_achat,
-            'prix_vente'=>$prix_vente,
-            'unite_achat'=>$unite_achat,
-            'unite_vente'=>$unite_vente,
+        // $data2=[
+        //     'produit'=>$nom,
+        //     'code'=>$code,
+        //     'prix_achat'=>$prix_achat,
+        //     'prix_vente'=>$prix_vente,
+        //     'unite_achat'=>$unite_achat,
+        //     'unite_vente'=>$unite_vente,
             
-        ];
-        $em=new Uval();
-        $em->setNomuval($unite_achat);
-        // $em->setNomuval($unite_vente);
-
+        // ];
+        
+        $ua=$service->repo_uval->find($unite_achat);
+        $uv=$service->repo_uval->find($unite_vente);
+        $fa=$service->repo_famille->find($famiile);
+        
         $e=new Produit();
         $e->setNom($nom);
         $e->setCode($code);
         $e->setStatut('Actif');
+        $e->setFamille($fa);
         $e->setPrixAchat($prix_achat);
         $e->setPrixVente($prix_vente);
-        $e->setUniteAchat($em);
-        $e->setUniteVente($em);
+        $e->setUniteAchat($ua);
+        $e->setUniteVente($uv);
         $service->insert_to_db($e);
+
 
         $data=[
             'id'=>$e->getId(),
             'nom'=>$e->getNom(),
             'statut'=>$e->getStatut(),
             'code'=>$e->getCode(),
+            'famille'=>$e->getFamille()->getNom(),
             'prix_achat'=>$e->getPrixAchat(),
             'prix_vente'=>$e->getPrixVente(),
-            'emballage_achat'=>$e->getUniteAchat(),
-            'emballage_vente'=>$e->getUniteVente()
+            'emballage_achat'=>$e->getUniteAchat()->getNomuval(),
+            'emballage_vente'=>$e->getUniteVente()->getNomuval()
             
         ];
 
@@ -367,23 +372,22 @@ class UtilsServiceController extends AbstractController
     */
     public function produitdelete(Service $service,$id): Response
     {
-        $a=$service->repo_achat->findOneBy(['produit'=>$id]);
         
         $e=$service->repo_produit->find($id);
         
         $data=[
-            'id_achat'=>$a->getId(),
+            // 'id_achat'=>$a->getId(),
             'id_produit'=>$e->getId(),
             'nom_produit'=>$e->getNom()
         ];
         
-        if ($data['id_achat'] !=null) {
-            return $this->json([
-                'statut'=>'error',
-                'message'=>"Cette donnée ne peut etre supprimée car elle est utilisée par un autre proccessus ",
-                'data'=>$data
-            ]);
-        }
+        // if ($a->getProduit() !=null) {
+        //     return $this->json([
+        //         'statut'=>'error',
+        //         'message'=>"Cette donnée ne peut etre supprimée car elle est utilisée par un autre proccessus ",
+        //         'data'=>$data
+        //     ]);
+        // }
         
         $service->delete_data($e);
 

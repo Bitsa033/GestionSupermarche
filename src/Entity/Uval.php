@@ -20,7 +20,7 @@ class Uval
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255,unique=true)
      */
     private $nomuval;
 
@@ -32,7 +32,7 @@ class Uval
     /**
      * @ORM\OneToMany(targetEntity=Achat::class, mappedBy="unitea")
      */
-    private $achats;
+    private $achats; 
 
     /**
      * @ORM\OneToMany(targetEntity=Produit::class, mappedBy="unite_vente")
