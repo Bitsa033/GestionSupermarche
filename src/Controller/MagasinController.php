@@ -19,10 +19,10 @@ class MagasinController extends AbstractController
      */
     public function index(CapaciteMagasinRepository $capaciteMagasin)
     {
-        return "index";
-        // return $this->render('magasin/index.html.twig', [
-        //     'magasins' => $capaciteMagasin->findAll(),
-        // ]);
+        
+        return $this->render('magasin/index.html.twig', [
+            'magasins' => $capaciteMagasin->findAll(),
+        ]);
     }
 
     /**
