@@ -26,7 +26,7 @@ class MagasinController extends AbstractController
     }
 
     /**
-     * @Route("magasin_new", name="magasin_new", methods={"POST"})
+     * @Route("magasin_new", name="magasin_new")
      */
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
