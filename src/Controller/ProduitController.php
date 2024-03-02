@@ -100,7 +100,15 @@ class ProduitController extends AbstractController
             // return $this->redirectToRoute('niveaux_index');
         }
         if (!empty($sessionFamille)) {
-            $nom_famille=$service->repo_famille->find($sessionFamille)->getNom();
+            $id_famille=$service->repo_famille->find($sessionFamille);
+            if ($id_famille===null) {
+                $session->set('famille',null);
+                // return dd($id_famille);
+                // $nom_famille="Aucune famille choisie pour l'instant!";
+            }
+            else {
+                $nom_famille=$service->repo_famille->find($sessionFamille)->getNom();
+            }
         }
         else {
            $nom_famille="Aucune famille choisie pour l'instant!";
@@ -141,18 +149,10 @@ class ProduitController extends AbstractController
      */
     public function edit(Request $request, Produit $produit, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(ProduitType::class, $produit);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('produit_index', [], Response::HTTP_SEE_OTHER);
-        }
+        
 
         return $this->render('produit/edit.html.twig', [
             'produit' => $produit,
-            'form' => $form->createView(),
         ]);
     }
 
