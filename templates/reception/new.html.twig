@@ -8,89 +8,88 @@
     <h4>Réception de la commande n°{{achat.id}}: {{achat.produit.uniteAchat.nomuval}} {{ achat.produit.nom }} </h4>
 
     <table class="table ">
-        <tbody>
-            <tr>
-                <th>Date commande</th>
-                <th>Prix unitaire</th>
-                <th>Quantité</th>
-                <th>Prix total</th>
+                        <tbody>
+                            <tr>
+                                <th>Date commande</th>
+                                <th>Prix unitaire</th>
+                                <th>Quantité</th>
+                                <th>Prix total</th>
 
-            </tr>
-            <tr>
-                <td>{{ achat.dateachat ? achat.dateachat|date('m/d/Y H:i:s') : '' }}</td>
-                <td>{{achat.produit.prixAchat}} FCFA</td>
-                <td>
-                    {{achat.qte| number_format(0, ' ', ' ')}}
-                </td>
-                <td>{{ achat.prixTotal| number_format(0, ' ', ' ') }} FCFA</td>
-            </tr>
-        </tbody>
-    </table>
+                            </tr>
+                            <tr>
+                                <td>{{ achat.dateachat ? achat.dateachat|date('m/d/Y H:i:s') : '' }}</td>
+                                <td>{{achat.produit.prixAchat}} FCFA</td>
+                                <td>
+                                    {{achat.qte| number_format(0, ' ', ' ')}}
+                                </td>
+                                <td>{{ achat.prixTotal| number_format(0, ' ', ' ') }} FCFA</td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-</div>
+                </div>
 
-<div class="row">
+                <div class="row">
 
-    <div class="offset-3 col-md-5">
-        {% if qte_achat == qte_reception %}
-        <div class="card">
-            <div class="card-header" style="color: green;">
-                Votre commande a été finalisée !
-            </div>
-        </div>
-        {% else %}
-        <h4>Formulaire de reception <strong>|
-                {% if qte_reception %}
-                quantité reçue:</strong> {{qte_reception}}/{{qte_achat}}</h4>
-        {% else %}
-        quantité reçue:</strong> 0</h4>
-        {% endif %}
+                    <div class="offset-3 col-md-5">
+                        {% if qte_achat == qte_reception %}
+                        <div class="card">
+                            <div class="card-header" style="color: green;">
+                                Votre commande a été finalisée !
+                            </div>
+                        </div>
+                        {% else %}
+                        <h4>Formulaire de reception <strong>|
+                                {% if qte_reception %}
+                                quantité reçue:</strong> {{qte_reception}}/{{qte_achat}}</h4>
+                        {% else %}
+                        quantité reçue:</strong> 0</h4>
+                        {% endif %}
 
-        <form action="" method="post">
-            <table class="table table-head-fixed">
-                {% if emballage == 1 %}
-                    
-                {% elseif emballage == 0 and quantite_unit_val_on_bd == 0 %}
-                    <label for="stock_tot">1 {{achat.produit.uniteAchat.nomuval}} est égale à combien de
-                        {{achat.produit.uniteVente.nomuval}} ?</label>
-                    <input type="number" name="quantiteInit[]" required>
-                {% elseif emballage == 0 and quantite_unit_val_on_bd == 1 %}
-                    
-                {% endif %}
+                        <form action="" method="post">
+                            <table class="table table-head-fixed">
+                                {% if emballage == 1 %}
+                                    
+                                {% elseif emballage == 0 and quantite_unit_val_on_bd == 0 %}
+                                    <label for="stock_tot">1 {{achat.produit.uniteAchat.nomuval}} est égale à combien de
+                                        {{achat.produit.uniteVente.nomuval}} ?</label>
+                                    <input type="number" name="quantiteInit[]" required>
+                                {% elseif emballage == 0 and quantite_unit_val_on_bd == 1 %}
+                                    
+                                {% endif %}
 
-                <tbody class="table table-bordered">
-                    <tr>
-                        <th>{{achat.produit.nom}}</th>
-                        <th>Qte</th>
-                        <th>ID</th>
-                        <th>Magasin</th>
-                        <th>Espace</th>
-                    </tr>
+                                <tbody class="table table-bordered">
+                <tr>
+                    <th>{{ achat.produit.nom }}</th>
+                    <th>Qte</th>
+                    <th>Choix</th>
+                    <th>Magasin</th>
+                    <th>Espace</th>
+                </tr>
 
-                    {% for mag in magasins %}
-                    <tr>
-                        <td>
-                            <input disabled type="text" name="id_commande" id="id_commande"
-                                value="{{achat.id}}">
-                        </td>
-                        <td>
-                            <input style="margin-left: 8%;" type="number" name="quantite[]" class="quantite" min="1"
-                                max="{{achat.qte - qte_reception}}" placeholder="{{achat.qte - qte_reception}}">
-                        </td>
-                        <td>
-                            <input type="checkbox" name="mag_id[]" value="{{mag.id}}"class="mag_id">
-                        </td>
-                        <td>
-                            {{ mag.nom }}
-                            <input type="hidden" name="mag_name[]" value="{{mag.id}}" class="form-control mag_name">
-                        </td>
-                        <td>
-                            {{ mag.capacite }} m<sup>2</sup>
-                        </td>
-
-                    </tr>
-                    {% endfor %}
-
+                {% for mag in magasins %}
+                <tr>
+                    <td>
+                    <input disabled type="text" value="{{ achat.id }}">
+                    </td>
+                    <td>
+                    <input
+                        style="margin-left: 8%;"
+                        type="number"
+                        name="quantite[{{ mag.id }}]"
+                        class="quantite"
+                        min="1"
+                        max="{{ achat.qte - qte_reception }}"
+                        placeholder="{{ achat.qte - qte_reception }}"
+                    >
+                    </td>
+                    <td>
+                    <input type="checkbox" name="mag_select[{{ mag.id }}]" value="1" class="mag_id">
+                    </td>
+                    <td>{{ mag.nom }}</td>
+                    <td>{{ mag.capacite }} m<sup>2</sup></td>
+                </tr>
+                {% endfor %}
                 </tbody>
             </table>
             <button type="submit" value="1" id="btn_valider_achat" class="btn btn-success col-md-4 offset-4" name="btn_valider_achat">Enregistrer</button>
