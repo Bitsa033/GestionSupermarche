@@ -13,7 +13,7 @@ class AchatController extends AbstractController
 {
 
     /**
-     * @Route("/", name="achat_liste", methods={"GET"})
+     * @Route("achat_liste", name="achat_liste", methods={"GET"})
      */
     public function achat_liste(Service $service): Response
     {
@@ -97,18 +97,8 @@ class AchatController extends AbstractController
      */
     public function edit(Request $request, Service $service): Response
     {
-        $form = $this->createForm(AchatType::class, $service->table_achat);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $service->db->flush();
-
-            return $this->redirectToRoute('achat_index', [], Response::HTTP_SEE_OTHER);
-        }
-
+        
         return $this->render('achat/edit.html.twig', [
-            'achat' => $service->table_achat,
-            'form' => $form->createView(),
         ]);
     }
 
