@@ -2,10 +2,8 @@
 
 {% block body %}
 {% include "layouts/nav_head_sortie.html.twig" %}
-<!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
 
-    <!-- Main content -->
     <section class="content">
         <br>
         <div class="container row">
@@ -14,109 +12,66 @@
 
                 <div class="card">
 
-                    <!-- /.card-header -->
-                    <div class="card-header form-inline">
-                        
-                        <div class="card-body table-responsive p-0" id="card-sortie">
-                            <div class="form-inline">
-                                <form action="" method="post">
-                                    <input type="text"  name="mot_cle" id="mot_cle" class="form-control col-md-4" style="margin-left: 2%; width:45rem;">
-                                    <button type="button" id="btn_searck" class="form-control btn btn-dark">Rechercher</button>
+                    <div class="card-header form-inline"></div>
 
-                                </form>
+                    <div class="card-body table-responsive p-0" style="height: 360px;" id="card-sortie">
 
-                            </div>
-                            <table class="table table-head-fixed" style="margin-top: 2%;">
+                        <table class="table table-head-fixed text-nowrap" style="margin-top: 2%;">
+                            <form action="" method="post">
+                                <tbody class="table table-bordered">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Produit</th>
+                                        <th>Prix</th>
+                                        <th>Stock</th>
+                                        <th>Qte sortie</th>
+                                    </tr>
 
-                                <form action="" method="post">
-                                    <tbody class="table table-bordered">
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Produit</th>
-                                            <th>Prix</th>
-                                            <th>Stock</th>
-                                            <th>Qte sortie</th>
-                                        </tr>
+                                    {% for produit in produits %}
+                                        {% if produit.qteTot > 1 %}
+                                            <tr>
+                                                <td style="width: 1%;">
+                                                    <input type="checkbox" name="produit_id[]" value="{{ produit.produit.id }}">
+                                                </td>
 
-                                        {% for produit in produits %}
-                                        <tr>
-                                            <td style="width: 1%;">
-                                                <input type="checkbox" name="produit_id[]" value="{{produit.produit.id}}" class="" id="">
-                                            </td>
+                                                <td style="width: 30%;">
+                                                    {{ produit.produit.uniteVente.nomuval }} {{ produit.produit.nom }}
+                                                    <input type="hidden" name="produit_name[]" value="{{ produit.produit.id }}">
+                                                </td>
 
-                                            <td style="width: 30%;">
-                                               {{produit.produit.uniteVente.nomuval}} {{ produit.produit.nom }} 
-                                                <input type="hidden" name="produit_name[]" value="{{produit.produit.id}}" class="form-control" id="">
-                                            
-                                                
-                                            </td>
+                                                <td>
+                                                    {{ produit.produit.prixVente|number_format(0,' ',' ') }} FCFA
+                                                </td>
 
-                                            <td>
-                                                {{ produit.produit.prixVente|number_format(0,' ',' ') }} FCFA
-                                            </td>
+                                                <td style="width: 20%;">
+                                                    {{ produit.qteTot|number_format(0, ' ', ' ') }}
+                                                </td>
 
-                                            <td style="width: 20%;">
-                                                {{ produit.qteTot }}
-                                                
-                                            </td>
-                                            
-                                            <td style="width: 5;">
-                                                <input style="width: 100%;" type="number" name="quantite[]" class="form-control" id="" min="1" max="{{ produit.qteTot }}"> 
-                                                
-                                            </td>
-                            
+                                                <td style="width: 20%;"> {# largeur élargie #}
+                                                    <input type="number" name="quantite[]" class="form-control" 
+                                                           style="width: 100%; font-size: 16px;" 
+                                                           min="1" max="{{ produit.qteTot|number_format(0, ' ', ' ') }}">
+                                                </td>
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
 
-                                        </tr>
-                                        {% endfor %}
+                                </tbody>
+                        </table>
 
-                                    </tbody>
-                            </table>
-
-                        </div>
-                        <!-- /.card -->
                         <br>
-                        <button type="submit" name="enregistrer" id="btn_sortie" class="btn btn-success offset-4">Enregistrer
-                            la commande</button>
-                        </form>
+                        <button type="submit" name="enregistrer" id="btn_sortie" class="btn btn-success offset-4">
+                            Enregistrer la commande
+                        </button>
+                    </form>
                     </div>
-
                 </div>
             </div>
-            {# ./col #}
+
             <div class="col-md-4">
-                {# <form autocomplete="off" method="post" id="quickForm">
-                    <div class="form-group">
-                        Somme remise
-                        <input type="number" name="somme" class="form-control" id="somme"
-                            placeholder="Entrez la somme d'argent ex: 5000">
-                        <div class="validate"></div>
-                    </div>
-                    <div class="form-group">
-                        Somme dépensée
-                        <input type="number" name="depenses" class="form-control" id="depenses"
-                            placeholder="Entrez la somme dépensée ex: 2350">
-                        <div class="validate"></div>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary col-md-8 offset-2"
-                            id="btn_calculer">Calculer</button>
-                    </div>
-    
-                    <div class="form-group" id="resultat">
-                        
-                        0000 FCFA
-                    </div>
-                    <div class="error-message"></div>
-                    <div id="message"></div>
-    
-                    
-                </form> #}
-
                 {% include "layouts/calculatrice.html.twig" %}
-
             </div>
-            {# .col #}
-            
+
         </div>
 
     </section>

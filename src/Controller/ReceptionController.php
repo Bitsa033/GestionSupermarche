@@ -67,7 +67,7 @@ class ReceptionController extends AbstractController
                         'prixTotal' => $prix_tot_achat,
                         'qteUnitVal'=>$quantite_unit_val,
                         'qteTotVal'=>$quantite_tot_val,
-                        'prixTotVal'=>$prix_tot_achat
+                        'prixTotVal'=>$prix_tot_val
                     );
 
                     $service->new_reception($data);
@@ -99,7 +99,7 @@ class ReceptionController extends AbstractController
             ($service->repo_reception->qteUnitVal($id) >0) ? 1 : 0 ,
             'qte_achat' => $qte_achat,
             'qte_reception' => $qte_reception,
-            'magasins'=>$service->repo_capacite_magasin->findAll()
+            'magasins'=>$service->repo_magasin->findAll()
         ]);
     }
 }

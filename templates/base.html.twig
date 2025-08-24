@@ -7,6 +7,7 @@
         {% block title %}Supermarché!
         {% endblock %}
     </title>
+
     {# Run `composer require symfony/webpack-encore-bundle`
     and uncomment the following Encore helpers to start using Symfony UX #}
     <link rel="stylesheet" href="template/plugins/fontawesome-free/css/all.min.css">
@@ -35,6 +36,21 @@
         #card-sortie {
             min-height: 350px;
         }
+
+        ..dashboard-container {
+        display: flex;
+        flex-direction: column;  /* vertical */
+        align-items: center;     /* centrer horizontalement */
+        justify-content: flex-start; /* ajuster verticalement si nécessaire */
+        padding: 20px;
+        }
+
+        .chart-wrapper {
+        width: 300px;   /* largeur du graphique */
+        height: 150px;  /* hauteur du graphique */
+        }
+
+
     </style>
     {% block stylesheets %}
 
@@ -94,7 +110,7 @@
     //     setData(reception_achat)
     // </script>
 {% block javascripts %}
-        {{ encore_entry_script_tags('app') }}
+    {{ encore_entry_script_tags('app') }}
 {% endblock %}
 
 </html>

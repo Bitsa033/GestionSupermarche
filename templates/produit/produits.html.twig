@@ -2,74 +2,130 @@
 
 {% block body %}
 {% include "layouts/nav_head_produit.html.twig" %}
-<!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
 
-    <!-- Main content -->
     <section class="content">
         <br>
         <div class="container-fluid">
-            <!-- Info boxes -->
-            <div class="row">
-                <div class="col-12 col-sm-6 col-md-3"></div>
-                <!-- /.col -->
 
-            </div>
-            <!-- /.row -->
+            {# Calcul du compteur des produits en rupture #}
+            {% set rupture_count = 0 %}
+            {% for produit in produits %}
+                {% if produit.qteTot is not null and produit.qteTot < 20 %}
+                    {% set rupture_count = rupture_count + 1 %}
+                {% endif %}
+            {% endfor %}
+
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
-                        <div class="card-header  form-inline">
-                            <form action="" method="post">
-                                <select name="" id="" class="form-control" style="min-width: 150px;">
-                                    <option value="">Riz</option>
-                                </select>
-                            </form>
-                            
+                        <!-- Card Header avec compteur rupture -->
+                        <div class="card-header form-inline">
+                            {% if rupture_count > 0 %}
+                                <span class="badge badge-danger">
+                                    {{ rupture_count }} produit{{ rupture_count > 1 ? 's' : '' }} en rupture de stock
+                                </span>
+                            {% endif %}
                         </div>
+
+                        <!-- Tableau principal -->
                         <div class="card-body table-responsive p-0" style="height: 310px;">
                             <table class="table table-head-fixed table-bordered">
-
-                                <tbody>
+                                <thead>
                                     <tr>
                                         <th>Produit</th>
                                         <th>Prix de vente</th>
                                         <th>Stock</th>
+                                        <th>Statut</th>
                                         <th>Prix total</th>
-
                                     </tr>
+                                </thead>
+                                <tbody>
+                                    {% set has_suffisants = false %}
                                     {% for produit in produits %}
-                                    <tr>
-                                        <td>{{produit.produit.uniteVente.nomuval}} {{produit.produit.nom}}</td>
-                                        <td>{{produit.produit.prixVente| number_format(0, ' ', ' ')}} FCFA</td>
-                                        
-                                        <td>{{produit.qteTot|number_format(0, ' ', ' ')}}</td>
-                                        <td>{{produit.prixTotal|number_format(0, ' ', ' ')}}</td>
-
-                                    </tr>
-
-                                    {% else %}
-                                    <tr>
-                                        <td colspan="5">Liste vide !</td>
-                                    </tr>
+                                        {% if produit.qteTot is not null and produit.qteTot >= 20 %}
+                                            {% set has_suffisants = true %}
+                                            <tr>
+                                                <td>
+                                                    {% if produit.produit.uniteVente is not null %}
+                                                        {{ produit.produit.uniteVente.nomuval }}
+                                                    {% endif %}
+                                                    {{ produit.produit.nom }}
+                                                </td>
+                                                <td>{{ produit.produit.prixVente|number_format(0, ' ', ' ') }} FCFA</td>
+                                                <td>
+                                                    <div>{{ produit.qteTot|number_format(0, ' ', ' ') }}</div>
+                                                    <div class="progress" style="height: 15px; margin-top: 5px;">
+                                                        <div class="progress-bar bg-success" 
+                                                             role="progressbar" 
+                                                             style="width: {{ (produit.qteTot / 1000) * 100 }}%;" 
+                                                             aria-valuenow="{{ produit.qteTot }}" 
+                                                             aria-valuemin="0" aria-valuemax="1000">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td><span class="badge badge-success">Stock suffisant</span></td>
+                                                <td>{{ produit.prixTotal|number_format(0, ' ', ' ') }}</td>
+                                            </tr>
+                                        {% endif %}
                                     {% endfor %}
-
+                                    {% if not has_suffisants %}
+                                        <tr>
+                                            <td colspan="5">Aucun produit avec stock suffisant !</td>
+                                        </tr>
+                                    {% endif %}
                                 </tbody>
                             </table>
-
                         </div>
-                        <!-- /.card-body -->
+
                         <div class="card-footer">
                             @Developpeur: BITSA NZDZIE PASCAL
                         </div>
                     </div>
                 </div>
-
             </div>
-
-            <!-- /.row -->
         </div>
-
     </section>
 </div>
+
+<!-- Modal rupture de stock -->
+<div class="modal fade" id="ruptureStockModal" tabindex="-1" role="dialog" aria-labelledby="ruptureStockModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content border-danger">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="ruptureStockModalLabel">Rupture de stock</h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ul>
+          {% for produit in produits %}
+            {% if produit.qteTot is not null and produit.qteTot < 20 %}
+              <li>{{ produit.produit.nom }} (Stock: {{ produit.qteTot }})</li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var rupture = false;
+    {% for produit in produits %}
+        {% if produit.qteTot is not null and produit.qteTot < 20 %}
+            rupture = true;
+        {% endif %}
+    {% endfor %}
+    if (rupture) {
+        $('#ruptureStockModal').modal('show');
+    }
+});
+</script>
+
 {% endblock %}

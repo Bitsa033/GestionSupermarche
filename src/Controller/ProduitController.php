@@ -32,18 +32,18 @@ class ProduitController extends AbstractController
     }
 
     /**
-     * @Route("sessionFamille", name="produit_sessionFamille")
+     * @Route("sessionCategorie", name="produit_sessionCategorie")
      */
-    public function sessionFamille(SessionInterface $session, Request $request)
+    public function sessionCategorie(SessionInterface $session, Request $request)
     {
-        if (!empty($request->request->get('famille'))) {
-            $famille = $request->request->get('famille');
-            $get_famille = $session->get('famille', []);
+        if (!empty($request->request->get('categorie'))) {
+            $categorie = $request->request->get('categorie');
+            $get_categorie = $session->get('categorie', []);
             
-            if (!empty($get_famille)) {
-                $session->set('famille', $famille);
+            if (!empty($get_categorie)) {
+                $session->set('categorie', $categorie);
             }
-            $session->set('famille', $famille);
+            $session->set('categorie', $categorie);
             // dd($session);
         }
         return $this->redirectToRoute('produit_new');
@@ -55,7 +55,7 @@ class ProduitController extends AbstractController
      */
     public function produit_new(SessionInterface $session,Service $service)
     {
-        $sessionFamille=$session->get('famille',[]);
+        $sessionCategorie=$session->get('categorie',[]);
         //on cherche l'utilisateur connecté
         $user = $this->getUser();
         // if (!$user) {
@@ -85,7 +85,7 @@ class ProduitController extends AbstractController
             for ($i = 0; $i < $sessionNb; $i++) {
                 $ref=rand(0,(1000));
                 $data = array(
-                    'id_famille'=>$sessionFamille,
+                    'id_categorie'=>$sessionCategorie,
                     'produit' => $_POST['produit' . $i],
                     'code'    => 'PROD_'.$ref,
                     'uniteAchat' =>$_POST['unite_achat'. $i],
@@ -99,26 +99,27 @@ class ProduitController extends AbstractController
 
             // return $this->redirectToRoute('niveaux_index');
         }
-        if (!empty($sessionFamille)) {
-            $id_famille=$service->repo_famille->find($sessionFamille);
-            if ($id_famille===null) {
-                $session->set('famille',null);
+        if (!empty($sessionCategorie)) {
+            
+            $id_categorie=$service->repo_categorie->find($sessionCategorie);
+            if ($id_categorie===null) {
+                $session->set('categorie',null);
                 // return dd($id_famille);
                 // $nom_famille="Aucune famille choisie pour l'instant!";
             }
             else {
-                $nom_famille=$service->repo_famille->find($sessionFamille)->getNom();
+                $nom_categorie=$service->repo_categorie->find($sessionCategorie)->getNomCat();
             }
         }
         else {
-           $nom_famille="Aucune famille choisie pour l'instant!";
+           $nom_categorie ="Aucune categorie choisie pour l'instant!";
         }
 
         return $this->render('produit/new.html.twig', [
             'nb_rows' => $nb_row,
-            'familles'=>$service->repo_famille->findAll(),
+            'categories'=>$service->repo_categorie->findAll(),
             'produits'=>$service->repo_produit->findAll(),
-            'nom_famille'=>$nom_famille,
+            'nom_categorie'=>$nom_categorie,
             'unites'=>$service->repo_uval->findAll(),
             'prix'=>$service->repo_margeprix->findAll()
         ]);
@@ -130,7 +131,7 @@ class ProduitController extends AbstractController
     public function produitsListe(Service $service){
 
         return $this->render('produit/produits.html.twig',[
-            'produits'=>$service->repo_stock->findAll()
+            'produits'=>$service->repo_stock->findAll(),
         ]);
     }
 

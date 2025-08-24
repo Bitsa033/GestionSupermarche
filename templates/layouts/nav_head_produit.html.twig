@@ -8,25 +8,14 @@
             </a>
         </li>
 
-        <li class="nav-item">
-            <a class="nav-link" href="{{ path('famille_index') }}" role="button">
-                Familles <i class="fas fa-th"></i>
-            </a>
-        </li>
-    
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Emballages</a>
+            <a class="nav-link dropdown-toggle" href="" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Parametrage produit</a>
             <div class="dropdown-menu" aria-labelledby="dropdown05">
-                <a class="dropdown-item" href="{{ path('uval_new') }}">Ajouter <span class="sr-only">(current)</span></a>
-                <a class="dropdown-item" href="{{ path('uval_index') }}">Afficher <span class="sr-only">(current)</span></a>
-            </div>
-        </li>
-        
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Magasins</a>
-            <div class="dropdown-menu" aria-labelledby="dropdown05">
-                <a class="dropdown-item" href="{{ path('magasin_new') }}">Ajouter <span class="sr-only">(current)</span></a>
-                <a class="dropdown-item" href="{{ path('magasin_index') }}">Afficher <span class="sr-only">(current)</span></a>
+                <a class="dropdown-item" href="{{ path('famille_index') }}">Familles <span class="sr-only">(current)</span></a>
+                <a class="dropdown-item" href="{{ path('categorie_index') }}">Categories <span class="sr-only">(current)</span></a>
+                <a class="dropdown-item" href="{{ path('uval_index') }}">Emballages <span class="sr-only">(current)</span></a>
+                <a class="dropdown-item" href="{{ path('magasin_index') }}">Magasins <span class="sr-only">(current)</span></a>
+
             </div>
         </li>
 
@@ -39,7 +28,7 @@
         </li>
 
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Commandes</a>
+            <a class="nav-link dropdown-toggle" href="" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Achats</a>
             <div class="dropdown-menu" aria-labelledby="dropdown05">
               <a class="dropdown-item" href="{{ path('achat_new') }}">Ajouter <span class="sr-only">(current)</span></a>
               <a class="dropdown-item" href="{{ path('achat_liste') }}">Afficher <span class="sr-only">(current)</span></a>

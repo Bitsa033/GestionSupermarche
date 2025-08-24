@@ -34,11 +34,11 @@
                             </div>
                             <!-- /.card-header -->
 							<div class="card-header form-inline">
-								<form action="{{path('produit_sessionFamille')}}" method="post">
-									Famille:
-									<select style="width:250px;" class="form-control" name="famille" id="">
-										{% for famille in familles %}
-										<option value="{{famille.id}}">{{famille.nom}}</option>
+								<form action="{{path('produit_sessionCategorie')}}" method="post">
+									Categorie:
+									<select style="width:250px;" class="form-control" name="categorie" id="">
+										{% for categorie in categories %}
+										<option value="{{categorie.id}}">{{categorie.nomCat}}</option>
 											
 										{% else %}
 										<option value="">Liste vide...</option>
@@ -48,14 +48,14 @@
 								</form>
 								<!--on affiche ici le nom de la famille qui est dans la session-->
 								<div style="margin-left: 2%;">
-									{% if app.session.get('famille') %}
-										Famille en cours: <strong>{{nom_famille}}</strong>
+									{% if app.session.get('categorie') %}
+										Categorie en cours: <strong>{{nom_categorie}}</strong>
 									{% else %}
-										<h6>Aucune famille choisie pour l'instant!</h6>
+										<h6>Aucune categorie choisie pour l'instant!</h6>
 									{% endif %}
 								</div>
 							</div>
-                            <div class="card-body table-responsive p-0" style="height: 300px;">
+                            <div class="card-body table-responsive p-0" style="height: 360px;">
                                 <form action="" method="post">
                                     <table class="table table-head-fixed text-nowrap">
                                         <tbody>
@@ -115,7 +115,7 @@
 
 								</div>
 								<!-- /.card-body -->
-								{% if app.session.get('famille') %}
+								{% if app.session.get('categorie') %}
 								<button type="submit" name="enregistrer" class="btn btn-success form-control offset-1 col-10">Enregistrer</button>
 								{% else %}
 								{% endif %}

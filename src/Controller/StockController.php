@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\Service;
+use Doctrine\DBAL\Connection;
 
 class StockController extends AbstractController
 {
@@ -113,6 +114,25 @@ class StockController extends AbstractController
         return $this->render('stock/panier_sortie.html.twig',[
             'sorties'=>$service->repo_sortiestock->findAll()
         ]);
+    }
+
+    /**
+     * @Route("stock_statistique_vente", name="stock_statistique_vente")
+     */
+    public function statistique_vente( Connection $connection, Service $service)
+    {
+
+        $sql = 'SELECT produit.nom as p, sum(sortie_stock.qte_sortie) AS qte_sortie_total, valeur FROM sortie_stock 
+        INNER join produit on produit.id= sortie_stock.produit_id GROUP by produit_id;
+        ';
+
+        $sorties = $connection->executeQuery($sql)->fetchAllAssociative();
+
+        return $this->render('stock/statistique_vente.html.twig', [
+        'sorties' => $sorties,
+        'entrees'=>$service->repo_achat->findAll()
+        ]);
+
     }
 
     

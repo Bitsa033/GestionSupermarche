@@ -30,10 +30,10 @@ class Produit
     private $code;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Famille::class, inversedBy="produits")
+     * @ORM\ManyToOne(targetEntity=Categorie::class, inversedBy="produits")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $famille;
+    private $categorie;
 
     /**
      * @ORM\OneToMany(targetEntity=Achat::class, mappedBy="produit")
@@ -154,14 +154,14 @@ class Produit
         return $this;
     }
 
-    public function getFamille(): ?Famille
+    public function getCategorie(): ?Categorie
     {
-        return $this->famille;
+        return $this->categorie;
     }
 
-    public function setFamille(?Famille $famille): self
+    public function setCategorie(?Categorie $categorie): self
     {
-        $this->famille = $famille;
+        $this->categorie = $categorie;
 
         return $this;
     }

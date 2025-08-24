@@ -25,14 +25,14 @@ class Famille
     private $nomfam;
 
     /**
-     * @ORM\OneToMany(targetEntity=Produit::class, mappedBy="famille")
+     * @ORM\OneToMany(targetEntity=Categorie::class, mappedBy="famille")
      */
-    private $produits;
+    private $categories;
 
 
     public function __construct()
     {
-        $this->produits = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -53,29 +53,29 @@ class Famille
     }
 
     /**
-     * @return Collection|Produit[]
+     * @return Collection<int, Categorie>
      */
-    public function getProduits(): Collection
+    public function getCategories(): Collection
     {
-        return $this->produits;
+        return $this->categories;
     }
 
-    public function addProduit(Produit $produit): self
+    public function addCategory(Categorie $category): self
     {
-        if (!$this->produits->contains($produit)) {
-            $this->produits[] = $produit;
-            $produit->setFamille($this);
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+            $category->setFamille($this);
         }
 
         return $this;
     }
 
-    public function removeProduit(Produit $produit): self
+    public function removeCategory(Categorie $category): self
     {
-        if ($this->produits->removeElement($produit)) {
+        if ($this->categories->removeElement($category)) {
             // set the owning side to null (unless already changed)
-            if ($produit->getFamille() === $this) {
-                $produit->setFamille(null);
+            if ($category->getFamille() === $this) {
+                $category->setFamille(null);
             }
         }
 

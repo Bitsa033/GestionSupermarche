@@ -11,9 +11,39 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\DBAL\Connection;
 
 class FamilleController extends AbstractController
 {
+    private $connection;
+
+    public function __construct(Connection $connection)
+    {
+        $this->connection = $connection;
+        $this->initialiserFamilles();
+    }
+
+    private function initialiserFamilles(): void
+    {
+        // Vérifier si la table famille est vide
+        $count = $this->connection->fetchOne('SELECT COUNT(*) FROM famille');
+
+        if ($count == 0) {
+            $familles = [
+                'Produits finis',
+                'Matières premières',
+                'Produits en cours',
+                'Fournitures consommables'
+            ];
+
+            foreach ($familles as $famille) {
+                $this->connection->insert('famille', [
+                    'nomfam' => $famille
+                ]);
+            }
+        }
+    }
+
     /**
      * @Route("famille_nb", name="famille_nb")
      */
@@ -101,22 +131,22 @@ class FamilleController extends AbstractController
     /**
      * @Route("{famille_id}_edit", name="famille_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, Famille $famille, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(FamilleType::class, $famille);
-        $form->handleRequest($request);
+    // public function edit(Request $request, Famille $famille, EntityManagerInterface $entityManager): Response
+    // {
+    //     $form = $this->createForm(FamilleType::class, $famille);
+    //     $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+    //     if ($form->isSubmitted() && $form->isValid()) {
+    //         $entityManager->flush();
 
-            return $this->redirectToRoute('famille_index', [], Response::HTTP_SEE_OTHER);
-        }
+    //         return $this->redirectToRoute('famille_index', [], Response::HTTP_SEE_OTHER);
+    //     }
 
-        return $this->render('famille/edit.html.twig', [
-            'famille' => $famille,
-            'form' => $form->createView(),
-        ]);
-    }
+    //     return $this->render('famille/edit.html.twig', [
+    //         'famille' => $famille,
+    //         'form' => $form->createView(),
+    //     ]);
+    // }
 
     /**
      * @Route("famille_{id}_delete", name="famille_delete", methods={"POST"})

@@ -78,14 +78,14 @@
                                 max="{{achat.qte - qte_reception}}" placeholder="{{achat.qte - qte_reception}}">
                         </td>
                         <td>
-                            <input type="checkbox" name="mag_id[]" value="{{mag.magasin.id}}"class="mag_id">
+                            <input type="checkbox" name="mag_id[]" value="{{mag.id}}"class="mag_id">
                         </td>
                         <td>
-                            {{ mag.magasin.nom }}
-                            <input type="hidden" name="mag_name[]" value="{{mag.magasin.id}}" class="form-control mag_name">
+                            {{ mag.nom }}
+                            <input type="hidden" name="mag_name[]" value="{{mag.id}}" class="form-control mag_name">
                         </td>
                         <td>
-                            {{ mag.capaciteActuel }} m<sup>2</sup>
+                            {{ mag.capacite }} m<sup>2</sup>
                         </td>
 
                     </tr>

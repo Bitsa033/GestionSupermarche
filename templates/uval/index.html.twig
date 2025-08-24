@@ -1,48 +1,78 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Uval index{% endblock %}
-
 {% block body %}
 {% include "layouts/nav_head_produit.html.twig" %}
-    <div class="content-wrapper">
-        <section class="content">
-            <div class="card col-6 offset-2">
-                <div class="card-body table-responsive p-0" style="height: 390px;">
-                
-                    <table class="table table-head-fixed table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>Nom</th>
-                                <th>actions
-                                    
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {% for uval in uvals %}
-                            <tr>
-                                <td>{{ uval.id }}</td>
-                                <td>{{ uval.nomuval }}</td>
-                                <td>
-                                    <a class="btn btn-info" href="{{ path('uval_show', {'id': uval.id}) }}">Consulter</a>
-                                    <a class="btn btn-info" href="{{ path('uval_edit', {'id': uval.id}) }}">Editer</a>
-                                </td>
-                            </tr>
-                        {% else %}
-                            <tr>
-                                <td colspan="3">no records found</td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                <div class="card-footer">
-                   @Developpeur: BITSA NZDZIE PASCAL
-                </div>
-            </div>
-        
-        </section>
-    </div>
+<div class="content-wrapper">
+    <section class="content">
+        <br>
+        <div class="container-fluid">
 
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body table-responsive p-0" style="height: 360px;">
+                            <table class="table table-head-fixed text-nowrap">
+                                <tbody>
+                                    <tr>
+                                        <th style="width:3%;">ID</th>
+                                        <th>Emballage</th>
+                                    </tr>
+                                    {% for emballage in uvals %}
+                                        <tr>
+                                            <td>{{ emballage.id }}</td>
+                                            <td>{{ emballage.nomuval }}</td>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="3">Liste vide !</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="card-footer">
+                            @Développeur: BITSA NZDZIE PASCAL
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <form action="{{ path('uval_nb') }}" method="post">
+                                <div class="form-inline">
+                                    <input type="number" name="nb_row" class="form-control" placeholder="Nbre ex: 5">
+                                    <button type="submit" class="form-control">Ok</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="card-body table-responsive p-0" style="height: 350px;">
+                            <form action="{{ path('uval_index') }}" method="post">
+                                <table class="table table-head-fixed text-nowrap">
+                                    <tbody>
+                                        <tr>
+                                            <th>Emballage</th>
+                                        </tr>
+
+                                        {% for nb_row in nb_rows %}
+                                            <tr>
+                                                <td>
+                                                    <input type="text" name="emballage{{ nb_row }}" class="form-control" placeholder="Nom de l'emballage">
+                                                </td>
+                                                
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                <button type="submit" name="enregistrer" class="btn btn-success form-control offset-1 col-10">Enregistrer</button>
+                                <br><br>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</div>
 {% endblock %}

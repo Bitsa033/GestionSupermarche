@@ -1,0 +1,130 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+{% include "layouts/nav_head_sortie.html.twig" %}
+<div class="content-wrapper">
+
+    <section class="content">
+        <br>
+        <div class="container">
+            <div class="row card">
+                <div class="col-md-12">
+                    <table class="table table-bordered table-striped">
+                        <thead class="table-default">
+                            <tr>
+                                <th>Total perte</th>
+                                <th>Total profit</th>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        
+                    </table>
+                </div>
+            </div>
+            <!-- row -->
+            <!-- Tableau des sorties -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5>Statistiques de sortie</h5>
+                            <table class="table table-bordered table-striped">
+                                <thead class="table-default">
+                                    <tr>
+                                        <th>Stock total sortant</th>
+                                        <th>Montant total</th>
+                                    </tr>
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                
+                            </table>
+                        </div>
+
+                        <div class="card-body table-responsive p-0" style="height: 360px;">
+                            <table class="table table-bordered table-head-fixed text-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>Produit</th>
+                                        <th>Stock sortant</th>
+                                        <th>Montant</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in sorties %}
+                                        <tr>
+                                            <td>{{ item.p }}</td>
+                                            <td>{{ item.qte_sortie_total|number_format(0, ' ', ' ') }}</td>
+                                            <td>{{ item.valeur|number_format(0, ' ', ' ') }} FCFA</td>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="3">Aucune sortie enregistrée</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <!-- Nouveau tableau pour les entrées en stock -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Statistiques d'entrée en stock</h5>
+                            <table class="table table-bordered table-striped">
+                                <thead class="table-default">
+                                    <tr>
+                                        <th>Stock total entrant</th>
+                                        <th>Montant total</th>
+                                    </tr>
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                
+                            </table>
+                        </div>
+
+                        <div class="card-body table-responsive p-0" style="height: 360px;">
+                            <table class="table table-bordered table-head-fixed text-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>Produit</th>
+                                        <th>Quantité entrée</th>
+                                        <th>Montant</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in entrees %}
+                                        <tr>
+                                            <td>{{ item.produit.nom }}</td>
+                                            <td>{{ item.qte|number_format(0, ' ', ' ') }}</td>
+                                            <td>{{ item.prixTotal|number_format(0, ' ', ' ') }} FCFA</td>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="3">Aucune entrée enregistrée</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+            <!--row-->
+            <div class="card-footer mt-2">
+                @Développeur: BITSA NZDZIE PASCAL
+            </div>
+
+        </div>
+    </section>
+</div>
+{% endblock %}

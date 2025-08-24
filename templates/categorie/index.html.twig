@@ -14,14 +14,14 @@
                                 <tbody>
                                     <tr>
                                         <th style="width:3%;">ID</th>
-                                        <th>Magasin</th>
-                                        <th>Capacite</th>
+                                        <th>Catégorie</th>
+                                        <th>Famille</th>
                                     </tr>
-                                    {% for magasin in magasins %}
+                                    {% for categorie in categories %}
                                         <tr>
-                                            <td>{{ magasin.id }}</td>
-                                            <td>{{ magasin.nom }}</td>
-                                            <td>{{ magasin.capacite }}</td>
+                                            <td>{{ categorie.id }}</td>
+                                            <td>{{ categorie.nomCat }}</td>
+                                            <td>{{ categorie.famille.nom }}</td>
                                         </tr>
                                     {% else %}
                                         <tr>
@@ -40,7 +40,7 @@
                 <div class="col-md-6">
                     <div class="card">
                         <div class="card-header">
-                            <form action="{{ path('magasin_nb') }}" method="post">
+                            <form action="{{ path('categorie_nb') }}" method="post">
                                 <div class="form-inline">
                                     <input type="number" name="nb_row" class="form-control" placeholder="Nbre ex: 5">
                                     <button type="submit" class="form-control">Ok</button>
@@ -49,21 +49,26 @@
                         </div>
 
                         <div class="card-body table-responsive p-0" style="height: 350px;">
-                            <form action="{{ path('magasin_index') }}" method="post">
+                            <form action="{{ path('categorie_index') }}" method="post">
                                 <table class="table table-head-fixed text-nowrap">
                                     <tbody>
                                         <tr>
-                                            <th>Magasin</th>
-                                            <th>Capacite</th>
+                                            <th>Catégorie</th>
+                                            <th>Famille</th>
                                         </tr>
 
                                         {% for nb_row in nb_rows %}
                                             <tr>
                                                 <td>
-                                                    <input type="text" name="magasin{{ nb_row }}" class="form-control" placeholder="Nom du magasin">
+                                                    <input type="text" name="categorie{{ nb_row }}" class="form-control" placeholder="Nom de la catégorie">
                                                 </td>
                                                 <td>
-                                                    <input type="text" name="capacite{{ nb_row }}" class="form-control" placeholder="Capacite du magasin">
+                                                    <select name="famille_id{{ nb_row }}" class="form-control">
+                                                        <option value="">-- Choisir une famille --</option>
+                                                        {% for famille in familles %}
+                                                            <option value="{{ famille.id }}">{{ famille.nom }}</option>
+                                                        {% endfor %}
+                                                    </select>
                                                 </td>
                                             </tr>
                                         {% endfor %}
