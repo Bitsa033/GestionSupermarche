@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Achat;
 use App\Entity\Reception;
-use App\Service\Db\Db;
+use App\Service\Db;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
@@ -27,26 +27,25 @@ class ReceptionRepository extends ServiceEntityRepository
     public function sommeQteRecue($commande)
     {
         $sql = '
-        SELECT SUM(qte_rec) as qte FROM reception WHERE commande_id='.$commande;
+        SELECT SUM(qte_rec) as qte FROM reception WHERE commande_id=' . $commande;
         $stmt = $this->db->fetch_one_command($sql);
         //$qte=$stmt[0]['qte'];
         // returns an array of arrays (i.e. a raw data set)
-        return $stmt['qte'] ;
-        
+        return $stmt['qte'];
     }
 
     public function qteUnitVal($commande)
     {
         $sql = '
         SELECT max(reception.id) as receptiion, qte_unit_val as qte FROM reception  
-        WHERE commande_id='.$commande.'';
+        WHERE commande_id=' . $commande . '';
         $stmt = $this->db->fetch_one_command($sql);
         //dd($stmt);
         //$qte=$stmt[0]['qte'];
         // returns an array of arrays (i.e. a raw data set)
-        return $stmt= (is_bool($stmt) == true) ? $stmt :$stmt['qte'] ;
+        return $stmt = (is_bool($stmt) == true) ? $stmt : $stmt['qte'];
         //return $stmt['qte'] ;
-        
+
     }
 
     // /**

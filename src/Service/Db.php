@@ -1,13 +1,14 @@
 <?php
-namespace App\Service\Db;
+
+namespace App\Service;
 
 use PDO;
 
-class Db 
+class Db
 {
-    public $domaine='mysql:host=localhost;dbname=gps';
-    public$username='root';
-    public $password='';
+    public $domaine = 'mysql:host=localhost;dbname=gps';
+    public $username = 'root';
+    public $password = '';
 
     function __construct()
     {
@@ -17,8 +18,8 @@ class Db
     function new_connection()
     {
         try {
-            
-            return new PDO($this->domaine,$this->username,$this->password);
+
+            return new PDO($this->domaine, $this->username, $this->password);
         } catch (\Exception) {
             die("Une erreur est survenue, verifiez vos parametres de connection, ou contactez votre webmestre !");
         }
@@ -27,35 +28,34 @@ class Db
     function fetch_all_command($command)
     {
         try {
-            $con=$this->new_connection();
-            $exec=$con->query($command);
-            $array=$exec->fetchAll();
+            $con = $this->new_connection();
+            $exec = $con->query($command);
+            $array = $exec->fetchAll();
             return $array;
         } catch (\Exception $e) {
-            die("Une erreur est survenue lors de l'execution de la requette !".$e->getMessage());
+            die("Une erreur est survenue lors de l'execution de la requette !" . $e->getMessage());
         }
     }
 
     function fetch_one_command($command)
     {
         try {
-            $con=$this->new_connection();
-            $exec=$con->query($command);
-            $array=$exec->fetch();
+            $con = $this->new_connection();
+            $exec = $con->query($command);
+            $array = $exec->fetch();
             return $array;
         } catch (\Exception $e) {
-            die("Une erreur est survenue lors de l'execution de la requette !".$e->getMessage());
+            die("Une erreur est survenue lors de l'execution de la requette !" . $e->getMessage());
         }
     }
 
     function insert_command($command)
     {
         try {
-            $con=$this->new_connection();
+            $con = $this->new_connection();
             $con->query($command);
-    
         } catch (\Exception $e) {
-            die("Une erreur est survenue lors de l'execution de la requette !".$e->getMessage());
+            die("Une erreur est survenue lors de l'execution de la requette !" . $e->getMessage());
         }
     }
 }
